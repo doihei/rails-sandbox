@@ -1,24 +1,51 @@
-# README
+# rails-sandbox
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails 8.1 + PostgreSQL のサンドボックスプロジェクト。
 
-Things you may want to cover:
+## 必要なもの
 
-* Ruby version
+- Docker / Docker Compose
 
-* System dependencies
+## セットアップ
 
-* Configuration
+```bash
+# 1. リポジトリをクローン
+git clone <repo-url>
+cd rails-sandbox
 
-* Database creation
+# 2. 環境変数ファイルを作成
+cp .env.example .env
 
-* Database initialization
+# 3. イメージをビルド
+docker compose build
 
-* How to run the test suite
+# 4. コンテナを起動
+docker compose up -d
 
-* Services (job queues, cache servers, search engines, etc.)
+# 5. DB セットアップ
+docker compose exec web bin/rails db:create db:migrate
+```
 
-* Deployment instructions
+## 開発
 
-* ...
+```bash
+# サーバー起動（docker compose up -d 後）
+# → http://localhost:3000
+
+# Rails コンソール
+docker compose exec web bin/rails console
+
+# マイグレーション実行
+docker compose exec web bin/rails db:migrate
+
+# テスト実行
+docker compose exec web bin/rails test
+```
+
+## 環境変数
+
+`.env.example` を参照。`.env` にコピーして使用する。
+
+## デプロイ
+
+Kamal を使用。`config/deploy.yml` を参照。
