@@ -30,3 +30,5 @@ docker compose logs -f web
 - `docker/Dockerfile.dev` — 開発用 Dockerfile（docker-compose 用）
 - `.env` — DB 接続情報（gitignore 対象）
 - `.env.example` — `.env` のテンプレート
+- `.claude/rules/docker.md` — Docker構成のコンテキストルール（Claude向け）
+- `.claude/skills/` — プロジェクト固有の Claude スキル
