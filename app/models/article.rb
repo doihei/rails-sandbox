@@ -5,8 +5,8 @@ class Article < ApplicationRecord
   validates :body,  presence: true
   validates :status, inclusion: { in: STATUSES }
 
+  before_validation :set_default_status, on: :create
   before_save :normalize_title
-  before_create :set_default_status
 
   scope :published, -> { where(status: "published") }
   scope :recent,    -> { order(created_at: :desc) }
