@@ -8,6 +8,12 @@ Rails 8.1 + PostgreSQL のサンドボックスプロジェクト。
 
 ## セットアップ
 
+### Dev Container（推奨）
+
+VSCode + [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 拡張をインストール後、リポジトリを開き「Reopen in Container」を選択。
+
+### 通常セットアップ
+
 ```bash
 # 1. リポジトリをクローン
 git clone <repo-url>

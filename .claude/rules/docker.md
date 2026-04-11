@@ -11,8 +11,8 @@
 build context はプロジェクトルート（`.`）なので、Dockerfile 内の COPY パスはルートからの相対パス。
 
 ### 環境変数
-- `.env` に `POSTGRES_USER`, `POSTGRES_PASSWORD`, `DATABASE_URL` を定義
-- `DATABASE_URL` により Rails が `config/database.yml` を自動上書き
+- `.env` に `POSTGRES_USER`, `POSTGRES_PASSWORD`, `DEV_DATABASE_URL`, `TEST_DATABASE_URL` を定義
+- `DEV_DATABASE_URL` / `TEST_DATABASE_URL` により Rails が `config/database.yml` を自動上書き
 - `config/database.yml` は変更不要
 
 ### Kamal との関係

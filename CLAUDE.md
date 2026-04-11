@@ -32,3 +32,5 @@ docker compose logs -f web
 - `.env.example` — `.env` のテンプレート
 - `.claude/rules/docker.md` — Docker構成のコンテキストルール（Claude向け）
 - `.claude/skills/` — プロジェクト固有の Claude スキル
+- `.devcontainer/` — VSCode Dev Container 設定（docker-compose の web サービスに接続）
+- `.vscode/tasks.json` — VSCode タスク設定（docker compose 経由でテスト実行）
