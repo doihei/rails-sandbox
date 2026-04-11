@@ -1,0 +1,22 @@
+{
+  "name": "rails-sandbox",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "web",
+  "workspaceFolder": "/rails",
+  "remoteUser": "root",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Shopify.ruby-lsp",
+        "ms-vscode.test-adapter-converter"
+      ],
+      "settings": {
+        "rubyLsp.formatter": "rubocop",
+        "rubyLsp.enabledFeatures": {
+          "inlayHint": true
+        }
+      }
+    }
+  },
+  "postCreateCommand": "bundle install"
+}
