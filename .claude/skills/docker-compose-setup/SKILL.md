@@ -90,6 +90,16 @@ docker compose logs web
 docker compose logs db
 ```
 
+**"A server is already running" が出る**
+```
+A server is already running (pid: 1, file: /rails/tmp/pids/server.pid).
+```
+→ entrypoint が自動で削除するが、手動でも解消できる。
+```bash
+rm tmp/pids/server.pid
+docker compose up -d
+```
+
 **`.env` ファイルがない / 環境変数が不足している**
 ```
 env file .env not found
@@ -112,6 +122,8 @@ docker compose up -d
 ---
 
 ## Step 3: DB セットアップ
+
+> **補足：** `docker compose up` 時に `bin/docker-entrypoint` が `db:prepare`（= create + migrate）を自動実行するため、初回起動後はこの手順は不要です。マイグレーションを手動で追加実行したい場合に使います。
 
 ```bash
 docker compose exec web bin/rails db:create db:migrate

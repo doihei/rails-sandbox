@@ -28,9 +28,20 @@ docker compose logs -f web
 
 - `docker/Dockerfile` — 本番用 Dockerfile（Kamal デプロイ用）
 - `docker/Dockerfile.dev` — 開発用 Dockerfile（docker-compose 用）
+- `bin/docker-entrypoint` — 起動スクリプト。server.pid の削除・db:prepare を自動実行
 - `.env` — DB 接続情報（gitignore 対象）
 - `.env.example` — `.env` のテンプレート
 - `.claude/rules/docker.md` — Docker構成のコンテキストルール（Claude向け）
 - `.claude/skills/` — プロジェクト固有の Claude スキル
 - `.devcontainer/` — VSCode Dev Container 設定（docker-compose の web サービスに接続）
 - `.vscode/tasks.json` — VSCode タスク設定（docker compose 経由でテスト実行）
+
+## トラブルシューティング
+
+### コンテナ再起動時に "A server is already running" が出る場合
+
+`tmp/pids/server.pid` が残っている。`bin/docker-entrypoint` 内で自動削除されるが、手動で解消する場合：
+
+```bash
+rm tmp/pids/server.pid
+```
