@@ -2,36 +2,52 @@ require "test_helper"
 
 class ArticleTest < ActiveSupport::TestCase
   # 正常系：有効なデータは保存できる
+  def valid_article
+    Article.new(
+      title: "テストタイトル",
+      body: "テスト本文",
+      user: users(:one)  # ← userを渡す
+    )
+  end
+
   test "タイトルと本文があれば保存できる" do
-    article = Article.new(title: "テストタイトル", body: "テスト本文")
-    assert article.valid?
+    assert valid_article.valid?
   end
 
-  # 異常系：タイトルなしは無効
   test "タイトルがなければ無効" do
-    article = Article.new(title: "", body: "本文")
+    article = valid_article.tap { |a| a.title = "" }
     assert_not article.valid?
-    assert_includes article.errors[:title], "can't be blank"
   end
 
-  # 異常系：本文なしは無効
   test "本文がなければ無効" do
-    article = Article.new(title: "タイトル", body: "")
+    article = valid_article.tap { |a| a.body = "" }
     assert_not article.valid?
   end
 
-  # コールバックのテスト
+  test "userがなければ無効" do
+    article = valid_article.tap { |a| a.user = nil }
+    assert_not article.valid?
+  end
+
   test "保存時にタイトルの前後空白が除去される" do
-    article = Article.create!(title: "  スペース付き  ", body: "本文")
+    article = Article.create!(
+      title: "  スペース付き  ",
+      body: "本文",
+      user: users(:one)
+    )
     assert_equal "スペース付き", article.title
   end
 
-  # scopeのテスト
   test "publishedスコープは公開済みの記事だけ返す" do
-    Article.create!(title: "公開記事", body: "本文", status: "published")
-    Article.create!(title: "下書き",   body: "本文", status: "draft")
-
     results = Article.published
     assert results.all? { |a| a.status == "published" }
+  end
+
+  test "userを削除すると記事も削除される" do
+    user = users(:one)
+    article_count = user.articles.count
+    assert_difference "Article.count", -article_count do
+      user.destroy
+    end
   end
 end

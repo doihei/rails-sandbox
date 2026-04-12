@@ -1,6 +1,8 @@
 class Article < ApplicationRecord
   STATUSES = %w[draft published archived].freeze
 
+  belongs_to :user
+
   validates :title, presence: true, length: { maximum: 100 }
   validates :body,  presence: true
   validates :status, inclusion: { in: STATUSES }

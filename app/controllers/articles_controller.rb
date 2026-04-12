@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: %i[ show edit update destroy ]
+  before_action :set_current_user
 
   # GET /articles or /articles.json
   def index
@@ -21,7 +22,7 @@ class ArticlesController < ApplicationController
 
   # POST /articles or /articles.json
   def create
-    @article = Article.new(article_params)
+    @article = current_user.articles.build(article_params)
 
     respond_to do |format|
       if @article.save
@@ -66,5 +67,21 @@ class ArticlesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def article_params
       params.expect(article: [ :title, :body ])
+    end
+
+    def set_current_user
+      # 認証なしの仮実装：最初のUserを使う（Devise導入後に置き換える）
+      @current_user = User.first_or_create!(
+        name: "開発ユーザー",
+        email: "dev@example.com"
+      )
+    end
+
+    def current_user
+      @current_user
+    end
+
+    def article_params
+      params.expect(article: [ :title, :body, :status ])
     end
 end
