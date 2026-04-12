@@ -11,16 +11,18 @@
     </div>
   <% end %>
 
-  <div>
+  <div data-controller="character-count">
     <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+    <%= form.text_field :title, data: { character_count_target: "input", action: "input->character-count#update" } %>
+    <span data-character-count-target="count">0</span>/100
   </div>
 
-  <div>
+  <div data-controller="character-count">
     <%= form.label :body, style: "display: block" %>
-    <%= form.textarea :body %>
+    <%= form.textarea :body, data: { character_count_target: "input", action: "input->character-count#update" } %>
+    <span data-character-count-target="count">0</span>/100
   </div>
-
+  
   <div>
     <%= form.submit %>
   </div>
