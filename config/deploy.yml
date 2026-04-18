@@ -43,6 +43,11 @@ env:
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
+    #
+    # この設定を有効にすると、PumaプロセスにSolid Queueのワーカーが同居して起動する。
+    # 開発・小規模本番ではサーバーを分けずに済むためこのままでOK。
+    # トラフィックが増えてきたら、この行をコメントアウトして
+    # servers.job セクションを有効化し、bin/jobs を別プロセスで動かすのが一般的な拡張パス。
     SOLID_QUEUE_IN_PUMA: true
 
     # Set number of processes dedicated to Solid Queue (default: 1)
