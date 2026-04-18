@@ -7,7 +7,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  web:
+  app:
     build:
       context: .
       dockerfile: docker/Dockerfile.dev
@@ -15,14 +15,28 @@ services:
     volumes:
       - .:/rails
       - bundle_cache:/usr/local/bundle
-    ports:
-      - "3000:3000"
+    # ポートをホストに公開しない（Nginxからのみアクセスさせる）
+    expose:
+      - "3000"
     env_file: .env
     environment:
       RAILS_ENV: development
+      SOLID_QUEUE_IN_PUMA: true
     depends_on:
       db:
         condition: service_started
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      # Nginx設定ファイルをマウント
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+      # 静的ファイルをNginxから直接配信するためにマウント
+      - .:/rails
+    depends_on:
+      - app
 
 volumes:
   postgres_data:
