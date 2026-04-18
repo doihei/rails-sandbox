@@ -36,7 +36,7 @@ docker compose exec app bin/rails db:create db:migrate
 
 ```bash
 # サーバー起動（docker compose up -d 後）
-# → http://localhost:3000
+# → http://localhost:8080 （Nginx経由）
 
 # Rails コンソール
 docker compose exec app bin/rails console

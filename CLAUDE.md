@@ -21,7 +21,7 @@ docker compose exec app bin/rails console
 docker compose down
 
 # ログ確認
-docker compose logs -f web
+docker compose logs -f app
 ```
 
 ## ファイル構成メモ
@@ -33,7 +33,8 @@ docker compose logs -f web
 - `.env.example` — `.env` のテンプレート
 - `.claude/rules/docker.md` — Docker構成のコンテキストルール（Claude向け）
 - `.claude/skills/` — プロジェクト固有の Claude スキル
-- `.devcontainer/` — VSCode Dev Container 設定（docker-compose の web サービスに接続）
+- `.devcontainer/` — VSCode Dev Container 設定（docker-compose の app サービスに接続）
+- `docker/nginx.conf` — Nginx設定（Nginx → Puma のリバースプロキシ）
 - `.vscode/tasks.json` — VSCode タスク設定（docker compose 経由でテスト実行）
 
 ## トラブルシューティング
