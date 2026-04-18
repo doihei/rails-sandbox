@@ -4,7 +4,7 @@
     {
       "label": "Rails: Run all tests",
       "type": "shell",
-      "command": "docker compose exec web bin/rails test",
+      "command": "docker compose exec app bin/rails test",
       "group": {
         "kind": "test",
         "isDefault": true
@@ -17,7 +17,7 @@
     {
       "label": "Rails: Run current file",
       "type": "shell",
-      "command": "docker compose exec web bin/rails test ${relativeFile}",
+      "command": "docker compose exec app bin/rails test ${relativeFile}",
       "group": "test",
       "presentation": {
         "reveal": "always",

@@ -13,9 +13,9 @@ Rails 8.1 + PostgreSQL のサンドボックスプロジェクト。
 docker compose up -d
 
 # Rails コマンド実行
-docker compose exec web bin/rails <コマンド>
-docker compose exec web bin/rails db:migrate
-docker compose exec web bin/rails console
+docker compose exec app bin/rails <コマンド>
+docker compose exec app bin/rails db:migrate
+docker compose exec app bin/rails console
 
 # 環境停止
 docker compose down

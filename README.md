@@ -29,7 +29,7 @@ docker compose build
 docker compose up -d
 
 # 5. DB セットアップ
-docker compose exec web bin/rails db:create db:migrate
+docker compose exec app bin/rails db:create db:migrate
 ```
 
 ## 開発
@@ -39,13 +39,13 @@ docker compose exec web bin/rails db:create db:migrate
 # → http://localhost:3000
 
 # Rails コンソール
-docker compose exec web bin/rails console
+docker compose exec app bin/rails console
 
 # マイグレーション実行
-docker compose exec web bin/rails db:migrate
+docker compose exec app bin/rails db:migrate
 
 # テスト実行
-docker compose exec web bin/rails test
+docker compose exec app bin/rails test
 ```
 
 ## 環境変数

@@ -126,12 +126,12 @@ docker compose up -d
 > **補足：** `docker compose up` 時に `bin/docker-entrypoint` が `db:prepare`（= create + migrate）を自動実行するため、初回起動後はこの手順は不要です。マイグレーションを手動で追加実行したい場合に使います。
 
 ```bash
-docker compose exec web bin/rails db:create db:migrate
+docker compose exec app bin/rails db:create db:migrate
 ```
 
 シードデータが必要な場合:
 ```bash
-docker compose exec web bin/rails db:seed
+docker compose exec app bin/rails db:seed
 ```
 
 ### よくあるエラーと対処
@@ -145,7 +145,7 @@ ActiveRecord::DatabaseConnectionError
 ```bash
 docker compose ps        # db が running か確認
 docker compose logs db   # エラーがないか確認
-docker compose exec web bin/rails db:create db:migrate  # リトライ
+docker compose exec app bin/rails db:create db:migrate  # リトライ
 ```
 
 **ロールが存在しない**
@@ -161,8 +161,8 @@ FATAL: database "xxx" does not exist
 ```
 → `db:create` が先に必要。
 ```bash
-docker compose exec web bin/rails db:create
-docker compose exec web bin/rails db:migrate
+docker compose exec app bin/rails db:create
+docker compose exec app bin/rails db:migrate
 ```
 
 **マイグレーション未実行**
@@ -171,7 +171,7 @@ ActiveRecord::PendingMigrationError
 ```
 → マイグレーションを実行する。
 ```bash
-docker compose exec web bin/rails db:migrate
+docker compose exec app bin/rails db:migrate
 ```
 
 **コンテナが見つからない**
@@ -207,8 +207,8 @@ docker compose logs -f
 docker compose logs -f web
 
 # Rails コマンド実行
-docker compose exec web bin/rails console
-docker compose exec web bin/rails db:migrate
+docker compose exec app bin/rails console
+docker compose exec app bin/rails db:migrate
 
 # 全削除してやり直し（DBデータも消える）
 docker compose down -v
