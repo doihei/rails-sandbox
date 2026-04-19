@@ -6,9 +6,7 @@ module ActiveSupport
   class TestCase
     parallelize(workers: :number_of_processors)
     fixtures :all
+    include ActiveJob::TestHelper
+    include Devise::Test::IntegrationHelpers
   end
-end
-
-class ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
 end
