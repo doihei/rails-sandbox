@@ -24,7 +24,16 @@
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
+    <nav style="padding: 8px 16px; background: #f5f5f5; display: flex; justify-content: space-between; align-items: center;">
+      <%= link_to "Articles", articles_path %>
+      <% if user_signed_in? %>
+        <span style="font-size: 13px; color: #666;">
+          <%= current_user.email %>
+          &nbsp;
+          <%= button_to "Sign out", destroy_user_session_path, method: :delete, style: "font-size: 13px; cursor: pointer;" %>
+        </span>
+      <% end %>
+    </nav>
     <p class="alert"><%= alert %></p>
     <%= yield %>
   </body>
