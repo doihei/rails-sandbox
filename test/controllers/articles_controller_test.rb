@@ -18,9 +18,10 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create article" do
     assert_difference("Article.count") do
-      post articles_url, params: { article: { body: @article.body, title: @article.title } }
+      assert_enqueued_with(job: ArticleNotificationJob) do
+        post articles_url, params: { article: { body: @article.body, title: @article.title } }
+      end
     end
-
     assert_redirected_to article_url(Article.last)
   end
 
