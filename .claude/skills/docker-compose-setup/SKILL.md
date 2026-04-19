@@ -86,7 +86,7 @@ Exited (1)  # docker compose ps で確認
 ```
 → ログを確認する。
 ```bash
-docker compose logs web
+docker compose logs app
 docker compose logs db
 ```
 
@@ -189,10 +189,10 @@ docker compose up -d
 
 ```bash
 docker compose ps          # 全サービスが running か
-docker compose logs -f web # サーバーログをフォロー
+docker compose logs -f app # サーバーログをフォロー
 ```
 
-`http://localhost:3000` にアクセスして動作確認する。
+`http://localhost:8080` にアクセスして動作確認する（Nginx 経由で app にルーティング）。
 
 ---
 
@@ -204,7 +204,7 @@ docker compose down
 
 # ログ確認
 docker compose logs -f
-docker compose logs -f web
+docker compose logs -f app
 
 # Rails コマンド実行
 docker compose exec app bin/rails console
