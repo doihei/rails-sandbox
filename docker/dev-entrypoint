@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+# If running the rails server then create or migrate existing database
+if [ "$1" = "bin/rails" ] && [ "$2" = "server" ]; then
+  ./bin/rails db:prepare
+  # Load queue schema on first setup (solid_queue has no migrations in dev/test)
+  ./bin/rails runner "ActiveRecord::Base.connection.table_exists?('solid_queue_processes') || system('./bin/rails db:schema:load:queue')"
+  rm -f tmp/pids/server.pid
+fi
+
+exec "${@}"
