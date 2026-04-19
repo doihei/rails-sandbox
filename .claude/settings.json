@@ -2,9 +2,7 @@
   "permissions": {
     "allow": [
       "Read(.claude/**)",
-      "Bash(docker compose:*)",
-      "Bash(git add:*)",
-      "Bash(git commit -m ':*)"
+      "Bash(docker compose *)"
     ]
   }
 }
