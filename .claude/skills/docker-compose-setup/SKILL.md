@@ -1,6 +1,6 @@
 ---
 name: docker-compose-setup
-description: Guides you step-by-step through setting up the docker-compose development environment for this Rails project: build, start containers, and run DB setup/migrations. Use this skill whenever the user wants to start the docker-compose environment, run docker compose build/up, set up the database, or troubleshoot docker-compose errors such as port conflicts, container crashes, DB connection failures, or build errors. Even if the user just says "docker-composeで環境立ち上げたい" or "docker compose うまくいかない", use this skill.
+description: Rails プロジェクトで docker-compose 環境を立ち上げる／トラブルシュートする手順。`docker compose build/up`・DB セットアップ・ポート競合/接続失敗/server.pid 問題・「docker-composeで環境立ち上げたい」系依頼で使う。
 ---
 
 # docker-compose 環境構築（Rails）

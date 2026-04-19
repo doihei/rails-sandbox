@@ -1,49 +1,18 @@
 # rails-sandbox
 
-Rails 8.1 + PostgreSQL のサンドボックスプロジェクト。
+Rails 8.1 + PostgreSQL の学習用サンドボックス。
 
-## 開発環境
+## 開発環境の絶対原則
 
-**ローカルの Ruby / PostgreSQL は使わない。docker-compose で全て動かす。**
+- **ローカルの Ruby / PostgreSQL は使わない。docker-compose で全て動かす。**
+- Rails コマンドは必ず `docker compose exec app bin/rails <コマンド>` 経由で実行する。
 
-## 主要コマンド
+## コンテキストの参照先
 
-```bash
-# 環境起動
-docker compose up -d
-
-# Rails コマンド実行
-docker compose exec app bin/rails <コマンド>
-docker compose exec app bin/rails db:migrate
-docker compose exec app bin/rails console
-
-# 環境停止
-docker compose down
-
-# ログ確認
-docker compose logs -f app
-```
-
-## ファイル構成メモ
-
-- `docker/Dockerfile` — 本番用 Dockerfile（Kamal デプロイ用）
-- `docker/Dockerfile.dev` — 開発用 Dockerfile（docker-compose 用）
-- `bin/docker-entrypoint` — 本番用起動スクリプト（Kamal デプロイ用）。server.pid の削除・db:prepare を自動実行
-- `docker/dev-entrypoint` — 開発用起動スクリプト。db:prepare・solid_queue テーブルの初期化・server.pid の削除を自動実行
-- `.env` — DB 接続情報（gitignore 対象）
-- `.env.example` — `.env` のテンプレート
-- `.claude/rules/docker.md` — Docker構成のコンテキストルール（Claude向け）
-- `.claude/skills/` — プロジェクト固有の Claude スキル
-- `.devcontainer/` — VSCode Dev Container 設定（docker-compose の app サービスに接続）
-- `docker/nginx.conf` — Nginx設定（Nginx → Puma のリバースプロキシ）
-- `.vscode/tasks.json` — VSCode タスク設定（docker compose 経由でテスト実行）
-
-## トラブルシューティング
-
-### コンテナ再起動時に "A server is already running" が出る場合
-
-`tmp/pids/server.pid` が残っている。`bin/docker-entrypoint` 内で自動削除されるが、手動で解消する場合：
-
-```bash
-rm tmp/pids/server.pid
-```
+- Docker 構成・環境変数・Kamal 連携 → `.claude/rules/docker.md`
+- コミット規約 → `.claude/rules/commit-message.md`
+- テスト実行規約 → `.claude/rules/testing.md`
+- Solid Queue / Job の実装規約 → `.claude/rules/jobs.md`
+- Turbo Frame の規約 → `.claude/rules/turbo.md`
+- 環境立ち上げ・トラブルシュート手順 → `.claude/skills/docker-compose-setup/SKILL.md`（`/docker-compose-setup` スキルで呼び出し可能）
+- 人間向けセットアップガイド → `README.md`
