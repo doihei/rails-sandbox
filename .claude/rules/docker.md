@@ -3,7 +3,7 @@
 ### サービス構成（docker-compose.yml）
 - `app`: Rails アプリ（Puma、内部ポート 3000。外部には公開しない）
 - `nginx`: リバースプロキシ（ホスト 8080 → コンテナ 80 → app:3000）
-- `db`: PostgreSQL 17（ポート 5432）
+- `db`: PostgreSQL 18（ポート 5432）
 
 ### Dockerfile の場所
 - `docker/Dockerfile` — 本番用（Kamal デプロイ時に使用）

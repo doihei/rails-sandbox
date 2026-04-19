@@ -25,11 +25,8 @@ cp .env.example .env
 # 3. イメージをビルド
 docker compose build
 
-# 4. コンテナを起動
+# 4. コンテナを起動（初回起動時に DB セットアップも自動実行）
 docker compose up -d
-
-# 5. DB セットアップ
-docker compose exec app bin/rails db:create db:migrate
 ```
 
 ## 開発

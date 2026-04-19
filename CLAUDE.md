@@ -28,7 +28,8 @@ docker compose logs -f app
 
 - `docker/Dockerfile` — 本番用 Dockerfile（Kamal デプロイ用）
 - `docker/Dockerfile.dev` — 開発用 Dockerfile（docker-compose 用）
-- `bin/docker-entrypoint` — 起動スクリプト。server.pid の削除・db:prepare を自動実行
+- `bin/docker-entrypoint` — 本番用起動スクリプト（Kamal デプロイ用）。server.pid の削除・db:prepare を自動実行
+- `docker/dev-entrypoint` — 開発用起動スクリプト。db:prepare・solid_queue テーブルの初期化・server.pid の削除を自動実行
 - `.env` — DB 接続情報（gitignore 対象）
 - `.env.example` — `.env` のテンプレート
 - `.claude/rules/docker.md` — Docker構成のコンテキストルール（Claude向け）
