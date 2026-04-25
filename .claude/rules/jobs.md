@@ -1,3 +1,9 @@
+---
+paths:
+  - "app/jobs/**/*.rb"
+  - "test/jobs/**/*.rb"
+---
+
 ## Solid Queue / Job の規約
 
 - Queue バックエンドは Solid Queue。開発・小規模本番では `SOLID_QUEUE_IN_PUMA: true`（docker-compose で設定済み）により Puma と同一プロセスでワーカーを起動する。別プロセス不要。

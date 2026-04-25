@@ -1,3 +1,8 @@
+---
+paths:
+  - "test/**/*"
+---
+
 ## テスト実行規約
 
 - テストは必ず `docker compose exec app bin/rails test` 経由で実行する（ローカル Ruby は使わない）

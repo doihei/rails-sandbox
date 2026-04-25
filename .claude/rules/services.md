@@ -1,3 +1,9 @@
+---
+paths:
+  - "app/services/**/*.rb"
+  - "test/services/**/*.rb"
+---
+
 ## Service Object の規約
 
 - `ApplicationService` を継承する

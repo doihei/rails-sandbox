@@ -1,3 +1,12 @@
+---
+paths:
+  - "docker/**/*"
+  - "docker-compose.yml"
+  - ".devcontainer/**/*"
+  - "config/deploy.yml"
+  - "bin/docker-entrypoint"
+---
+
 ## Docker 構成
 
 ### サービス構成（docker-compose.yml）

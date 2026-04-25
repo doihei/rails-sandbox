@@ -1,3 +1,8 @@
+---
+paths:
+  - "app/views/**/*.erb"
+---
+
 ## Turbo Frame の規約
 
 - Frame ID は複数形リソース名に統一する（例: `turbo_frame_tag "articles"`）
