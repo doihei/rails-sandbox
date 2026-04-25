@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :set_article, only: %i[ show edit update destroy ]
+  before_action :set_article, only: %i[ show edit update destroy publish ]
 
   # GET /articles or /articles.json
   def index
@@ -55,6 +55,20 @@ class ArticlesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to articles_path, notice: "Article was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
+    end
+  end
+
+  # PATCH /articles/:id/publish
+  def publish
+    result = Articles::PublishService.call(
+      article: @article,
+      current_user: current_user
+    )
+
+    if result.success?
+      redirect_to result.value, notice: "記事を公開しました"
+    else
+      redirect_to @article, alert: result.error
     end
   end
 
