@@ -1,12 +1,12 @@
-<% content_for :title, "Editing article" %>
+<% content_for :title, "記事編集" %>
 
-<h1>Editing article</h1>
+<h1>記事編集</h1>
 
 <%= render "form", article: @article %>
 
 <br>
 
 <div>
-  <%= link_to "Show this article", @article %> |
-  <%= link_to "Back to articles", articles_path %>
+  <%= link_to "詳細", @article %> |
+  <%= link_to "戻る", articles_path %>
 </div>

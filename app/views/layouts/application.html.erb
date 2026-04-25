@@ -25,7 +25,7 @@
 
   <body>
     <nav style="padding: 8px 16px; background: #f5f5f5; display: flex; justify-content: space-between; align-items: center;">
-      <%= link_to "Articles", articles_path %>
+      <%= link_to "記事", articles_path %>
       <% if user_signed_in? %>
         <span style="font-size: 13px; color: #666;">
           <%= current_user.email %>
