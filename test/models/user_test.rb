@@ -31,7 +31,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not user.valid?
   end
 
-  test "has_many articles" do
+  test "user1が複数の記事を持っている" do
     user = users(:one)
     assert_respond_to user, :articles
     assert_instance_of Article, user.articles.first
@@ -49,5 +49,21 @@ class UserTest < ActiveSupport::TestCase
     user = users(:one)
     assert user.valid_password?("password")
     assert_not user.valid_password?("wrong")
+  end
+
+  test "user.email_vo は ValueObjects::Email オブジェクトを返す" do
+    user = users(:one)
+    assert_instance_of ValueObjects::Email, user.email_vo
+  end
+
+  test "user.email_vo.domain でドメインを取得できる" do
+    user = users(:one)
+    assert_equal "example.com", user.email_vo.domain
+  end
+
+  test "email で User を検索できる" do
+    user = User.find_by(email: "user1@example.com")
+    assert_not_nil user
+    assert_equal "user1@example.com", user.email_vo.to_s
   end
 end
