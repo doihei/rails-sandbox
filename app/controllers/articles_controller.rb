@@ -21,14 +21,18 @@ class ArticlesController < ApplicationController
 
   # POST /articles or /articles.json
   def create
-    @article = current_user.articles.build(article_params)
+    result = Articles::CreateService.call(
+      user: current_user,
+      params: article_params
+    )
 
     respond_to do |format|
-      if @article.save
-        ArticleNotificationJob.perform_later(@article)
-        format.html { redirect_to @article, notice: "Article was successfully created." }
-        format.json { render :show, status: :created, location: @article }
+      if result.success?
+        format.html { redirect_to result.value, notice: "記事を作成しました" }
+        format.json { render :show, status: :created, location: result.value }
       else
+        @article = current_user.articles.build(article_params)
+        @article.errors.add(:base, result.error)
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
@@ -39,7 +43,7 @@ class ArticlesController < ApplicationController
   def update
     respond_to do |format|
       if @article.update(article_params)
-        format.html { redirect_to @article, notice: "Article was successfully updated.", status: :see_other }
+        format.html { redirect_to @article, notice: "記事を更新しました", status: :see_other }
         format.json { render :show, status: :ok, location: @article }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -53,7 +57,7 @@ class ArticlesController < ApplicationController
     @article.destroy!
 
     respond_to do |format|
-      format.html { redirect_to articles_path, notice: "Article was successfully destroyed.", status: :see_other }
+      format.html { redirect_to articles_path, notice: "記事を削除しました", status: :see_other }
       format.json { head :no_content }
     end
   end
