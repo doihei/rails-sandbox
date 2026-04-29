@@ -5,6 +5,8 @@ paths:
   - ".devcontainer/**/*"
   - "config/deploy.yml"
   - "bin/docker-entrypoint"
+  - "bin/dev"
+  - "Procfile.dev"
 ---
 
 ## Docker 構成
@@ -32,9 +34,16 @@ build context はプロジェクトルート（`.`）なので、Dockerfile 内�
 ### エントリポイント
 - `bin/docker-entrypoint` — 本番用（Kamal）。`server.pid` 削除 + `db:prepare` を自動実行
 - `docker/dev-entrypoint` — 開発用（docker-compose）。`db:prepare` + solid_queue テーブル初期化 + `server.pid` 削除
+- `bin/dev` — foreman 経由で `Procfile.dev` を起動するシェルスクリプト。web（Puma）と css（Tailwind watch）を並列起動する
+
+### Procfile.dev
+foreman が読む開発用プロセス定義。現在の構成:
+- `web`: `bin/rails server -b 0.0.0.0`
+- `css`: `bin/rails tailwindcss:watch[always]`（`always` 必須。Docker では stdin が即閉じるため `always` なしだとビルド1回で終了する）
 
 ### 関連ファイル
 - `.env` / `.env.example` — DB 接続情報（`.env` は gitignore 対象）
 - `docker/nginx.conf` — Nginx → Puma リバースプロキシ設定
+- `Procfile.dev` — foreman が読む開発用プロセス定義（web + css）
 - `.devcontainer/` — docker-compose の `app` サービスに接続する VSCode Dev Container 設定
 - `.vscode/tasks.json` — docker compose 経由でテスト実行するタスク定義
