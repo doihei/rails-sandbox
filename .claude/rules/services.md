@@ -21,3 +21,10 @@ paths:
 - ネームスペースはリソース名の複数形モジュールに統一する（例: `Articles::PublishService`）
 - ファイル配置: `app/services/<namespace>/<action>_service.rb`
 - 既存実装の参照: `app/services/articles/publish_service.rb`
+- `composed_of` で VO 管理しているカラムを扱う場合、文字列比較せずに VO のドメインメソッドを使う:
+  ```ruby
+  # NG
+  if @article.status == "published"
+  # OK
+  if @article.status.published?
+  ```
