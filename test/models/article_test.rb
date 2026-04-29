@@ -40,7 +40,7 @@ class ArticleTest < ActiveSupport::TestCase
 
   test "publishedスコープは公開済みの記事だけ返す" do
     results = Article.published
-    assert results.all? { |a| a.status == "published" }
+    assert results.all? { |a| a.status.published? }
   end
 
   test "userを削除すると記事も削除される" do

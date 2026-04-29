@@ -14,7 +14,7 @@ class Articles::CreateServiceTest < ActiveSupport::TestCase
     )
     assert result.success?
     assert_equal "新しい記事", result.value.title
-    assert_equal "draft", result.value.status
+    assert result.value.status.draft?
   end
 
   test "作成後にJobがキューに積まれる" do

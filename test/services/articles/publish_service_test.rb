@@ -14,7 +14,7 @@ class Articles::PublishServiceTest < ActiveSupport::TestCase
       current_user: @owner
     )
     assert result.success?
-    assert_equal "published", result.value.status
+    assert result.value.status.published?
   end
 
   test "Jobがキューに積まれる" do

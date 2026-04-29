@@ -30,10 +30,10 @@ module Articles
     end
 
     def validates_publishable!
-      if @article.status == "published"
+      if @article.status.published?
         raise PublishError, "すでに公開済みです"
       end
-      if @article.status == "archived"
+      if @article.status.archived?
         raise PublishError, "アーカイブ済みの記事は公開できません"
       end
     end

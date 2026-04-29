@@ -4,7 +4,7 @@
   <%= render @article %>
 
   <div>
-    <% if @article.status != "published" && @article.user == current_user %>
+    <% if !@article.status.published? && @article.user == current_user %>
       <%= link_to "公開", publish_article_path(@article),
         method: :patch,
         data: { turbo_confirm: "この記事を公開しますか？" } %> |

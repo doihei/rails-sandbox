@@ -56,7 +56,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
 
   test "publish 後に status が published に変わる" do
     patch publish_article_url(@article)
-    assert_equal "published", @article.reload.status
+    assert @article.reload.status.published?
   end
 
   test "他人の記事を publish しようとすると alert が返る" do
