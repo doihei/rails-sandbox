@@ -2,6 +2,7 @@
 paths:
   - "app/models/value_objects/**/*.rb"
   - "test/models/value_objects/**/*.rb"
+  - "app/models/*.rb"
 ---
 
 ## Value Object の規約
@@ -58,13 +59,32 @@ end
 
 ### ActiveRecord モデルとの連携
 
-`composed_of` は Rails の uniqueness バリデーションや Devise と互換性の問題が起きるため**使用しない**。
-代わりに `_vo` サフィックスのゲッターメソッドを定義し、DB カラムは文字列のまま保持する。
+#### 原則: `composed_of` + `converter` で VO を直接管理する
+
+Rails が管理するカラム（Devise 非依存）には `composed_of` を使う。
+`converter` を指定することで文字列渡し（`update!(status: "published")` など）も自動変換される。
+
+```ruby
+class Article < ApplicationRecord
+  composed_of :status,
+              class_name: "ValueObjects::ArticleStatus",
+              mapping: [ [ "status", "value" ] ],
+              converter: ->(v) { ValueObjects::ArticleStatus.new(v.to_s) }
+end
+```
+
+- `article.status` → `ValueObjects::ArticleStatus`（VO のドメインメソッドが使える）
+- `article.status = "published"` / `update!(status: "published")` → converter 経由で VO に自動変換
+
+#### 例外: Devise 管理カラムには `_vo` メソッドを使う
+
+`email` / `password` など Devise が直接操作するカラムは、`composed_of` を使うと
+uniqueness バリデーションや Devise 内部処理と競合するため使用しない。
+この場合のみ `_vo` サフィックスのゲッターメソッドを定義し、DB カラムは文字列のまま保持する。
 
 ```ruby
 class User < ApplicationRecord
   # DB カラム (email: string) はそのまま Rails/Devise に委ねる
-  # Value Object への変換は専用メソッドで提供する
   def email_vo
     value = read_attribute(:email)
     value.present? ? ValueObjects::Email.new(value) : nil
