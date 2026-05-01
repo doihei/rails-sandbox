@@ -31,13 +31,12 @@ E: Unable to locate package <name>
 ```
 → `docker/Dockerfile.dev` の `apt-get install` に該当パッケージがない、またはリポジトリが古い。`apt-get update` が `install` の前にあるか確認する。
 
-**gem が見つからない**
+**gem が見つからない（ビルド失敗）**
 ```
 Bundler::GemNotFound / Could not find gem
 ```
-→ `Gemfile.lock` と Dockerfile の環境が合っていない。ホスト側で `bundle install` を実行して `Gemfile.lock` を更新してからリビルド。
+→ `Gemfile.lock` と Dockerfile の環境が合っていない。`Gemfile.lock` を更新してからリビルド。
 ```bash
-bundle install
 docker compose build
 ```
 
@@ -116,6 +115,18 @@ css: bin/tailwindcss -i app/assets/tailwind/application.css -o app/assets/builds
 修正後にコンテナを再起動する:
 ```bash
 docker compose up app -d
+```
+
+**gem が見つからない（ビルドは成功したのに起動失敗する）**
+```
+Could not find puma-X.X.X, bootsnap-X.X.X in locally installed gems (Bundler::GemNotFound)
+```
+→ `bundle_cache` ボリュームに古い gems が残っており、イメージ内の最新の gems を上書きしている。
+gem を更新した後は `docker compose build` だけでなくボリュームの削除が必要。
+```bash
+docker compose down
+docker volume rm rails-sandbox_bundle_cache
+docker compose up
 ```
 
 **`.env` ファイルがない / 環境変数が不足している**
