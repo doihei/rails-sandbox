@@ -33,7 +33,7 @@ build context はプロジェクトルート（`.`）なので、Dockerfile 内�
 
 ### エントリポイント
 - `bin/docker-entrypoint` — 本番用（Kamal）。`server.pid` 削除 + `db:prepare` を自動実行
-- `docker/dev-entrypoint` — 開発用（docker-compose）。`db:prepare` + solid_queue テーブル初期化 + `server.pid` 削除
+- `docker/dev-entrypoint` — 開発用（docker-compose）。`bundle install` + `db:prepare` + solid_queue テーブル初期化 + `server.pid` 削除
 - `bin/dev` — foreman 経由で `Procfile.dev` を起動するシェルスクリプト。web（Puma）と css（Tailwind watch）を並列起動する
 
 ### Procfile.dev

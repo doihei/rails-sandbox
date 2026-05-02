@@ -121,12 +121,10 @@ docker compose up app -d
 ```
 Could not find puma-X.X.X, bootsnap-X.X.X in locally installed gems (Bundler::GemNotFound)
 ```
-→ `bundle_cache` ボリュームに古い gems が残っており、イメージ内の最新の gems を上書きしている。
-gem を更新した後は `docker compose build` だけでなくボリュームの削除が必要。
+→ `dev-entrypoint` の `bundle install` が `Gemfile.lock` と `bundle_cache` ボリュームを自動同期する。
+コンテナを再起動するだけで解消する。
 ```bash
-docker compose down
-docker volume rm rails-sandbox_bundle_cache
-docker compose up
+docker compose restart app
 ```
 
 **`.env` ファイルがない / 環境変数が不足している**
