@@ -29,5 +29,10 @@
     "**/vendor": true, "**/public/assets": true, "**/storage": true, "**/*.lock": true
   },
   "rubyLsp.formatter": "rubocop",
-  "gitlens.codeLens.enabled": true
+  "gitlens.codeLens.enabled": true,
+  "tailwindCSS.includeLanguages": {
+    "erb": "html"
+  },
+  "tailwindCSS.files.exclude": [],
+  "tailwindCSS.experimental.configFile": "app/assets/tailwind/application.css"
 }
