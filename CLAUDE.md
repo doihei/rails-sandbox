@@ -15,6 +15,7 @@ Rails 8.1 + PostgreSQL の学習用サンドボックス。
 - Solid Queue / Job の実装規約 → `.claude/rules/jobs.md`
 - Service Object の実装規約 → `.claude/rules/services.md`
 - Value Object の実装規約 → `.claude/rules/value_objects.md`
-- Turbo Frame の規約 → `.claude/rules/turbo.md`
+- Turbo の方針 → `.claude/rules/turbo.md`
+- Tailwind CSS 規約 → `.claude/rules/tailwind.md`
 - 環境立ち上げ・トラブルシュート手順 → `.claude/skills/docker-compose-setup/SKILL.md`（`/docker-compose-setup` スキルで呼び出し可能）
 - 人間向けセットアップガイド → `README.md`
