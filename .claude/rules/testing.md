@@ -13,6 +13,7 @@ paths:
   - `ActiveJob::TestHelper`（`assert_enqueued_with` などを使う場合）
 - Service Object のテストは `test/services/<namespace>/` に配置する（`ActiveSupport::TestCase` を継承）
 - Value Object のテストは `test/models/value_objects/` に配置する（`ActiveSupport::TestCase` を継承）
+- ViewComponent のテストは `test/components/<namespace>/` に配置する（`ViewComponent::TestCase` を継承）
 - `composed_of` で VO 管理しているカラムはテスト内でも文字列比較しない:
   ```ruby
   # NG

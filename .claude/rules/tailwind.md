@@ -1,6 +1,7 @@
 ---
 paths:
   - "app/views/**/*.erb"
+  - "app/components/**/*.html.erb"
 ---
 
 ## Tailwind CSS 規約
