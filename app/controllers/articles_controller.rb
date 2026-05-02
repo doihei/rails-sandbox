@@ -28,7 +28,7 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       if result.success?
-        format.html { redirect_to result.value, notice: "記事を作成しました" }
+        format.html { redirect_to result.value, notice: t("flash.article.created") }
         format.json { render :show, status: :created, location: result.value }
       else
         @article = current_user.articles.build(article_params)
@@ -43,7 +43,7 @@ class ArticlesController < ApplicationController
   def update
     respond_to do |format|
       if @article.update(article_params)
-        format.html { redirect_to @article, notice: "記事を更新しました", status: :see_other }
+        format.html { redirect_to @article, notice: t("flash.article.updated"), status: :see_other }
         format.json { render :show, status: :ok, location: @article }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -57,7 +57,7 @@ class ArticlesController < ApplicationController
     @article.destroy!
 
     respond_to do |format|
-      format.html { redirect_to articles_path, notice: "記事を削除しました", status: :see_other }
+      format.html { redirect_to articles_path, notice: t("flash.article.deleted"), status: :see_other }
       format.json { head :no_content }
     end
   end
@@ -70,7 +70,7 @@ class ArticlesController < ApplicationController
     )
 
     if result.success?
-      redirect_to result.value, notice: "記事を公開しました"
+      redirect_to result.value, notice: t("flash.article.published")
     else
       redirect_to @article, alert: result.error
     end

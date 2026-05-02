@@ -1,7 +1,7 @@
-<% content_for :title, "記事編集" %>
+<% content_for :title, t('.title') %>
 
 <div class="flex justify-between items-center mb-6">
-  <h1 class="text-2xl font-semibold text-gray-800">記事編集</h1>
+  <h1 class="text-2xl font-semibold text-gray-800"><%= t('.title') %></h1>
 </div>
 
 <%= render "form", article: @article %>

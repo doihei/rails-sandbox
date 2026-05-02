@@ -1,8 +1,8 @@
-<% content_for :title, "記事一覧" %>
+<% content_for :title, t('.title') %>
 
 <div class="flex justify-between items-center mb-6">
-  <h1 class="text-2xl font-semibold text-gray-800">記事一覧</h1>
-  <%= link_to "新規作成", new_article_path,
+  <h1 class="text-2xl font-semibold text-gray-800"><%= t('.title') %></h1>
+  <%= link_to t('.new_button'), new_article_path,
       class: "bg-gray-800 text-white text-sm px-4 py-2 rounded hover:bg-gray-700" %>
 </div>
 

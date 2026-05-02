@@ -8,17 +8,17 @@
   <% end %>
 
   <div class="mb-4" data-controller="character-count">
-    <%= form.label :title, "タイトル", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= form.label :title, t('.title_label'), class: "block text-sm font-medium text-gray-700 mb-1" %>
     <%= form.text_field :title,
         class: "w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-500",
         data: { character_count_target: "input", action: "input->character-count#update" } %>
     <p class="text-xs text-gray-400 mt-1">
-      <span data-character-count-target="count">0</span>/100
+      <span data-character-count-target="count">0</span><%= t('.char_count_suffix') %>
     </p>
   </div>
 
   <div class="mb-6" data-controller="character-count">
-    <%= form.label :body, "本文", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= form.label :body, t('.body_label'), class: "block text-sm font-medium text-gray-700 mb-1" %>
     <%= form.textarea :body, rows: 8,
         class: "w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-500",
         data: { character_count_target: "input", action: "input->character-count#update" } %>
@@ -28,9 +28,9 @@
   </div>
 
   <div class="flex gap-3">
-    <%= form.submit article.persisted? ? "更新する" : "作成する",
+    <%= form.submit article.persisted? ? t('.submit_update') : t('.submit_create'),
         class: "bg-gray-800 text-white px-5 py-2 rounded text-sm hover:bg-gray-700 cursor-pointer" %>
-    <%= link_to "キャンセル", article.persisted? ? article : articles_path,
+    <%= link_to t('.cancel'), article.persisted? ? article : articles_path,
         class: "text-sm text-gray-500 hover:text-gray-700 px-4 py-2" %>
   </div>
 <% end %>
