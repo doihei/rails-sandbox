@@ -1,0 +1,44 @@
+ja:
+  app_name: "Rails Sandbox"
+
+  # articles コントローラ
+  articles:
+    index:
+      title: "記事一覧"
+      new_button: "新規作成"
+    new:
+      title: "新規作成"
+    edit:
+      title: "記事編集"
+    show:
+      publish: "公開する"
+      edit: "編集"
+      delete: "削除"
+      back: "一覧へ"
+      confirm_publish: "この記事を公開しますか？"
+      confirm_delete: "削除しますか？"
+    form:
+      title_label: "タイトル"
+      body_label: "本文"
+      char_count_suffix: "/100"
+      submit_create: "作成する"
+      submit_update: "更新する"
+      cancel: "キャンセル"
+
+  # flash メッセージ
+  flash:
+    article:
+      created: "記事を作成しました"
+      updated: "記事を更新しました"
+      deleted: "記事を削除しました"
+      published: "記事を公開しました"
+
+  # ナビ・レイアウト
+  nav:
+    logout: "ログアウト"
+
+  # ステータスバッジ
+  article_status:
+    draft: "下書き"
+    published: "公開済み"
+    archived: "アーカイブ"
