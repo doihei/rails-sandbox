@@ -4,7 +4,7 @@
 
   <div class="flex justify-between items-start mb-4">
     <h1 class="text-xl font-semibold text-gray-800"><%= @article.title %></h1>
-    <%= render "status_badge", article: @article %>
+    <%= render(StatusBadgeComponent.new(status: @article.status)) %>
   </div>
 
   <p class="text-sm text-gray-500 mb-4">
