@@ -79,4 +79,9 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to article_url(@article)
     assert_equal "すでに公開済みです", flash[:alert]
   end
+
+  test "存在しない記事は 404" do
+    get article_url(id: 999999999)
+    assert_response :not_found
+  end
 end
