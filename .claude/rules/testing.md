@@ -11,6 +11,9 @@ paths:
 - `test/test_helper.rb` に以下を include 済み。新規テストでは追加不要:
   - `Devise::Test::IntegrationHelpers`（ログイン必須のコントローラテスト用）
   - `ActiveJob::TestHelper`（`assert_enqueued_with` などを使う場合）
+- コントローラテストは `ActionDispatch::IntegrationTest` を継承する（URL ヘルパーを使うため）
+  - `ActionController::TestCase` は URL ヘルパーが使えず `UrlGenerationError` になる
+- 統合テスト内で翻訳文字列を比較する場合は `t()` ではなく `I18n.t()` を使う
 - Service Object のテストは `test/services/<namespace>/` に配置する（`ActiveSupport::TestCase` を継承）
 - Value Object のテストは `test/models/value_objects/` に配置する（`ActiveSupport::TestCase` を継承）
 - ViewComponent のテストは `test/components/<namespace>/` に配置する（`ViewComponent::TestCase` を継承）
