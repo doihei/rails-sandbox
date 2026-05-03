@@ -13,7 +13,8 @@ paths:
   ```
 - 戻り値は必ず `Result` オブジェクトを返す:
   - 成功: `Result.success(value)`
-  - 失敗: `Result.failure("エラーメッセージ")`
+  - 失敗: `Result.failure(I18n.t("articles.publish.errors.unauthorized"))`
+  - ユーザー向けエラーメッセージは必ず `I18n.t()` を使う（ハードコード禁止）
 - ビジネスロジック固有の例外はサービス内部でクラス定義して rescue する:
   ```ruby
   OwnershipError = Class.new(StandardError)
