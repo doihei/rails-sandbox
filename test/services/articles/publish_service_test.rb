@@ -35,7 +35,7 @@ class Articles::PublishServiceTest < ActiveSupport::TestCase
       current_user: other
     )
     assert result.failure?
-    assert_includes result.error, "権限がありません"
+    assert_equal I18n.t("articles.publish.errors.unauthorized"), result.error
   end
 
   test "published済みはfailure" do
@@ -45,7 +45,7 @@ class Articles::PublishServiceTest < ActiveSupport::TestCase
       current_user: @owner
     )
     assert result.failure?
-    assert_includes result.error, "すでに公開済み"
+    assert_equal I18n.t("articles.publish.errors.already_published"), result.error
   end
 
   test "archived記事はfailure" do
@@ -55,6 +55,6 @@ class Articles::PublishServiceTest < ActiveSupport::TestCase
       current_user: @owner
     )
     assert result.failure?
-    assert_includes result.error, "アーカイブ済み"
+    assert_equal I18n.t("articles.publish.errors.archived"), result.error
   end
 end

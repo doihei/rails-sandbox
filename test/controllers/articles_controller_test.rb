@@ -51,7 +51,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   test "所有者が draft 記事を publish すると記事詳細へリダイレクト" do
     patch publish_article_url(@article)
     assert_redirected_to article_url(@article)
-    assert_equal "記事を公開しました", flash[:notice]
+    assert_equal I18n.t("flash.article.published"), flash[:notice]
   end
 
   test "publish 後に status が published に変わる" do
@@ -64,7 +64,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:two)
     patch publish_article_url(@article)
     assert_redirected_to article_url(@article)
-    assert_equal "この記事を公開する権限がありません", flash[:alert]
+    assert_equal I18n.t("articles.publish.errors.unauthorized"), flash[:alert]
   end
 
   test "未ログインで publish するとログイン画面へリダイレクト" do
@@ -77,7 +77,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     @article.update!(status: "published")
     patch publish_article_url(@article)
     assert_redirected_to article_url(@article)
-    assert_equal "すでに公開済みです", flash[:alert]
+    assert_equal I18n.t("articles.publish.errors.already_published"), flash[:alert]
   end
 
   test "存在しない記事は 404" do
