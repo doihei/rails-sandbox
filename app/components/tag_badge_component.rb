@@ -8,7 +8,6 @@ class TagBadgeComponent < ViewComponent::Base
   end
 
   def path
-    Rails.application.routes.url_helpers.tag_articles_path(@tag)
+    Rails.application.routes.url_helpers.tag_path(@tag)
   end
 end
-
