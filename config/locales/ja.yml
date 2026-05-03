@@ -27,6 +27,11 @@ ja:
       tag_names_label: "タグ"
       tag_names_placeholder: "rails, ruby, web（カンマ区切り）"
       tag_names_hint: "カンマ区切りで複数入力できます（例: rails, ruby）"
+    card:
+      comment_count:
+        zero: "コメントなし"
+        one: "%{count}件のコメント"
+        other: "%{count}件のコメント"
   comments:
     section_title:
       zero: "コメント"
@@ -38,7 +43,12 @@ ja:
     delete: "削除"
     confirm_delete: "このコメントを削除しますか？"
     empty: "まだコメントがありません"
-
+  tags:
+    show:
+      title: "「%{name}」の記事"
+      count: "%{count}件"
+      back: "一覧へ"
+      empty: "この タグの記事はまだありません"
   # flash メッセージ
   flash:
     article:
