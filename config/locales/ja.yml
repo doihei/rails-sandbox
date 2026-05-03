@@ -24,6 +24,9 @@ ja:
       submit_create: "作成する"
       submit_update: "更新する"
       cancel: "キャンセル"
+      tag_names_label: "タグ"
+      tag_names_placeholder: "rails, ruby, web（カンマ区切り）"
+      tag_names_hint: "カンマ区切りで複数入力できます（例: rails, ruby）"
   comments:
     section_title:
       zero: "コメント"
@@ -35,7 +38,7 @@ ja:
     delete: "削除"
     confirm_delete: "このコメントを削除しますか？"
     empty: "まだコメントがありません"
-    
+
   # flash メッセージ
   flash:
     article:

@@ -3,7 +3,7 @@ class ArticlesController < ApplicationController
 
   # GET /articles or /articles.json
   def index
-    @articles = Article.includes(:user)
+    @articles = Article.includes(:user, :tags)
   end
 
   # GET /articles/1 or /articles/1.json
@@ -23,7 +23,8 @@ class ArticlesController < ApplicationController
   def create
     result = Articles::CreateService.call(
       user: current_user,
-      params: article_params
+      params: article_params,
+      tag_names: params[:article][:tag_names]
     )
 
     respond_to do |format|
@@ -43,6 +44,7 @@ class ArticlesController < ApplicationController
   def update
     respond_to do |format|
       if @article.update(article_params)
+        update_tags(@article, params[:article][:tag_names])
         format.html { redirect_to @article, notice: t("flash.article.updated"), status: :see_other }
         format.json { render :show, status: :ok, location: @article }
       else
@@ -84,5 +86,11 @@ class ArticlesController < ApplicationController
 
     def article_params
       params.expect(article: [ :title, :body, :status ])
+    end
+
+    def update_tags(article, tag_names_string)
+      tag_list = ValueObjects::TagNameList.new(tag_names_string)
+      tags = tag_list.names.map { |name| Tag.find_or_create_by_name!(name) }
+      article.tags = tags
     end
 end

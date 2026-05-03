@@ -54,4 +54,25 @@ class Articles::CreateServiceTest < ActiveSupport::TestCase
     assert result.failure?
     assert_includes result.error, "Body"
   end
+
+  test "タグ名を渡すとタグが付与される" do
+    result = Articles::CreateService.call(
+      user:      @user,
+      params:    { title: "タグ付き記事", body: "本文" },
+      tag_names: "rails, ruby"
+    )
+    assert result.success?
+    assert_equal 2, result.value.tags.count
+    assert_includes result.value.tags.map(&:name), "rails"
+  end
+
+  test "空のタグ名を渡してもエラーにならない" do
+    result = Articles::CreateService.call(
+      user:      @user,
+      params:    { title: "タグなし記事", body: "本文" },
+      tag_names: ""
+    )
+    assert result.success?
+    assert_equal 0, result.value.tags.count
+  end
 end
