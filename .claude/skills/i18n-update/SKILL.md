@@ -11,11 +11,22 @@ description: View・ControllerへのI18n対応を支援するスキル。新し�
 
 ```
 config/locales/
-  ja.yml          # 日本語（正典）← ユーザーが主に管理
-  en.yml          # 英語（フォールバック）← 欠損キーを自動補完
-  devise.ja.yml   # Devise メッセージ（日本語）
-  devise.en.yml   # Devise メッセージ（英語フォールバック）
+  ja.yml              # 共通キー（app_name, nav, flash, article_status, activerecord）
+  en.yml              # 同上・英語
+  devise.ja.yml       # Devise メッセージ（日本語）
+  devise.en.yml       # Devise メッセージ（英語フォールバック）
+  articles/
+    ja.yml            # articles.* キー（日本語）
+    en.yml            # articles.* キー（英語）
+  comments/
+    ja.yml            # comments.* キー（日本語）
+    en.yml
+  tags/
+    ja.yml            # tags.* キー（日本語）
+    en.yml
 ```
+
+コントローラ単位でサブディレクトリに分割している。新しいコントローラを追加するときは `config/locales/<controller>/ja.yml` を作成する。
 
 ---
 
@@ -99,7 +110,7 @@ redirect_to @article, notice: t("flash.article.created")
 ```
 以下のキーを追加します：
 
-【ja.yml】
+【config/locales/articles/ja.yml】
   articles.show.published_at: "公開日"
 
 【devise.ja.yml】（自動）
@@ -114,13 +125,25 @@ redirect_to @article, notice: t("flash.article.created")
 
 ユーザーの承認後、以下の順で書き込む。
 
-### ja.yml / devise.ja.yml への追加
+### コントローラ別サブディレクトリへの追加
+
+追加するキーのコントローラ名に対応するサブディレクトリのファイルへ追加する：
+
+| キー | 書き込み先 |
+|---|---|
+| `articles.*` | `config/locales/articles/ja.yml` |
+| `comments.*` | `config/locales/comments/ja.yml` |
+| `tags.*` | `config/locales/tags/ja.yml` |
+| `flash.*`, `nav.*`, `app_name`, `article_status.*`, `activerecord.*` | `config/locales/ja.yml`（共通） |
+| Devise 関連 | `config/locales/devise.ja.yml` |
+
+新しいコントローラのキーを追加する場合、対応するサブディレクトリが存在しなければ作成する。
 
 YAML の階層構造を維持して適切な位置に挿入する。既存のキーと重複しないよう確認してから追加する。
 
-### en.yml / devise.en.yml の自動補完
+### 対応する en.yml の自動補完
 
-`ja.yml`（または `devise.ja.yml`）に追加したキーが `en.yml`（または `devise.en.yml`）に存在しない場合、自動で英語訳を補完する。ユーザーへの再確認は不要。
+追加したキーに対応する英語ファイル（例: `config/locales/articles/en.yml`）にキーが存在しない場合、自動で英語訳を補完する。ユーザーへの再確認は不要。
 
 英語訳の方針：
 - フラッシュメッセージは過去形（"Article was created."）
@@ -129,22 +152,21 @@ YAML の階層構造を維持して適切な位置に挿入する。既存のキ
 
 ---
 
-## Step 6: ja.yml の肥大化チェック
+## Step 6: サブディレクトリへの振り分けチェック
 
-書き込み後、`ja.yml` の行数を確認する。**100行を超えた場合**、ユーザーに分割を提案する：
+書き込み後、ルートの `ja.yml` を確認し、**コントローラ固有のキーが混入していないか**チェックする。
+
+`articles.*` / `comments.*` / `tags.*` などコントローラ名のトップキーがルートの `ja.yml` に含まれている場合、ユーザーに移動を提案する：
 
 ```
-ja.yml が XXX 行になっています。
-コントローラ別にファイルを分割すると管理しやすくなります：
+config/locales/ja.yml に articles.* キーが含まれています。
+コントローラ別サブディレクトリに移動することを推奨します：
 
-  config/locales/articles.ja.yml  ← articles キーを移動
-  config/locales/articles.en.yml  ← 対応する英語キーも移動
+  config/locales/articles/ja.yml  ← articles キーを移動
+  config/locales/articles/en.yml  ← 対応する英語キーも移動
   config/locales/ja.yml           ← app_name / nav / flash など共通キーのみ残す
 
-Rails は config/locales/ 内のすべての .yml を自動ロードするため、
-分割しても動作は変わりません。Devise がすでに別ファイルになっているのと同じ仕組みです。
-
-分割しますか？
+移動しますか？
 ```
 
 ---
