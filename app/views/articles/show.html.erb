@@ -2,6 +2,14 @@
 
 <div class="bg-white border border-gray-200 rounded-lg p-6">
 
+  <% if @article.tags.any? %>
+    <div class="flex flex-wrap gap-1.5 mb-4">
+      <% @article.tags.each do |tag| %>
+        <%= render(TagBadgeComponent.new(tag: tag)) %>
+      <% end %>
+    </div>
+  <% end %>
+
   <div class="flex justify-between items-start mb-4">
     <h1 class="text-xl font-semibold text-gray-800"><%= @article.title %></h1>
     <%= render(StatusBadgeComponent.new(status: @article.status)) %>
