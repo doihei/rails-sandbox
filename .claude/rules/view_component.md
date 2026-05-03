@@ -16,12 +16,15 @@ paths:
 app/components/
   status_badge_component.rb         # 汎用コンポーネント（名前空間なし）
   status_badge_component.html.erb
+  tag_badge_component.rb
+  tag_badge_component.html.erb
   articles/
     card_component.rb               # articles 専用コンポーネント
     card_component.html.erb
 
 test/components/
   status_badge_component_test.rb
+  tag_badge_component_test.rb
   articles/
     card_component_test.rb
 ```

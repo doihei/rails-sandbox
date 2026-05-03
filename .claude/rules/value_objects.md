@@ -57,6 +57,46 @@ module ValueObjects
 end
 ```
 
+### コレクション型 Value Object
+
+複数の値をまとめて正規化・管理する場合は、コレクション型 VO として実装する。
+単一値の `value` ではなく `names` などの配列属性を持ち、`empty?` で空判定する。
+
+```ruby
+module ValueObjects
+  class TagNameList
+    attr_reader :names
+
+    def initialize(raw)
+      raise ArgumentError, "String または nil を渡してください" unless raw.nil? || raw.is_a?(String)
+      @names = raw.to_s.split(",").map { |n| n.strip.downcase }.reject(&:blank?).uniq.freeze
+      freeze
+    end
+
+    def empty?
+      @names.empty?
+    end
+
+    def ==(other)
+      other.is_a?(TagNameList) && other.names == names
+    end
+    alias eql? ==
+
+    def hash
+      names.hash
+    end
+  end
+end
+```
+
+使用例：
+
+```ruby
+tag_list = ValueObjects::TagNameList.new("Rails, ruby, RAILS")
+tag_list.names  # => ["rails", "ruby"]
+tag_list.empty? # => false
+```
+
 ### ActiveRecord モデルとの連携
 
 #### 原則: `composed_of` + `converter` で VO を直接管理する
