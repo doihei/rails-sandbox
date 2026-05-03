@@ -35,7 +35,7 @@
   },
   "tailwindCSS.files.exclude": [],
   "tailwindCSS.experimental.configFile": "app/assets/tailwind/application.css",
-  "i18n-ally.localesPaths": ["config/locales"],
+  "i18n-ally.localesPaths": ["config/locales/**"],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.sourceLanguage": "ja",
   "i18n-ally.displayLanguage": "ja",
