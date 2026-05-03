@@ -25,16 +25,16 @@ module Articles
 
     def validates_ownership!
       unless @article.user == @current_user
-        raise OwnershipError, "この記事を公開する権限がありません"
+        raise OwnershipError, I18n.t("articles.publish.errors.unauthorized")
       end
     end
 
     def validates_publishable!
       if @article.status.published?
-        raise PublishError, "すでに公開済みです"
+        raise PublishError, I18n.t("articles.publish.errors.already_published")
       end
       if @article.status.archived?
-        raise PublishError, "アーカイブ済みの記事は公開できません"
+        raise PublishError, I18n.t("articles.publish.errors.archived")
       end
     end
 

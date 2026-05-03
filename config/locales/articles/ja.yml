@@ -29,3 +29,8 @@ ja:
         zero: "コメントなし"
         one: "%{count}件のコメント"
         other: "%{count}件のコメント"
+    publish:
+      errors:
+        unauthorized: "この記事を公開する権限がありません"
+        already_published: "すでに公開済みです"
+        archived: "アーカイブ済みの記事は公開できません"

@@ -29,3 +29,8 @@ en:
         zero: "No comments"
         one: "%{count} comment"
         other: "%{count} comments"
+    publish:
+      errors:
+        unauthorized: "You are not authorized to publish this article."
+        already_published: "This article has already been published."
+        archived: "Archived articles cannot be published."
