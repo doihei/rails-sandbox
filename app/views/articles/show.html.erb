@@ -33,3 +33,20 @@
     <%= link_to t('.back'), articles_path, class: "text-gray-500 hover:text-gray-700 ml-auto" %>
   </div>
 </div>
+<div class="mt-6 bg-white border border-gray-200 rounded-lg p-6">
+  <h2 class="text-base font-medium text-gray-800 mb-4">
+    <%= t('comments.section_title', count: @article.comments.count) %>
+  </h2>
+
+  <div class="divide-y divide-gray-100">
+    <%= render @article.comments.includes(:user).recent %>
+  </div>
+
+  <% if @article.comments.empty? %>
+    <p class="text-sm text-gray-400 text-center py-6"><%= t('comments.empty') %></p>
+  <% end %>
+
+  <div class="mt-6 pt-6 border-t border-gray-100">
+    <%= render "comments/form" %>
+  </div>
+</div>
