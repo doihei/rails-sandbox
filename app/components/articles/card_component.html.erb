@@ -17,6 +17,9 @@
     <div class="flex flex-col items-end gap-1 shrink-0">
       <%= render(StatusBadgeComponent.new(status: @article.status)) %>
       <span class="text-xs text-gray-400"><%= author_name %></span>
+      <span class="text-xs text-gray-400">
+        <%= t('articles.card.comment_count', count: comment_count) %>
+      </span>
     </div>
   </div>
 </div>

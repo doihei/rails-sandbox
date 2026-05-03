@@ -10,4 +10,8 @@ class Articles::CardComponent < ViewComponent::Base
   def tags
     @article.tags
   end
+
+  def comment_count
+    @article.comments.size
+  end
 end
