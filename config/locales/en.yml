@@ -23,13 +23,27 @@ en:
       submit_create: "Create"
       submit_update: "Update"
       cancel: "Cancel"
-
+  comments:
+    section_title:
+      zero: "Comments"
+      one: "Comments (%{count})"
+      other: "Comments (%{count})"
+    body_label: "Comment"
+    placeholder: "Write a comment..."
+    submit: "Post"
+    delete: "Delete"
+    confirm_delete: "Delete this comment?"
+    empty: "No comments yet."
   flash:
     article:
       created: "Article was created."
       updated: "Article was updated."
       deleted: "Article was deleted."
       published: "Article was published."
+    comment:
+      created: "Comment was created."
+      deleted: "Comment was deleted."
+      unauthorized: "You can only delete your own comments."
 
   nav:
     logout: "Log out"
@@ -38,3 +52,11 @@ en:
     draft: "Draft"
     published: "Published"
     archived: "Archived"
+
+  activerecord:
+    errors:
+      models:
+        article_tag:
+          attributes:
+            tag_id:
+              taken: "has already been added to this article"
