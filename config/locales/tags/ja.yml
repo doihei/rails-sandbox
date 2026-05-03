@@ -1,0 +1,7 @@
+ja:
+  tags:
+    show:
+      title: "「%{name}」の記事"
+      count: "%{count}件"
+      back: "一覧へ"
+      empty: "この タグの記事はまだありません"

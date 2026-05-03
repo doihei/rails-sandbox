@@ -1,0 +1,7 @@
+en:
+  tags:
+    show:
+      title: "Articles tagged \"%{name}\""
+      count: "%{count} articles"
+      back: "Back to list"
+      empty: "No articles with this tag yet."

@@ -1,0 +1,31 @@
+en:
+  articles:
+    index:
+      title: "Articles"
+      new_button: "New Article"
+    new:
+      title: "New Article"
+    edit:
+      title: "Edit Article"
+    show:
+      publish: "Publish"
+      edit: "Edit"
+      delete: "Delete"
+      back: "Back to List"
+      confirm_publish: "Publish this article?"
+      confirm_delete: "Are you sure you want to delete?"
+    form:
+      title_label: "Title"
+      body_label: "Body"
+      char_count_suffix: "/100"
+      submit_create: "Create"
+      submit_update: "Update"
+      cancel: "Cancel"
+      tag_names_label: "Tags"
+      tag_names_placeholder: "rails, ruby, web (comma-separated)"
+      tag_names_hint: "Separate tags with commas (e.g. rails, ruby)"
+    card:
+      comment_count:
+        zero: "No comments"
+        one: "%{count} comment"
+        other: "%{count} comments"
