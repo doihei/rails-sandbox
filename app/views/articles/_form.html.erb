@@ -27,14 +27,32 @@
     </p>
   </div>
 
-  <div class="mb-6">
+  <div class="mb-6" data-controller="tag-input">
     <%= form.label :tag_names, t('.tag_names_label'),
         class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= form.text_field :tag_names,
+
+    <%# チップ表示エリア + テキスト入力を1行に並べる %>
+    <div class="flex flex-wrap items-center gap-1.5 min-h-[38px]
+                border border-gray-300 rounded px-3 py-1.5
+                focus-within:border-gray-500 cursor-text bg-white"
+        onclick="this.querySelector('input[type=text]').focus()">
+
+      <%# チップが追加される場所 %>
+      <div data-tag-input-target="chips" class="contents"></div>
+
+      <%# 実際のテキスト入力 %>
+      <input type="text"
+            data-tag-input-target="input"
+            data-action="keydown->tag-input#keydown blur->tag-input#blur"
+            placeholder="<%= t('.tag_names_placeholder') %>"
+            class="flex-1 min-w-[120px] text-sm outline-none bg-transparent py-0.5">
+    </div>
+
+    <%# サーバーに送る hidden field %>
+    <%= form.hidden_field :tag_names,
         value: article.tags.map(&:name).join(", "),
-        placeholder: t('.tag_names_placeholder'),
-        class: "w-full border border-gray-300 rounded px-3 py-2 text-sm
-                focus:outline-none focus:border-gray-500" %>
+        data: { "tag-input-target": "hidden" } %>
+
     <p class="text-xs text-gray-400 mt-1"><%= t('.tag_names_hint') %></p>
   </div>
 
