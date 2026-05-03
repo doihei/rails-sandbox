@@ -58,6 +58,18 @@ text-red-600 border border-red-200 px-4 py-1.5 rounded hover:bg-red-50 cursor-po
 bg-red-50 border-l-4 border-red-400 text-red-700 px-4 py-3 text-sm mb-4 rounded
 ```
 
+**バッジ・チップ（タグ等の小さなラベル）**
+```
+# 通常（span）
+inline-flex items-center text-xs px-2 py-0.5 rounded-full font-medium
+bg-blue-50 text-blue-700 border border-blue-100
+
+# リンク（a）
+inline-flex items-center text-xs px-2 py-0.5 rounded-full font-medium
+bg-blue-50 text-blue-700 border border-blue-100
+hover:bg-blue-100 transition-colors
+```
+
 ### Devise フォームの幅
 
 ```

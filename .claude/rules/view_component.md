@@ -86,6 +86,17 @@ Turbo Stream などで DOM を操作する可能性があるリスト要素に�
 <div id="<%= dom_id(@article) %>">
 ```
 
+### ルーティングヘルパーの使い方
+
+コンポーネントの Ruby ファイル（`.rb`）内では `_path` / `_url` ヘルパーは直接使えない。
+`Rails.application.routes.url_helpers` 経由で呼び出す：
+
+```ruby
+def path
+  Rails.application.routes.url_helpers.tag_path(@tag)
+end
+```
+
 ### テスト
 
 `ViewComponent::TestCase` を継承する：
