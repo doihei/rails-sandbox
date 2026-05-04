@@ -17,4 +17,11 @@ class User < ApplicationRecord
     value = read_attribute(:email)
     value.present? ? ValueObjects::Email.new(value) : nil
   end
+
+  def self.article_count_ranking
+    joins(:articles)
+      .group("users.id")
+      .select("users.*, COUNT(articles.id) AS articles_count")
+      .order("articles_count DESC")
+  end
 end
