@@ -114,6 +114,32 @@ class Articles::CardComponentTest < ViewComponent::TestCase
 end
 ```
 
+### アソシエーションのカウントと N+1 対策
+
+コンポーネントで関連レコードの件数を表示する場合、`counter_cache` を使う。
+アソシエーションに直接 `.size` / `.count` を呼ぶと一覧表示で N+1 が発生する：
+
+```ruby
+# NG: 記事ごとに SQL が発行される
+def comment_count
+  @article.comments.size
+end
+```
+
+`counter_cache: true` を設定してカウントカラムを参照する：
+
+```ruby
+# app/models/comment.rb
+belongs_to :article, counter_cache: true
+```
+
+```ruby
+# OK: articles.comments_count カラムを読むだけ（SQL 0 回）
+def comments_count
+  @article.comments_count
+end
+```
+
 ### パーシャルとの使い分け
 
 | 用途 | 選択 |
