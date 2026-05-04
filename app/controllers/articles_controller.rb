@@ -3,7 +3,7 @@ class ArticlesController < ApplicationController
 
   # GET /articles or /articles.json
   def index
-    @articles = Article.includes(:user, :tags)
+    @articles = Article.includes(:user, :tags, :comments)
   end
 
   # GET /articles/1 or /articles/1.json

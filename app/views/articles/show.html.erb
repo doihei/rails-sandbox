@@ -47,7 +47,8 @@
   </h2>
 
   <div class="divide-y divide-gray-100">
-    <%= render @article.comments.includes(:user).recent %>
+    <%# eager load 済みのデータをそのまま使う %>
+    <%= render @article.comments.recent %>
   </div>
 
   <% if @article.comments.empty? %>
