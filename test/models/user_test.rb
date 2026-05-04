@@ -66,4 +66,14 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil user
     assert_equal "user1@example.com", user.email_vo.to_s
   end
+
+  test "article_count_rankingは記事数の多い順にユーザーを返す" do
+    # users(:one) は記事を 2 件持つ → 先頭になる
+    assert_equal users(:one), User.article_count_ranking.first
+  end
+
+  test "article_count_rankingは記事を持たないユーザーを含まない" do
+    # joins(:articles) なので記事なしの users(:two) は除外される
+    assert_not_includes User.article_count_ranking, users(:two)
+  end
 end
