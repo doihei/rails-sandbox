@@ -33,4 +33,20 @@ class CommentTest < ActiveSupport::TestCase
     comments = articles(:one).comments.recent
     assert comments.first.created_at >= comments.last.created_at
   end
+
+  test "counter_cache確認。コメント追加でcomment_countの増加する" do
+    article = articles(:one)
+    assert_difference "article.reload.comments_count", 1 do
+      Comment.create!(article: article, user: users(:one), body: "Nice post!")
+    end
+  end
+
+  test "counter_cache確認。コメント追加でcomment_countの減少する" do
+    article = articles(:one)
+    comment = article.comments.create!(user: users(:one), body: "Test")
+
+    assert_difference "article.reload.comments_count", -1 do
+      comment.destroy!
+    end
+  end
 end
