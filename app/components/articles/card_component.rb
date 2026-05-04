@@ -11,10 +11,8 @@ class Articles::CardComponent < ViewComponent::Base
     @article.tags
   end
 
-  def comment_count
-    # .size は eager load 済みなら SQL を発行しない（Ruby の .length を使う）
-    # eager load なしなら COUNT クエリを発行する
-    # → コントローラで includes(:comments) していることが前提
-    @article.comments.size
+  def comments_count
+    # Counter Cache: articles.comments_count カラムを読むだけ（SQL 0回）
+    @article.comments_count
   end
 end

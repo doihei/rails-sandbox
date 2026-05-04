@@ -18,7 +18,7 @@
       <%= render(StatusBadgeComponent.new(status: @article.status)) %>
       <span class="text-xs text-gray-400"><%= author_name %></span>
       <span class="text-xs text-gray-400">
-        <%= t('articles.card.comment_count', count: comment_count) %>
+        <%= t('articles.card.comment_count', count: comments_count) %>
       </span>
     </div>
   </div>
