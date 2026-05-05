@@ -7,11 +7,11 @@
         <div class="hidden md:flex space-x-4">
           <%= link_to t('articles.index.title'),
                       articles_path,
-                      class: "px-3 py-2 rounded-md text-sm font-medium transition #{current_page?(articles_path) ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900'}" %>
+                      class: "px-3 py-2 rounded-md text-sm font-medium transition #{current_page?(articles_path) ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900'}" %>
 
           <%= link_to t('articles.popular.title'),
                       popular_articles_path,
-                      class: "px-3 py-2 rounded-md text-sm font-medium transition #{current_page?(popular_articles_path) ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'}" %>
+                      class: "px-3 py-2 rounded-md text-sm font-medium transition #{current_page?(popular_articles_path) ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900'}" %>
         </div>
       </div>
 
@@ -19,7 +19,7 @@
         <% if user_signed_in? %>
           <span class="text-gray-500 dark:text-gray-400"><%= current_user.email %></span>
           <%= button_to t('nav.logout'), destroy_user_session_path, method: :delete,
-              class: "text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded px-3 py-1 cursor-pointer bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" %>
+              class: "text-gray-600 border border-gray-300 rounded px-3 py-1 cursor-pointer bg-white hover:bg-gray-50" %>
         <% end %>
       </div>
     </div>
