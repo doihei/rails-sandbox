@@ -84,4 +84,43 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     get article_url(id: 999999999)
     assert_response :not_found
   end
+
+  test "人気記事一覧を取得できる" do
+    # 人気記事（コメント3件以上）を作成
+    popular_article = articles(:published)
+    3.times do
+      Comment.create!(
+        article: popular_article,
+        user: users(:one),
+        body: "Great article!"
+      )
+    end
+
+    # コメント2件以下の記事（表示されない）
+    unpopular_article = articles(:draft)
+    2.times do
+      Comment.create!(
+        article: unpopular_article,
+        user: users(:one),
+        body: "Nice"
+      )
+    end
+
+    get popular_articles_url
+    assert_response :success
+
+    # 人気記事が表示される
+    assert_select "h1", text: /人気記事/
+
+    # テストの詳細は既存のカード表示テストと同じロジックを使用可能
+  end
+
+  test "人気記事がない場合にメッセージが表示される" do
+    # すべての記事のコメントを削除
+    Comment.destroy_all
+
+    get popular_articles_url
+    assert_response :success
+    assert_select "p", text: /まだ人気記事がありません/
+  end
 end

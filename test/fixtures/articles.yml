@@ -11,4 +11,15 @@ two:
   body: MyText
   status: published
   user: one    # ← fixturesのuser oneを参照
-  
+
+published:
+  title: TwoPublished
+  body: TwoPublished
+  status: published
+  user: two    # ← fixturesのuser twoを参照
+
+draft:
+  title: TwoDraft
+  body: TwoDraft
+  status: draft
+  user: two    # ← fixturesのuser twoを参照
