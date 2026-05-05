@@ -111,8 +111,6 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
 
     # 人気記事が表示される
     assert_select "h1", text: I18n.t("articles.popular.title")
-
-    # テストの詳細は既存のカード表示テストと同じロジックを使用可能
   end
 
   test "人気記事がない場合にメッセージが表示される" do
