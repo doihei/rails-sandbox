@@ -29,6 +29,11 @@ en:
         zero: "No comments"
         one: "%{count} comment"
         other: "%{count} comments"
+    popular:
+      title: "Popular Articles"
+      description: "Articles with 3 or more comments, sorted by comment count"
+      no_popular_articles: "No popular articles yet"
+      no_popular_articles_hint: "Articles with 3 or more comments will appear here"
     publish:
       errors:
         unauthorized: "You are not authorized to publish this article."

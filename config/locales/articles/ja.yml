@@ -29,6 +29,12 @@ ja:
         zero: "コメントなし"
         one: "%{count}件のコメント"
         other: "%{count}件のコメント"
+    popular:
+      title: "🔥 人気記事"
+      description: "コメント3件以上の記事をコメント数順に表示"
+      no_popular_articles: "まだ人気記事がありません"
+      no_popular_articles_hint: "コメントが3件以上ついた記事がここに表示されます"
+      new_button: "新規作成"
     publish:
       errors:
         unauthorized: "この記事を公開する権限がありません"

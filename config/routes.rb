@@ -5,6 +5,10 @@ Rails.application.routes.draw do
       patch :publish # PATCH /articles/:id/publish
     end
 
+    collection do
+      get :popular
+    end
+
     resources :comments, only: [ :create, :destroy ]
   end
 

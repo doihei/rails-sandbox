@@ -78,6 +78,11 @@ class ArticlesController < ApplicationController
     end
   end
 
+  # GET /articles/popular
+  def popular
+    @articles = Article.popular.includes(:user, :tags)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
