@@ -70,8 +70,37 @@ bg-blue-50 text-blue-700 border border-blue-100
 hover:bg-blue-100 transition-colors
 ```
 
+**ナビリンク（アクティブ状態の切り替え）**
+```
+# 非アクティブ
+text-gray-600 hover:text-gray-900
+
+# アクティブ
+bg-gray-100 text-gray-900
+
+# ERB での記述例
+class: "px-3 py-2 rounded-md text-sm font-medium transition #{current_page?(path) ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900'}"
+```
+
 ### Devise フォームの幅
 
 ```
 max-w-sm mx-auto   # ログイン・登録など認証系は幅を絞る
+```
+
+### カスタム CSS クラスの禁止
+
+`application.css` に `@apply` を使ったカスタムクラスを定義しない。
+再利用したいスタイルは Tailwind クラスをインラインで記述する。
+
+```css
+/* NG */
+.nav-link {
+  @apply text-gray-600 px-3 py-2 rounded-md text-sm font-medium;
+}
+```
+
+```erb
+<%# OK %>
+<%= link_to "リンク", path, class: "text-gray-600 px-3 py-2 rounded-md text-sm font-medium" %>
 ```
