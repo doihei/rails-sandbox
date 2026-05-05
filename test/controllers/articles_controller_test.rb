@@ -110,7 +110,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     # 人気記事が表示される
-    assert_select "h1", text: /人気記事/
+    assert_select "h1", text: I18n.t("articles.popular.title")
 
     # テストの詳細は既存のカード表示テストと同じロジックを使用可能
   end
@@ -121,6 +121,6 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
 
     get popular_articles_url
     assert_response :success
-    assert_select "p", text: /まだ人気記事がありません/
+    assert_select "p", text: I18n.t("articles.popular.no_popular_articles")
   end
 end
