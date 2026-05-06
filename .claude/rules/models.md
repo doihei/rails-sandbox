@@ -130,7 +130,8 @@ scope :tagged_with, ->(tag_name) {
 scope :popular, -> {
   joins(:comments)
     .group("articles.id")          # NG: "article.id"
-    .having("COUNT(comments.id) >= 3")
+    .having("articles.comments_count >= 3")
+    .order("articles.comments_count DESC")
 }
 ```
 

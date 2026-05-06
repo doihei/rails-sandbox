@@ -26,6 +26,20 @@ paths:
   ```
 - VSCode では `.vscode/tasks.json` に docker compose 経由のテストタスクが定義済み
 
+### フィクスチャの counter_cache カラム
+
+fixtures はコールバックを経由しないため、counter_cache カラム（`comments_count`、`tags_count` など）は自動で更新されない。
+実際の関連レコード数と一致する値を fixture に明示する：
+
+```yml
+# comments が 2 件・tags が 2 件ある場合
+one:
+  comments_count: 2
+  tags_count: 2
+```
+
+未設定（0のまま）だと、`comments_count` を参照するスコープ（`popular` など）のテストで実際の件数とズレが生じる。
+
 ### フィクスチャ追加時の注意
 
 新しいフィクスチャを追加するとき、既存の count 系テスト（`article_count_ranking` など）への影響を確認する。
