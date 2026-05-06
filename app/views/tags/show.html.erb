@@ -6,7 +6,7 @@
       <%= t('.title', name: @tag.name) %>
     </h1>
     <span class="text-sm text-gray-400">
-      <%= t('tags.show.count', count: @tag.articles_count) %>
+      <%= t('.count', count: @tag.articles_count) %>
     </span>
   </div>
   <%= link_to t('.back'), articles_path,
