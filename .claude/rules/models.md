@@ -41,6 +41,32 @@ belongs_to :article, counter_cache: true
 add_column :articles, :comments_count, :integer, default: 0, null: false
 ```
 
+#### counter_cache（has_many :through の中間モデル）
+
+多対多（`has_many :through`）の場合は、中間モデルの `belongs_to` にカスタムカラム名で指定する：
+
+```ruby
+# app/models/article_tag.rb
+class ArticleTag < ApplicationRecord
+  belongs_to :article, counter_cache: :tags_count
+  belongs_to :tag, counter_cache: :articles_count
+end
+```
+
+マイグレーションで両テーブルにカラムを追加する：
+
+```ruby
+add_column :articles, :tags_count, :integer, default: 0, null: false
+add_column :tags, :articles_count, :integer, default: 0, null: false
+```
+
+既存データは `reset_counters` でバックフィルする：
+
+```ruby
+Tag.find_each { |tag| Tag.reset_counters(tag.id, :article_tags) }
+Article.find_each { |article| Article.reset_counters(article.id, :article_tags) }
+```
+
 ### バリデーション
 
 標準バリデーションは `validates` で記述する。エラーメッセージは i18n で管理し `message:` にハードコードしない（詳細は `i18n.md` 参照）：
