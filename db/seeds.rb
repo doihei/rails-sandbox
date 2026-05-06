@@ -52,7 +52,7 @@ articles_data = [
     body: "Rails 8では多くの新機能が追加されました。Solid Queue、Solid Cache、Solid Cableなどのsolid系gemが標準搭載され、Redisなしでも高機能なアプリケーションが構築できるようになりました。",
     status: "published",
     user: users[0],
-    tags: ["rails", "ruby"],
+    tags: [ "rails", "ruby" ],
     comments_count: 15  # 超人気記事
   },
   {
@@ -60,7 +60,7 @@ articles_data = [
     body: "PostgreSQLのパフォーマンスを最大化するためのベストプラクティスを紹介します。インデックスの最適化、クエリプランの分析、コネクションプーリングの設定など。",
     status: "published",
     user: users[1],
-    tags: ["postgresql", "rails"],
+    tags: [ "postgresql", "rails" ],
     comments_count: 8   # 人気記事
   },
   {
@@ -68,7 +68,7 @@ articles_data = [
     body: "Docker Composeを使った開発環境の構築方法を解説します。Rails、PostgreSQL、Redisをコンテナで管理し、チーム全体で統一された環境を実現します。",
     status: "published",
     user: users[2],
-    tags: ["docker", "rails", "postgresql"],
+    tags: [ "docker", "rails", "postgresql" ],
     comments_count: 12  # 超人気記事
   },
   {
@@ -76,7 +76,7 @@ articles_data = [
     body: "React Hooksを使ったState管理のベストプラクティスを紹介します。useState、useEffect、useContextなどの基本的なHooksから、カスタムHooksの作り方まで。",
     status: "published",
     user: users[3],
-    tags: ["react", "javascript"],
+    tags: [ "react", "javascript" ],
     comments_count: 6   # 人気記事
   },
   {
@@ -84,7 +84,7 @@ articles_data = [
     body: "Vue.js 3ではComposition APIが導入され、より柔軟なコンポーネント設計が可能になりました。TypeScriptとの連携も強化されています。",
     status: "published",
     user: users[0],
-    tags: ["vue", "javascript"],
+    tags: [ "vue", "javascript" ],
     comments_count: 5   # 人気記事
   },
   {
@@ -92,7 +92,7 @@ articles_data = [
     body: "Kubernetesを使った本番環境の構築と運用について解説します。Pod、Service、Deployment、Ingressなどの基本概念から、スケーリング戦略まで。",
     status: "published",
     user: users[1],
-    tags: ["kubernetes", "docker", "aws"],
+    tags: [ "kubernetes", "docker", "aws" ],
     comments_count: 10  # 人気記事
   },
   {
@@ -100,7 +100,7 @@ articles_data = [
     body: "Redisの基本的な使い方から、Railsでのキャッシュ戦略まで解説します。セッションストア、フラグメントキャッシュ、低レイテンシ実現のためのテクニック。",
     status: "published",
     user: users[2],
-    tags: ["redis", "rails"],
+    tags: [ "redis", "rails" ],
     comments_count: 7   # 人気記事
   },
   {
@@ -108,7 +108,7 @@ articles_data = [
     body: "AWS LambdaとAPI Gatewayを使ったサーバーレスアーキテクチャの構築方法を紹介します。コスト削減とスケーラビリティを両立する設計パターン。",
     status: "published",
     user: users[3],
-    tags: ["aws"],
+    tags: [ "aws" ],
     comments_count: 4   # 人気記事
   },
   {
@@ -116,7 +116,7 @@ articles_data = [
     body: "Rubyの強力な機能であるメタプログラミングについて解説します。define_method、method_missing、evalなどを使った動的なコード生成テクニック。",
     status: "published",
     user: users[0],
-    tags: ["ruby"],
+    tags: [ "ruby" ],
     comments_count: 9   # 人気記事
   },
   {
@@ -124,7 +124,7 @@ articles_data = [
     body: "JavaScriptの非同期処理の基本から、Promise、async/awaitまで詳しく解説します。コールバック地獄を回避し、読みやすいコードを書くためのベストプラクティス。",
     status: "published",
     user: users[1],
-    tags: ["javascript"],
+    tags: [ "javascript" ],
     comments_count: 2   # コメント少ない（人気記事一覧に表示されない）
   },
   {
@@ -132,7 +132,7 @@ articles_data = [
     body: "これは下書き記事です。公開前の記事として保存されています。",
     status: "draft",
     user: users[2],
-    tags: ["rails"],
+    tags: [ "rails" ],
     comments_count: 0
   }
 ]
