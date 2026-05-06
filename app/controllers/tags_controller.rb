@@ -5,9 +5,6 @@ class TagsController < ApplicationController
   end
 
   def index
-    @tags = Tag.left_joins(:articles)
-              .group("tags.id")
-              .select("tags.*, COUNT(articles.id) AS articles_count")
-              .order("articles_count DESC, tags.name ASC")
+    @tags = Tag.order(articles_count: :desc, name: :asc)
   end
 end
