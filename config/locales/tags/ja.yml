@@ -1,5 +1,13 @@
 ja:
   tags:
+    index:
+      title: "タグ一覧"
+      count:
+        zero: "%{count}件"
+        one: "%{count}件"
+        other: "%{count}件"
+      empty: "タグがまだありません"
+      back: "記事一覧へ"
     show:
       title: "「%{name}」の記事"
       count: "%{count}件"

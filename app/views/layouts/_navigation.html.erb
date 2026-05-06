@@ -12,6 +12,10 @@
           <%= link_to t('articles.popular.title'),
                       popular_articles_path,
                       class: "px-3 py-2 rounded-md text-sm font-medium transition #{current_page?(popular_articles_path) ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900'}" %>
+
+          <%= link_to t('tags.index.title'),
+                      tags_path,
+                      class: "px-3 py-2 rounded-md text-sm font-medium transition #{current_page?(tags_path) ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900'}" %>
         </div>
       </div>
 
