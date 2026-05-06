@@ -21,7 +21,8 @@ class Article < ApplicationRecord
   scope :popular,   -> {
     joins(:comments)
       .group("articles.id")
-      .having("COUNT(comments.id) >= 3")
+      .having("articles.comments_count >= 3")
+      .order("articles.comments_count DESC")
   }
   scope :tagged_with, ->(tag_name) {
     joins(:tags).where(tags: { name: tag_name }).distinct
