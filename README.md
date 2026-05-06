@@ -41,6 +41,9 @@ docker compose exec app bin/rails console
 # マイグレーション実行
 docker compose exec app bin/rails db:migrate
 
+# シードデータ投入（ユーザー・記事・タグ・コメントを作成）
+docker compose exec app bin/rails db:seed
+
 # テスト実行
 docker compose exec app bin/rails test
 ```

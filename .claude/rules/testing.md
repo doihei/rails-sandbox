@@ -25,3 +25,24 @@ paths:
   assert article.status.published?
   ```
 - VSCode では `.vscode/tasks.json` に docker compose 経由のテストタスクが定義済み
+
+### フィクスチャ追加時の注意
+
+新しいフィクスチャを追加するとき、既存の count 系テスト（`article_count_ranking` など）への影響を確認する。
+特定のユーザーが「記事なし」または「記事数が少ない」ことを前提とするテストがある場合、
+そのユーザーに記事フィクスチャを紐付けると順位が変わってテストが壊れる。
+
+```yml
+# NG: users(:two) が他テストで「記事なし」ユーザーとして使われている場合
+new_article:
+  user: two
+
+# OK: 専用のユーザーフィクスチャ（three など）を追加して紐付ける
+three:
+  name: user3
+  email: user3@example.com
+  encrypted_password: ...
+
+new_article:
+  user: three
+```
