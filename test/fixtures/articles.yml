@@ -5,6 +5,7 @@ one:
   body: MyText
   status: draft
   comments_count: 2
+  tags_count: 2
   user: one    # ← fixturesのuser oneを参照
 
 two:
