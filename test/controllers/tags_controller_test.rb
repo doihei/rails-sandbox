@@ -1,7 +1,35 @@
+require "test_helper"
+
 class TagsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @tag = tags(:rails)
     sign_in users(:one)
+  end
+
+  test "タグ一覧を取得できる" do
+    get tags_url
+    assert_response :success
+  end
+
+  test "タグが記事数の多い順に表示される" do
+    # tags(:rails) に記事を追加
+    Article.create!(
+      title: "Rails Article",
+      body: "Content",
+      user: users(:one),
+      tags: [ tags(:rails) ]
+    )
+
+    get tags_url
+    assert_response :success
+  end
+
+  test "記事のないタグも表示される" do
+    Tag.create!(name: "unused")
+
+    get tags_url
+    assert_response :success
+    assert_select "span", text: "unused"
   end
 
   test "タグ別記事一覧を取得できる" do
