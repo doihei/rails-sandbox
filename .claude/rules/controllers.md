@@ -18,8 +18,25 @@ paths:
 before_action :set_article, only: %i[show edit update destroy publish]
 
 def set_article
-  @article = Article.includes(:user, :tags, comments: :user, likes: :user).find(params.expect(:id))
+  @article = Article.includes(
+    :user,
+    :tags,
+    :likes,
+    comments: [ :user, :likes ]
+  ).find(params.expect(:id))
 end
+```
+
+eager load 済みのアソシエーションはメモリ内で参照する。`count` / `exists?` は追加のDBクエリが発生するため `size` / `any?` を使う：
+
+```erb
+<%# NG: N+1 %>
+<%= comment.likes.exists?(user: current_user) ? '済' : 'いいね' %>
+(<%= comment.likes.count %>)
+
+<%# OK: メモリ参照 %>
+<%= comment.likes.any? { |l| l.user_id == current_user.id } ? '済' : 'いいね' %>
+(<%= comment.likes.size %>)
 ```
 
 ### Strong Parameters
