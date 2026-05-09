@@ -77,3 +77,14 @@ redirect_to articles_path, notice: t("flash.article.deleted"), status: :see_othe
 # ApplicationController に定義済み
 rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
 ```
+
+### ポリモーフィックな型パラメータ
+
+`params[:type]` などをクラス定数に変換する際は `safe_constantize` を直接使わず、ホワイトリスト定数でのハッシュ参照を使う（Brakeman の UnsafeReflection 警告対策）：
+
+```ruby
+LIKEABLE_TYPES = { "Article" => Article, "Comment" => Comment }.freeze
+
+klass = LIKEABLE_TYPES[params[:likeable_type]]
+raise ActionController::BadRequest unless klass
+```
