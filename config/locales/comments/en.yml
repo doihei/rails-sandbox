@@ -4,9 +4,13 @@ en:
       zero: "Comments"
       one: "Comments (%{count})"
       other: "Comments (%{count})"
-    body_label: "Comment"
-    placeholder: "Write a comment..."
-    submit: "Post"
-    delete: "Delete"
-    confirm_delete: "Delete this comment?"
     empty: "No comments yet."
+    form:
+      body_label: "Comment"
+      placeholder: "Write a comment..."
+      submit: "Post"
+    comment:
+      liked: "♥"
+      like: "♡"
+      delete: "Delete"
+      confirm_delete: "Delete this comment?"

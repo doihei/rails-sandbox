@@ -11,6 +11,9 @@ ja:
       created: "コメントを投稿しました"
       deleted: "コメントを削除しました"
       unauthorized: "削除できるのは自分のコメントだけです"
+    like:
+      created: "いいねしました"
+      destroyed: "いいねを取り消しました"
 
   nav:
     logout: "ログアウト"

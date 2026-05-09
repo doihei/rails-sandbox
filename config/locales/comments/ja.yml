@@ -4,9 +4,13 @@ ja:
       zero: "コメント"
       one: "コメント（%{count}件）"
       other: "コメント（%{count}件）"
-    body_label: "コメント"
-    placeholder: "コメントを入力..."
-    submit: "投稿する"
-    delete: "削除"
-    confirm_delete: "このコメントを削除しますか？"
     empty: "まだコメントがありません"
+    form:
+      body_label: "コメント"
+      placeholder: "コメントを入力..."
+      submit: "投稿する"
+    comment:
+      liked: "♥"
+      like: "♡"
+      delete: "削除"
+      confirm_delete: "このコメントを削除しますか？"

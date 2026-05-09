@@ -14,6 +14,8 @@ en:
       back: "Back to List"
       confirm_publish: "Publish this article?"
       confirm_delete: "Are you sure you want to delete?"
+      liked: "♥ Liked"
+      like: "♡ Like"
     form:
       title_label: "Title"
       body_label: "Body"
@@ -25,6 +27,8 @@ en:
       tag_names_placeholder: "rails, ruby, web (comma-separated)"
       tag_names_hint: "Separate tags with commas (e.g. rails, ruby)"
     card:
+      liked: "♥"
+      like: "♡"
       comment_count:
         zero: "No comments"
         one: "%{count} comment"

@@ -11,6 +11,9 @@ en:
       created: "Comment was created."
       deleted: "Comment was deleted."
       unauthorized: "You can only delete your own comments."
+    like:
+      created: "Liked."
+      destroyed: "Unliked."
 
   nav:
     logout: "Log out"
