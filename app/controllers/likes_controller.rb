@@ -15,11 +15,11 @@ class LikesController < ApplicationController
 
   private
 
+  LIKEABLE_TYPES = { "Article" => Article, "Comment" => Comment }.freeze
+
   def find_likeable
-    # params[:likeable_type] = "Article" or "Comment"
-    # params[:likeable_id]   = 対象のID
-    klass = params[:likeable_type].safe_constantize
-    raise ActionController::BadRequest unless klass&.in?([ Article, Comment ])
+    klass = LIKEABLE_TYPES[params[:likeable_type]]
+    raise ActionController::BadRequest unless klass
     klass.find(params[:likeable_id])
   end
 end
