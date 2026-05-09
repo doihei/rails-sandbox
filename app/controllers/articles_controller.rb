@@ -86,8 +86,12 @@ class ArticlesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
-      @article = Article.includes(:user, :tags, comments: :user, likes: :user)
-              .find(params.expect(:id))
+      @article = Article.includes(
+        :user,
+        :tags,
+        :likes,
+        comments: [ :user, :likes ]
+      ).find(params.expect(:id))
     end
 
     def article_params
