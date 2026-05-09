@@ -11,6 +11,7 @@
 # 既存データをクリア（開発環境のみ）
 if Rails.env.development?
   puts "🗑️  既存データをクリア中..."
+  Like.destroy_all
   ArticleTag.destroy_all
   Comment.destroy_all
   Article.destroy_all
@@ -188,6 +189,26 @@ end
 
 puts "\n✅ #{Comment.count}件のコメントを作成しました"
 
+puts "\n❤️  いいねを作成中..."
+
+# 記事へのいいね（各記事にランダムなユーザーがいいね）
+Article.published.each do |article|
+  users.sample(rand(1..users.count)).each do |user|
+    Like.create!(likeable: article, user: user)
+    print "."
+  end
+end
+
+# コメントへのいいね（一部コメントにいいね）
+Comment.all.sample(Comment.count / 2).each do |comment|
+  users.sample(rand(1..2)).each do |user|
+    Like.find_or_create_by!(likeable: comment, user: user)
+    print "."
+  end
+end
+
+puts "\n✅ #{Like.count}件のいいねを作成しました"
+
 puts "\n" + "="*50
 puts "🎉 シードデータの作成が完了しました！"
 puts "="*50
@@ -196,6 +217,7 @@ puts "  - ユーザー: #{User.count}人"
 puts "  - 記事: #{Article.count}件（公開: #{Article.published.count}件、下書き: #{Article.where(status: 'draft').count}件）"
 puts "  - タグ: #{Tag.count}個"
 puts "  - コメント: #{Comment.count}件"
+puts "  - いいね: #{Like.count}件（記事: #{Like.where(likeable_type: 'Article').count}件、コメント: #{Like.where(likeable_type: 'Comment').count}件）"
 puts "\n🔥 人気記事（コメント3件以上）: #{Article.popular.count}件"
 puts "\n📝 確認用URL:"
 puts "  - 記事一覧: http://localhost:8080/articles"
