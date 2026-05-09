@@ -18,7 +18,7 @@ paths:
 before_action :set_article, only: %i[show edit update destroy publish]
 
 def set_article
-  @article = Article.includes(:user, :tags, comments: :user).find(params.expect(:id))
+  @article = Article.includes(:user, :tags, comments: :user, likes: :user).find(params.expect(:id))
 end
 ```
 

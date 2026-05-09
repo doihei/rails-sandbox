@@ -26,6 +26,15 @@ has_many :article_tags, dependent: :destroy
 has_many :comments, dependent: :destroy
 ```
 
+#### ポリモーフィックアソシエーション（被参照側）
+
+複数モデルから参照される場合は `as:` オプションで polymorphic を宣言する：
+
+```ruby
+# Article / Comment 共通
+has_many :likes, as: :likeable, dependent: :destroy
+```
+
 #### counter_cache
 
 関連レコードのカウントを頻繁に参照する場合は `counter_cache: true` を設定する。カラムを読むだけで SQL が発生しない（N+1 防止）：

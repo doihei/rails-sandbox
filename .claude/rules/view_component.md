@@ -40,8 +40,9 @@ test/components/
 ```ruby
 # app/components/articles/card_component.rb
 class Articles::CardComponent < ViewComponent::Base
-  def initialize(article:)
+  def initialize(article:, current_user: nil)
     @article = article
+    @current_user = current_user
   end
 
   # ロジックはメソッドとして定義し、テンプレートから呼び出す
@@ -137,6 +138,18 @@ belongs_to :article, counter_cache: true
 # OK: articles.comments_count カラムを読むだけ（SQL 0 回）
 def comments_count
   @article.comments_count
+end
+```
+
+counter_cache がない関連（likes など）はコントローラの `includes` でプリロードしておけば `.size` が SQL を発行しない：
+
+```ruby
+# コントローラ側
+@articles = Article.includes(:user, :tags, :likes)
+
+# コンポーネント側（includes 済みなら SQL 0 回）
+def likes_count
+  @article.likes.size
 end
 ```
 
