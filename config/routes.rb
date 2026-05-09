@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   end
 
   resources :tags, only: [ :index, :show ]
+  resources :likes, only: [ :create ]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
