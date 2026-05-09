@@ -3,7 +3,7 @@ class ArticlesController < ApplicationController
 
   # GET /articles or /articles.json
   def index
-    @articles = Article.includes(:user, :tags)
+    @articles = Article.includes(:user, :tags, :likes)
   end
 
   # GET /articles/1 or /articles/1.json
@@ -80,13 +80,13 @@ class ArticlesController < ApplicationController
 
   # GET /articles/popular
   def popular
-    @articles = Article.popular.includes(:user, :tags)
+    @articles = Article.popular.includes(:user, :tags, :likes)
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
-      @article = Article.includes(:user, :tags, comments: :user)
+      @article = Article.includes(:user, :tags, comments: :user, likes: :user)
               .find(params.expect(:id))
     end
 

@@ -38,6 +38,13 @@
           data: { turbo_confirm: t('.confirm_delete') },
           class: "text-red-600 border border-red-200 px-4 py-1.5 rounded hover:bg-red-50 cursor-pointer bg-white" %>
     <% end %>
+  <%= button_to likes_path(likeable_type: "Article", likeable_id: @article.id),
+      method: :post,
+      class: "text-sm border border-gray-300 rounded px-3 py-1 hover:bg-gray-50 cursor-pointer bg-white" do %>
+    <%= @article.likes.exists?(user: current_user) ? t('.liked') : t('.like') %>
+    (<%= @article.likes.count %>)
+  <% end %>
+
     <%= link_to t('.back'), articles_path, class: "text-gray-500 hover:text-gray-700 ml-auto" %>
   </div>
 </div>

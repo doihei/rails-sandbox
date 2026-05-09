@@ -1,7 +1,7 @@
 class TagsController < ApplicationController
   def show
     @tag = Tag.find(params[:id])
-    @articles = @tag.articles.includes(:user, :tags).recent
+    @articles = @tag.articles.includes(:user, :tags, :likes).recent
   end
 
   def index

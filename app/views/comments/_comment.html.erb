@@ -11,10 +11,16 @@
     </div>
     <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap"><%= comment.body %></p>
   </div>
+  <%= button_to likes_path(likeable_type: "Comment", likeable_id: comment.id),
+      method: :post,
+      class: "text-xs border border-gray-200 rounded px-2 py-1 cursor-pointer bg-white h-fit flex-shrink-0" do %>
+    <%= comment.likes.exists?(user: current_user) ? t('.liked') : t('.like') %>
+    (<%= comment.likes.count %>)
+  <% end %>
   <% if comment.user == current_user %>
-    <%= button_to t('comments.delete'), article_comment_path(@article, comment),
+    <%= button_to t('.delete'), article_comment_path(@article, comment),
         method: :delete,
-        data: { turbo_confirm: t('comments.confirm_delete') },
+        data: { turbo_confirm: t('.confirm_delete') },
         class: "text-xs text-red-400 hover:text-red-600 border border-red-200 rounded px-2 py-1 cursor-pointer bg-white h-fit flex-shrink-0" %>
   <% end %>
 </div>

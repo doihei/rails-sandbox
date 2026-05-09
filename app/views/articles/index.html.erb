@@ -8,6 +8,6 @@
 
 <div id="articles" class="flex flex-col gap-3">
   <% @articles.each do |article| %>
-    <%= render(Articles::CardComponent.new(article: article)) %>
+    <%= render(Articles::CardComponent.new(article: article, current_user: current_user)) %>
   <% end %>
 </div>

@@ -20,6 +20,14 @@
       <span class="text-xs text-gray-400">
         <%= t('articles.card.comment_count', count: comments_count) %>
       </span>
+      <%# いいねボタン %>
+      <% if @current_user %>
+        <%= button_to likes_path(likeable_type: "Article", likeable_id: @article.id),
+            method: :post,
+            class: "text-xs border border-gray-200 rounded px-2 py-0.5 cursor-pointer bg-white hover:bg-gray-50" do %>
+          <%= liked? ? t('articles.card.liked') : t('articles.card.like') %> <%= likes_count %>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </div>
