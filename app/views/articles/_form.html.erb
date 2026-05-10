@@ -27,6 +27,8 @@
     </p>
   </div>
 
+  <%= form.hidden_field :lock_version %>
+
   <div class="mb-6" data-controller="tag-input">
     <%= form.label :tag_names, t('.tag_names_label'),
         class: "block text-sm font-medium text-gray-700 mb-1" %>

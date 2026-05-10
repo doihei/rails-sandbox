@@ -14,6 +14,7 @@ ja:
     like:
       created: "いいねしました"
       destroyed: "いいねを取り消しました"
+    stale_object: "他の人が先に更新しました。最新の内容を確認してから再度お試しください。"
 
   nav:
     logout: "ログアウト"
