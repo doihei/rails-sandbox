@@ -42,6 +42,8 @@ class Article < ApplicationRecord
     where("comments_count > (SELECT AVG(comments_count) FROM articles WHERE comments_count > 0)")
   }
 
+  self.locking_column = :lock_version
+
   private
 
   def normalize_title
