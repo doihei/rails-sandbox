@@ -234,6 +234,23 @@ def email_vo
 end
 ```
 
+### 楽観的ロック（Optimistic Locking）
+
+同時編集による競合を防ぐ場合は `lock_version` カラムで楽観的ロックを有効にする。カラム名は明示的に指定する：
+
+```ruby
+self.locking_column = :lock_version
+```
+
+マイグレーションでカラムを追加する（デフォルト 0 / NOT NULL）：
+
+```ruby
+add_column :articles, :lock_version, :integer, default: 0, null: false
+```
+
+フォームの `hidden_field` で `lock_version` を送信し、コントローラの Strong Parameters に含める。
+競合時（`StaleObjectError`）のハンドリングは `ApplicationController` の `rescue_from` で一元管理する（詳細は `controllers.md` 参照）。
+
 ### Tag の正規化
 
 タグ名の検索・作成は `Tag.find_or_create_by_name!` を通じて行う。このメソッドが小文字化・前後空白除去を一元管理する：

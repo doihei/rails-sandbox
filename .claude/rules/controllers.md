@@ -92,7 +92,8 @@ redirect_to articles_path, notice: t("flash.article.deleted"), status: :see_othe
 
 ```ruby
 # ApplicationController に定義済み
-rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
+rescue_from ActiveRecord::RecordNotFound,   with: :render_not_found
+rescue_from ActiveRecord::StaleObjectError, with: :render_state_object
 ```
 
 ### ポリモーフィックな型パラメータ
