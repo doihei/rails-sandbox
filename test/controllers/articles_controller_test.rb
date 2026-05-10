@@ -121,4 +121,20 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "p", text: I18n.t("articles.popular.no_popular_articles")
   end
+
+  test "stale な lock_version で更新するとリダイレクト + alert" do
+    # 別プロセスの更新を模倣して lock_version を進める
+    Article.where(id: @article.id).update_all(lock_version: @article.lock_version + 1)
+
+    patch article_url(@article), params: {
+      article: {
+        title: "古いversionでの更新",
+        body: @article.body,
+        lock_version: @article.lock_version  # 古いversionを送る
+      }
+    }
+
+    assert_response :redirect
+    assert_equal I18n.t("flash.stale_object"), flash[:alert]
+  end
 end

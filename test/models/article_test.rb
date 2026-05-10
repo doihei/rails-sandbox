@@ -96,4 +96,31 @@ class ArticleTest < ActiveSupport::TestCase
     assert_includes Article.above_average_comments, articles(:one)
     assert_not_includes Article.above_average_comments, articles(:two)
   end
+
+  test "lock_versionが古いと保存時にStaleObjectErrorが発生する" do
+    article = articles(:one)
+
+    # ユーザーA・Bが同じ記事を読み込む
+    article_a = Article.find(article.id)
+    article_b = Article.find(article.id)
+
+    # ユーザーAが先に保存（lock_version 0 → 1）
+    article_a.update!(title: "Aによる更新")
+
+    # ユーザーBは古い lock_version 0 のまま保存しようとする
+    assert_raises(ActiveRecord::StaleObjectError) do
+      article_b.update!(title: "Bによる更新")
+    end
+  end
+
+  test "lock_versionが正しければ連続更新できる" do
+    article = articles(:one)
+    initial_version = article.lock_version
+
+    article.update!(title: "1回目")
+    assert_equal initial_version + 1, article.reload.lock_version
+
+    article.update!(title: "2回目")
+    assert_equal initial_version + 2, article.reload.lock_version
+  end
 end
