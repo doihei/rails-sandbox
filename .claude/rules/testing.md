@@ -1,12 +1,33 @@
 ---
 paths:
   - "test/**/*"
+  - "spec/**/*"
 ---
 
 ## テスト実行規約
 
-- テストは必ず `docker compose exec app bin/rails test` 経由で実行する（ローカル Ruby は使わない）
-- テストフレームワークは minitest（Rails 標準）。RSpec は使わない。
+### フレームワーク方針
+
+- **新規テストは RSpec で書く**。Minitest は既存テストの維持のみ（将来的に RSpec へ完全移行予定）
+- テストは必ずコンテナ経由で実行する（ローカル Ruby は使わない）
+
+---
+
+## RSpec（新規テストはこちら）
+
+- 実行コマンド: `docker compose exec app bundle exec rspec`
+- ファイル配置: `spec/models/`、`spec/factories/`
+- データ生成は FactoryBot（`spec/factories/*.rb`）。fixtures は使わない
+- DatabaseCleaner が設定済み（`spec/rails_helper.rb`）。`use_transactional_fixtures` は無効にして DatabaseCleaner に委譲
+- `spec/rails_helper.rb` に以下を include 済み。新規 spec では追加不要:
+  - `FactoryBot::Syntax::Methods`（`create` / `build` をそのまま使える）
+
+---
+
+## Minitest（既存テストの維持のみ）
+
+- テストは必ず `docker compose exec app bin/rails test` 経由で実行する
+- テストフレームワークは minitest（Rails 標準）
 - データ生成は fixtures (`test/fixtures/*.yml`)。factory_bot は使わない。
 - `test/test_helper.rb` に以下を include 済み。新規テストでは追加不要:
   - `Devise::Test::IntegrationHelpers`（ログイン必須のコントローラテスト用）

@@ -44,8 +44,11 @@ docker compose exec app bin/rails db:migrate
 # シードデータ投入（ユーザー・記事・タグ・コメントを作成）
 docker compose exec app bin/rails db:seed
 
-# テスト実行
+# テスト実行（Minitest）
 docker compose exec app bin/rails test
+
+# テスト実行（RSpec）
+docker compose exec app bundle exec rspec
 ```
 
 ## 環境変数
