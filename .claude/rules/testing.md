@@ -10,6 +10,7 @@ paths:
 
 - **新規テストは RSpec で書く**。Minitest は既存テストの維持のみ（将来的に RSpec へ完全移行予定）
 - テストは必ずコンテナ経由で実行する（ローカル Ruby は使わない）
+- VSCode では `.vscode/tasks.json` に Minitest / RSpec 両方のタスクが定義済み
 
 ---
 
@@ -45,7 +46,6 @@ paths:
   # OK
   assert article.status.published?
   ```
-- VSCode では `.vscode/tasks.json` に docker compose 経由のテストタスクが定義済み
 
 ### フィクスチャの counter_cache カラム
 
