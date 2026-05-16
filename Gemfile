@@ -64,6 +64,10 @@ group :development, :test do
 
   # Observe N+1 issue
   gem "bullet"
+
+  # rspec + factory_bot
+  gem "rspec-rails", "~> 8.0.0"
+  gem "factory_bot_rails"
 end
 
 group :development do
@@ -75,4 +79,5 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "database_cleaner-active_record"
 end
