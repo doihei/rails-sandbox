@@ -23,6 +23,26 @@
         "reveal": "always",
         "panel": "shared"
       }
+    },
+    {
+      "label": "RSpec: Run all specs",
+      "type": "shell",
+      "command": "docker compose exec app bundle exec rspec",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "RSpec: Run current file",
+      "type": "shell",
+      "command": "docker compose exec app bundle exec rspec ${relativeFile}",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
     }
   ]
 }
