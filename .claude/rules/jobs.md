@@ -1,7 +1,7 @@
 ---
 paths:
   - "app/jobs/**/*.rb"
-  - "test/jobs/**/*.rb"
+  - "spec/jobs/**/*.rb"
 ---
 
 ## Solid Queue / Job の規約

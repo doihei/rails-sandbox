@@ -1,7 +1,7 @@
 ---
 paths:
   - "app/models/value_objects/**/*.rb"
-  - "test/models/value_objects/**/*.rb"
+  - "spec/models/value_objects/**/*.rb"
   - "app/models/*.rb"
 ---
 
@@ -15,7 +15,7 @@ paths:
 ### ファイル配置
 
 - 実装: `app/models/value_objects/<name>.rb`
-- テスト: `test/models/value_objects/<name>_test.rb`
+- テスト: `spec/models/value_objects/<name>_spec.rb`
 - ネームスペース: `ValueObjects` モジュールで囲む
 
 ```ruby
@@ -137,20 +137,20 @@ end
 
 ### テスト
 
-`ActiveSupport::TestCase` を継承し、正常系・異常系・同値性・変換を網羅する。
+`RSpec.describe` で記述し、正常系・異常系・同値性・変換を網羅する。
 
 ```ruby
-class ValueObjects::EmailTest < ActiveSupport::TestCase
-  test "小文字化・空白除去して初期化される" do
-    assert_equal "user@example.com", ValueObjects::Email.new("  User@Example.COM  ").value
+RSpec.describe ValueObjects::Email, type: :model do
+  it "小文字化・空白除去して初期化される" do
+    expect(described_class.new("  User@Example.COM  ").value).to eq("user@example.com")
   end
 
-  test "String 以外を渡すと ArgumentError" do
-    assert_raises(ArgumentError) { ValueObjects::Email.new(nil) }
+  it "String 以外を渡すと ArgumentError" do
+    expect { described_class.new(nil) }.to raise_error(ArgumentError)
   end
 
-  test "同じアドレスなら == で等しい" do
-    assert_equal ValueObjects::Email.new("a@b.com"), ValueObjects::Email.new("a@b.com")
+  it "同じアドレスなら == で等しい" do
+    expect(described_class.new("a@b.com")).to eq(described_class.new("a@b.com"))
   end
 end
 ```

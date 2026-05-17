@@ -1,7 +1,7 @@
 ---
 paths:
   - "app/models/**/*.rb"
-  - "test/models/**/*.rb"
+  - "spec/models/**/*.rb"
 ---
 
 ## モデル規約

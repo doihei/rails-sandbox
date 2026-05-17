@@ -3,7 +3,7 @@ paths:
   - "app/components/**/*.rb"
   - "app/components/**/*.html.erb"
   - "app/views/**/*.erb"
-  - "test/components/**/*.rb"
+  - "spec/components/**/*.rb"
 ---
 
 ## ViewComponent 規約
@@ -22,11 +22,11 @@ app/components/
     card_component.rb               # articles 専用コンポーネント
     card_component.html.erb
 
-test/components/
-  status_badge_component_test.rb
-  tag_badge_component_test.rb
+spec/components/
+  status_badge_component_spec.rb
+  tag_badge_component_spec.rb
   articles/
-    card_component_test.rb
+    card_component_spec.rb
 ```
 
 ### 命名規則
@@ -100,17 +100,15 @@ end
 
 ### テスト
 
-`ViewComponent::TestCase` を継承する：
+`type: :component` で記述する（`ViewComponent::TestHelpers` が自動 include される）：
 
 ```ruby
-class Articles::CardComponentTest < ViewComponent::TestCase
-  setup do
-    @article = articles(:one)
-  end
+RSpec.describe Articles::CardComponent, type: :component do
+  let(:article) { create(:article) }
 
-  test "タイトルが描画される" do
-    render_inline(Articles::CardComponent.new(article: @article))
-    assert_selector "a", text: @article.title
+  it "タイトルが描画される" do
+    render_inline(described_class.new(article: article))
+    expect(page).to have_link(article.title)
   end
 end
 ```
