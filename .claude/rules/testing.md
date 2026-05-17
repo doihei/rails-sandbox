@@ -1,6 +1,5 @@
 ---
 paths:
-  - "test/**/*"
   - "spec/**/*"
 ---
 
@@ -8,77 +7,76 @@ paths:
 
 ### フレームワーク方針
 
-- **新規テストは RSpec で書く**。Minitest は既存テストの維持のみ（将来的に RSpec へ完全移行予定）
+- **テストフレームワークは RSpec のみ**。Minitest は削除済み。
 - テストは必ずコンテナ経由で実行する（ローカル Ruby は使わない）
-- VSCode では `.vscode/tasks.json` に Minitest / RSpec 両方のタスクが定義済み
+- VSCode では `.vscode/tasks.json` に RSpec タスクが定義済み
 
 ---
 
-## RSpec（新規テストはこちら）
+## RSpec
 
 - 実行コマンド: `docker compose exec app bundle exec rspec`
-- ファイル配置: `spec/models/`、`spec/factories/`
+- ファイル配置:
+  - モデル: `spec/models/`
+  - サービス: `spec/services/<namespace>/`
+  - ジョブ: `spec/jobs/`
+  - コンポーネント: `spec/components/<namespace>/`
+  - リクエスト（コントローラ相当）: `spec/requests/`
+  - ファクトリ: `spec/factories/`
 - データ生成は FactoryBot（`spec/factories/*.rb`）。fixtures は使わない
 - DB クリーンアップは `use_transactional_fixtures = true`（各テスト後にトランザクションをロールバック）で管理
 - `ENV['RAILS_ENV'] = 'test'` を強制設定済み（コンテナ内の `RAILS_ENV=development` を上書き）
 - `spec/rails_helper.rb` に以下を include 済み。新規 spec では追加不要:
   - `FactoryBot::Syntax::Methods`（`create` / `build` をそのまま使える）
+  - `Devise::Test::IntegrationHelpers`（`type: :request` の spec でログイン可能）
+  - `ActiveJob::TestHelper`（`have_enqueued_job` / `perform_enqueued_jobs` を使う場合）
+  - `ViewComponent::TestHelpers`（`type: :component` の spec で `render_inline` を使える）
 
----
+### RSpec の type 別メモ
 
-## Minitest（既存テストの維持のみ）
+| type | 配置先 | 継承元 |
+|---|---|---|
+| `:model` | `spec/models/` | `RSpec::Rails` の model helper |
+| `:request` | `spec/requests/` | `ActionDispatch::Integration` |
+| `:component` | `spec/components/` | `ViewComponent::TestHelpers` |
+| `:job` | `spec/jobs/` | `ActiveJob::TestHelper` |
 
-- テストは必ず `docker compose exec app bin/rails test` 経由で実行する
-- テストフレームワークは minitest（Rails 標準）
-- データ生成は fixtures (`test/fixtures/*.yml`)。factory_bot は使わない。
-- `test/test_helper.rb` に以下を include 済み。新規テストでは追加不要:
-  - `Devise::Test::IntegrationHelpers`（ログイン必須のコントローラテスト用）
-  - `ActiveJob::TestHelper`（`assert_enqueued_with` などを使う場合）
-- コントローラテストは `ActionDispatch::IntegrationTest` を継承する（URL ヘルパーを使うため）
-  - `ActionController::TestCase` は URL ヘルパーが使えず `UrlGenerationError` になる
-- 統合テスト内で翻訳文字列を比較する場合は `t()` ではなく `I18n.t()` を使う
-- Service Object のテストは `test/services/<namespace>/` に配置する（`ActiveSupport::TestCase` を継承）
-- Value Object のテストは `test/models/value_objects/` に配置する（`ActiveSupport::TestCase` を継承）
-- ViewComponent のテストは `test/components/<namespace>/` に配置する（`ViewComponent::TestCase` を継承）
-- `composed_of` で VO 管理しているカラムはテスト内でも文字列比較しない:
-  ```ruby
-  # NG
-  assert_equal "published", article.status
-  # OK
-  assert article.status.published?
-  ```
+### counter_cache カラムのテスト
 
-### フィクスチャの counter_cache カラム
+FactoryBot は `after(:create)` コールバックを経由するため counter_cache は自動更新される。
+`create` / `destroy` で変化を確認する際は `reload` を使う:
 
-fixtures はコールバックを経由しないため、counter_cache カラム（`comments_count`、`tags_count` など）は自動で更新されない。
-実際の関連レコード数と一致する値を fixture に明示する：
-
-```yml
-# comments が 2 件・tags が 2 件ある場合
-one:
-  comments_count: 2
-  tags_count: 2
+```ruby
+expect { create(:comment, article: article) }
+  .to change { article.reload.comments_count }.by(1)
 ```
 
-未設定（0のまま）だと、`comments_count` を参照するスコープ（`popular` など）のテストで実際の件数とズレが生じる。
+### `let` の遅延評価に注意
 
-### フィクスチャ追加時の注意
+`expect { action }.to change(Model, :count).by(n)` の中で初めて `let` が評価されると、
+作成と削除がキャンセルされてカウントが変わらない。事前に参照するか `let!` を使う:
 
-新しいフィクスチャを追加するとき、既存の count 系テスト（`article_count_ranking` など）への影響を確認する。
-特定のユーザーが「記事なし」または「記事数が少ない」ことを前提とするテストがある場合、
-そのユーザーに記事フィクスチャを紐付けると順位が変わってテストが壊れる。
+```ruby
+# NG: comment が block 内で初めて評価されると count 変化 = 0
+it "削除できる" do
+  expect { delete path(comment) }.to change(Comment, :count).by(-1)
+end
 
-```yml
-# NG: users(:two) が他テストで「記事なし」ユーザーとして使われている場合
-new_article:
-  user: two
+# OK: block の前に comment を参照しておく
+it "削除できる" do
+  comment  # 事前に評価
+  expect { delete path(comment) }.to change(Comment, :count).by(-1)
+end
 
-# OK: 専用のユーザーフィクスチャ（three など）を追加して紐付ける
-three:
-  name: user3
-  email: user3@example.com
-  encrypted_password: ...
+# または let! で強制評価
+let!(:comment) { create(:comment, ...) }
+```
 
-new_article:
-  user: three
+### `composed_of` で管理しているカラムは文字列比較しない
+
+```ruby
+# NG
+expect(article.status).to eq("published")
+# OK
+expect(article.status.published?).to be true
 ```
