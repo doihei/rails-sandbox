@@ -19,7 +19,8 @@ paths:
 - 実行コマンド: `docker compose exec app bundle exec rspec`
 - ファイル配置: `spec/models/`、`spec/factories/`
 - データ生成は FactoryBot（`spec/factories/*.rb`）。fixtures は使わない
-- DatabaseCleaner が設定済み（`spec/rails_helper.rb`）。`use_transactional_fixtures` は無効にして DatabaseCleaner に委譲
+- DB クリーンアップは `use_transactional_fixtures = true`（各テスト後にトランザクションをロールバック）で管理
+- `ENV['RAILS_ENV'] = 'test'` を強制設定済み（コンテナ内の `RAILS_ENV=development` を上書き）
 - `spec/rails_helper.rb` に以下を include 済み。新規 spec では追加不要:
   - `FactoryBot::Syntax::Methods`（`create` / `build` をそのまま使える）
 
