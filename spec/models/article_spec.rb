@@ -30,6 +30,20 @@ RSpec.describe Article, type: :model do
         expect(article).not_to be_valid
       end
     end
+
+    context "userがない場合" do
+      it '無効になる' do
+        article = build(:article, user: nil)
+        expect(article).not_to be_valid
+      end
+    end
+  end
+
+  describe "コールバック" do
+    it "before_save でタイトル前後の空白が除去される" do
+      article = create(:article, title: "  タイトル  ")
+      expect(article.title).to eq("タイトル")
+    end
   end
 
   describe "スコープ" do
@@ -59,6 +73,51 @@ RSpec.describe Article, type: :model do
         tag_name = tagged.tags.first.name
         expect(Article.tagged_with(tag_name)).to include(tagged)
         expect(Article.tagged_with(tag_name)).not_to include(untagged)
+      end
+    end
+
+    context ".tagged_with_all" do
+      it '複数タグをすべて持つ記事だけ返す（AND 検索）' do
+        tag_a = create(:tag, name: "ruby")
+        tag_b = create(:tag, name: "rails")
+        both = create(:article)
+        both.tags << [ tag_a, tag_b ]
+        only_a = create(:article)
+        only_a.tags << tag_a
+
+        result = Article.tagged_with_all("ruby", "rails")
+        expect(result).to include(both)
+        expect(result).not_to include(only_a)
+      end
+    end
+
+    context ".by_latest_comment" do
+      it '最新コメントが新しい順に並び、コメントなし記事は末尾になる' do
+        no_comment = create(:article)
+        old_comment_article = create(:article)
+        create(:comment, article: old_comment_article, created_at: 2.days.ago)
+        new_comment_article = create(:article)
+        create(:comment, article: new_comment_article, created_at: 1.day.ago)
+
+        result = Article.by_latest_comment.to_a
+        expect(result.index(new_comment_article)).to be < result.index(old_comment_article)
+        expect(result.last).to eq(no_comment)
+      end
+    end
+
+    context ".above_average_comments" do
+      it 'コメント数が平均より多い記事を返す' do
+        high = create(:article)
+        3.times { create(:comment, article: high) }
+        high.reload
+
+        low = create(:article)
+        create(:comment, article: low)
+        low.reload
+
+        result = Article.above_average_comments
+        expect(result).to include(high)
+        expect(result).not_to include(low)
       end
     end
   end
