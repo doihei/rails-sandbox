@@ -24,6 +24,9 @@ ja:
     published: "公開済み"
     archived: "アーカイブ"
 
+  errors:
+    login_required: "ログインが必要です"
+
   activerecord:
     errors:
       models:

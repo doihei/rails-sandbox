@@ -24,6 +24,9 @@ en:
     published: "Published"
     archived: "Archived"
 
+  errors:
+    login_required: "You need to log in."
+
   activerecord:
     errors:
       models:
