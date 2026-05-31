@@ -3,6 +3,7 @@ en:
     index:
       title: "Articles"
       new_button: "New Article"
+      loading: "Loading..."
     new:
       title: "New Article"
     edit:
