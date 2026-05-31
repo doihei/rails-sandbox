@@ -1,3 +1,10 @@
+---
+paths:
+  - "app/graphql/**/*.rb"
+  - "app/controllers/graphql_controller.rb"
+  - "config/routes.rb"
+---
+
 ## GraphQL API 実装規約
 
 このプロジェクトは `graphql-ruby` を使用し、`app/graphql/` 配下にスキーマを管理する。
