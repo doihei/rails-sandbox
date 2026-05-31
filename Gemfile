@@ -49,6 +49,9 @@ gem "rails-i18n"
 # ViewComponent
 gem "view_component"
 
+# graphql
+gem "graphql"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -68,6 +71,9 @@ group :development, :test do
   # rspec + factory_bot
   gem "rspec-rails", "~> 8.0.0"
   gem "factory_bot_rails"
+
+  # graphql
+  gem "graphiql-rails"
 end
 
 group :development do
