@@ -20,11 +20,11 @@ module Types
 
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
-    field :articles, [ Types::ArticleType ], null: false,
-          description: "全記事を返す"
+    field :articles, Types::ArticleType.connection_type, null: false,
+          description: "記事一覧(Relay Cursor Pagination)"
 
     def articles
-      Article.all
+      Article.all.order(created_at: :desc)
     end
 
     field :article, Types::ArticleType, null: true,
