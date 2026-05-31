@@ -21,5 +21,6 @@ Rails 8.1 + PostgreSQL の学習用サンドボックス。
 - Tailwind CSS 規約 → `.claude/rules/tailwind.md`
 - i18n（国際化）規約 → `.claude/rules/i18n.md`
 - ViewComponent 規約 → `.claude/rules/view_component.md`
+- GraphQL API の実装規約 → `.claude/rules/graphql.md`
 - 環境立ち上げ・トラブルシュート手順 → `.claude/skills/docker-compose-setup/SKILL.md`（`/docker-compose-setup` スキルで呼び出し可能）
 - 人間向けセットアップガイド → `README.md`

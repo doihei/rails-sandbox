@@ -48,6 +48,15 @@ docker compose exec app bin/rails db:seed
 docker compose exec app bundle exec rspec
 ```
 
+## GraphQL API
+
+`docker compose up -d` 後、以下のエンドポイントが利用可能：
+
+| 用途 | URL |
+|---|---|
+| GraphQL エンドポイント | `POST http://localhost:8080/graphql` |
+| GraphiQL（ブラウザUI） | `http://localhost:8080/graphiql`（development のみ） |
+
 ## 環境変数
 
 `.env.example` を参照。`.env` にコピーして使用する。
