@@ -27,7 +27,9 @@ users = [
   { name: "山田太郎", email: "yamada@example.com", password: "password" },
   { name: "佐藤花子", email: "sato@example.com", password: "password" },
   { name: "鈴木一郎", email: "suzuki@example.com", password: "password" },
-  { name: "田中美咲", email: "tanaka@example.com", password: "password" }
+  { name: "田中美咲", email: "tanaka@example.com", password: "password" },
+  { name: "伊藤健二", email: "ito@example.com", password: "password" },
+  { name: "渡辺さくら", email: "watanabe@example.com", password: "password" }
 ].map do |attrs|
   User.create!(attrs)
 end
@@ -37,7 +39,7 @@ puts "✅ #{users.count}人のユーザーを作成しました"
 puts "\n🏷️  タグを作成中..."
 
 # タグ作成
-tag_names = %w[rails ruby javascript react vue postgresql redis docker kubernetes aws]
+tag_names = %w[rails ruby javascript react vue postgresql redis docker kubernetes aws typescript graphql testing ci-cd linux]
 tags = tag_names.map do |name|
   Tag.find_or_create_by_name!(name)
 end
@@ -46,15 +48,15 @@ puts "✅ #{tags.count}個のタグを作成しました"
 
 puts "\n📝 記事を作成中..."
 
-# 記事データ
-articles_data = [
+# 固定記事データ（人気記事・特集記事）
+fixed_articles = [
   {
     title: "Rails 8の新機能まとめ",
     body: "Rails 8では多くの新機能が追加されました。Solid Queue、Solid Cache、Solid Cableなどのsolid系gemが標準搭載され、Redisなしでも高機能なアプリケーションが構築できるようになりました。",
     status: "published",
     user: users[0],
     tags: [ "rails", "ruby" ],
-    comments_count: 15  # 超人気記事
+    comments_count: 15
   },
   {
     title: "PostgreSQLのパフォーマンスチューニング",
@@ -62,7 +64,7 @@ articles_data = [
     status: "published",
     user: users[1],
     tags: [ "postgresql", "rails" ],
-    comments_count: 8   # 人気記事
+    comments_count: 8
   },
   {
     title: "Dockerで開発環境を構築する",
@@ -70,7 +72,7 @@ articles_data = [
     status: "published",
     user: users[2],
     tags: [ "docker", "rails", "postgresql" ],
-    comments_count: 12  # 超人気記事
+    comments_count: 12
   },
   {
     title: "React HooksでState管理をシンプルに",
@@ -78,7 +80,7 @@ articles_data = [
     status: "published",
     user: users[3],
     tags: [ "react", "javascript" ],
-    comments_count: 6   # 人気記事
+    comments_count: 6
   },
   {
     title: "Vue.js 3の新機能",
@@ -86,7 +88,7 @@ articles_data = [
     status: "published",
     user: users[0],
     tags: [ "vue", "javascript" ],
-    comments_count: 5   # 人気記事
+    comments_count: 5
   },
   {
     title: "Kubernetesで本番環境を構築",
@@ -94,7 +96,7 @@ articles_data = [
     status: "published",
     user: users[1],
     tags: [ "kubernetes", "docker", "aws" ],
-    comments_count: 10  # 人気記事
+    comments_count: 10
   },
   {
     title: "Redisをキャッシュとして活用する",
@@ -102,7 +104,7 @@ articles_data = [
     status: "published",
     user: users[2],
     tags: [ "redis", "rails" ],
-    comments_count: 7   # 人気記事
+    comments_count: 7
   },
   {
     title: "AWSで始めるサーバーレスアーキテクチャ",
@@ -110,7 +112,7 @@ articles_data = [
     status: "published",
     user: users[3],
     tags: [ "aws" ],
-    comments_count: 4   # 人気記事
+    comments_count: 4
   },
   {
     title: "Rubyのメタプログラミング入門",
@@ -118,7 +120,7 @@ articles_data = [
     status: "published",
     user: users[0],
     tags: [ "ruby" ],
-    comments_count: 9   # 人気記事
+    comments_count: 9
   },
   {
     title: "JavaScriptの非同期処理を理解する",
@@ -126,7 +128,7 @@ articles_data = [
     status: "published",
     user: users[1],
     tags: [ "javascript" ],
-    comments_count: 2   # コメント少ない（人気記事一覧に表示されない）
+    comments_count: 2
   },
   {
     title: "下書き記事のサンプル",
@@ -138,22 +140,63 @@ articles_data = [
   }
 ]
 
-# 記事とタグを作成
-articles_data.each do |data|
+fixed_articles.each do |data|
   article = Article.create!(
     title: data[:title],
     body: data[:body],
     status: data[:status],
     user: data[:user],
-    comments_count: data[:comments_count]  # Counter Cacheの初期値を設定
+    comments_count: data[:comments_count]
   )
-
-  # タグを紐付け
   data[:tags].each do |tag_name|
     tag = Tag.find_by(name: tag_name)
     article.tags << tag if tag
   end
+  print "."
+end
 
+# ページネーション確認用の大量記事を自動生成
+generated_topics = [
+  { title_prefix: "RailsのActive Record入門", tech: "rails", tags: %w[rails ruby] },
+  { title_prefix: "TypeScriptで型安全なAPIを作る", tech: "typescript", tags: %w[typescript javascript] },
+  { title_prefix: "GraphQL APIの設計パターン", tech: "graphql", tags: %w[graphql rails] },
+  { title_prefix: "RSpecによるテスト駆動開発", tech: "testing", tags: %w[testing rails ruby] },
+  { title_prefix: "GitHub ActionsでCI/CDパイプラインを構築", tech: "ci-cd", tags: %w[ci-cd docker] },
+  { title_prefix: "Linuxサーバーのセキュリティ設定", tech: "linux", tags: %w[linux aws] },
+  { title_prefix: "Reactのパフォーマンス最適化テクニック", tech: "react", tags: %w[react javascript typescript] },
+  { title_prefix: "PostgreSQLのインデックス設計", tech: "postgresql", tags: %w[postgresql rails] },
+  { title_prefix: "DockerイメージのサイズをSlimにする方法", tech: "docker", tags: %w[docker ci-cd] },
+  { title_prefix: "Rubyの並行処理とスレッドセーフ設計", tech: "ruby", tags: %w[ruby rails] },
+  { title_prefix: "AWS ECSでコンテナを本番運用する", tech: "aws", tags: %w[aws docker kubernetes] },
+  { title_prefix: "Vue.jsとNuxtで作るSSRアプリ", tech: "vue", tags: %w[vue javascript] },
+  { title_prefix: "Redisのデータ構造を使いこなす", tech: "redis", tags: %w[redis] },
+  { title_prefix: "KubernetesのHelm Chartで環境管理", tech: "kubernetes", tags: %w[kubernetes docker] },
+  { title_prefix: "JavaScriptのデザインパターン実践", tech: "javascript", tags: %w[javascript typescript] }
+]
+
+bodies = [
+  "この記事では基礎から応用まで丁寧に解説します。初心者でも理解できるよう、具体的なコード例を交えながら説明していきます。実際のプロジェクトでも即座に活用できる知識を身につけましょう。",
+  "実務経験をもとに、現場で使えるノウハウをまとめました。パフォーマンスと保守性を両立するアプローチを中心に、よくある落とし穴と回避策も紹介します。",
+  "チームの生産性を上げるためのベストプラクティスを紹介します。コードレビューの効率化、ドキュメント管理、自動化など、多角的な視点でアプローチします。",
+  "最新バージョンの新機能を網羅的に解説します。アップグレードの際に注意すべきBreaking Changeと、新機能の活用方法を具体的なサンプルコードで示します。",
+  "よくある問題とその解決策を厳選してまとめました。Stack Overflowで頻出の質問から、経験者でも陥りやすいトラップまで、実例とともに解説します。"
+]
+
+statuses = %w[published published published published draft]
+
+50.times do |i|
+  topic = generated_topics[i % generated_topics.size]
+  article = Article.create!(
+    title: "#{topic[:title_prefix]}（第#{i + 1}回）",
+    body: bodies[i % bodies.size],
+    status: statuses[i % statuses.size],
+    user: users[i % users.size],
+    comments_count: [ 0, 0, 1, 2, 3, 5, 8 ].sample
+  )
+  topic[:tags].each do |tag_name|
+    tag = Tag.find_by(name: tag_name)
+    article.tags << tag if tag
+  end
   print "."
 end
 
