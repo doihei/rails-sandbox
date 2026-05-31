@@ -4,6 +4,7 @@ en:
       title: "Articles"
       new_button: "New Article"
       loading: "Loading..."
+      load_more: "Load more"
     new:
       title: "New Article"
     edit:

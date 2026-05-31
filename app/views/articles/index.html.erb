@@ -23,4 +23,12 @@
        data-articles-index-target="list"
        class="flex flex-col gap-3">
   </div>
+
+  <%# もっと見るボタン %>
+  <div data-articles-index-target="pagination" hidden class="mt-6 text-center">
+    <button data-action="click->articles-index#loadMore"
+            class="bg-gray-800 text-white text-sm px-6 py-2 rounded hover:bg-gray-700">
+      <%= t('.load_more') %>
+    </button>
+  </div>
 </div>

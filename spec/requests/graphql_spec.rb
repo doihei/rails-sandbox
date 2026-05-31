@@ -9,9 +9,15 @@ RSpec.describe "GraphQL", type: :request do
       <<~GQL
         query {
           articles {
-            id
-            title
-            status
+            nodes {
+              id
+              title
+              status
+            }
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
           }
         }
       GQL
@@ -20,8 +26,8 @@ RSpec.describe "GraphQL", type: :request do
     it "記事一覧を返す" do
       post "/graphql", params: { query: query }, as: :json
       json = JSON.parse(response.body)
-      expect(json.dig("data", "articles")).to be_an(Array)
-      expect(json.dig("data", "articles").first["title"]).to eq(article.title)
+      expect(json.dig("data", "articles", "nodes")).to be_an(Array)
+      expect(json.dig("data", "articles", "nodes").first["title"]).to eq(article.title)
     end
   end
 
