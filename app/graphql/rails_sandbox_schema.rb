@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class RailsSandboxSchema < GraphQL::Schema
+  include ApolloFederation::Schema
+
   mutation(Types::MutationType)
   query(Types::QueryType)
 

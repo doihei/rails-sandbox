@@ -1,5 +1,8 @@
 module Types
   class ArticleType < Types::BaseObject
+    include ApolloFederation::Object
+    key fields: "id"
+
     field :id, ID, null: false
     field :title, String, null: false
     field :body, String, null: false
@@ -17,6 +20,12 @@ module Types
 
     def tags
       dataloader.with(Sources::AssociationLoader, :tags).load(object)
+    end
+
+    def self.resolve_references(references, _context)
+      ids = references.map { |r| r[:id].to_i }
+      articles = Article.where(id: ids).index_by(&:id)
+      references.map { |r| articles[r[:id].to_i] }
     end
   end
 end
