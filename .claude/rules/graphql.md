@@ -89,3 +89,35 @@ ja:
 
 開発環境では `http://localhost:8080/graphiql` から GraphiQL UI にアクセスできる。
 `config/routes.rb` で `Rails.env.development?` の条件付きマウントとなっている。
+
+### Apollo Federation 対応
+
+このスキーマは Apollo Federation のサブグラフとして動作する。
+
+**スキーマへの組み込み：**
+
+```ruby
+class RailsSandboxSchema < GraphQL::Schema
+  include ApolloFederation::Schema
+  ...
+end
+```
+
+**型をエンティティとして公開する：**
+
+```ruby
+class ArticleType < Types::BaseObject
+  include ApolloFederation::Object
+  key fields: "id"
+
+  # resolve_references（複数形）で一括取得 → WHERE id IN (...) の1クエリ
+  # resolve_reference（単数形）は使わない — N件クエリが発生する
+  def self.resolve_references(references, _context)
+    ids = references.map { |r| r[:id].to_i }
+    articles = Article.where(id: ids).index_by(&:id)
+    references.map { |r| articles[r[:id].to_i] }
+  end
+end
+```
+
+**注意：** `resolve_reference`（単数）は `references.map` で個別呼び出しになり Dataloader がバッチできないため、必ず `resolve_references`（複数）を使うこと。
