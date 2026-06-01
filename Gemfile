@@ -52,6 +52,9 @@ gem "view_component"
 # graphql
 gem "graphql"
 
+# apollo-federation
+gem "apollo-federation"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
