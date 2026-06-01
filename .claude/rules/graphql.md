@@ -121,3 +121,11 @@ end
 ```
 
 **注意：** `resolve_reference`（単数）は `references.map` で個別呼び出しになり Dataloader がバッチできないため、必ず `resolve_references`（複数）を使うこと。
+
+### CORS / CSRF 設定
+
+`config/initializers/cors.rb` で rack-cors によるCORS設定を行う。
+デフォルトでは `http://localhost:3000` から `/graphql` への POST を許可している。
+
+`GraphqlController` では `protect_from_forgery with: :null_session` を設定しており、
+外部クライアント（フロントエンドSPA等）からCSRFトークンなしにリクエストできる。

@@ -57,6 +57,11 @@ docker compose exec app bundle exec rspec
 | GraphQL エンドポイント | `POST http://localhost:8080/graphql` |
 | GraphiQL（ブラウザUI） | `http://localhost:8080/graphiql`（development のみ） |
 
+### CORS
+
+`config/initializers/cors.rb` により、`http://localhost:3000` からのリクエストを許可している。
+フロントエンドをローカルで別ポートで起動する場合はこのファイルを編集する。
+
 ## 環境変数
 
 `.env.example` を参照。`.env` にコピーして使用する。
