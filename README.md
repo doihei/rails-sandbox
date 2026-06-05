@@ -59,8 +59,12 @@ docker compose exec app bundle exec rspec
 
 ### CORS
 
-`config/initializers/cors.rb` により、`http://localhost:3000` からのリクエストを許可している。
-フロントエンドをローカルで別ポートで起動する場合はこのファイルを編集する。
+`config/initializers/cors.rb` により、`/graphql` への CORS を設定している。
+デフォルトでは `http://localhost:3000` を許可。複数オリジンを許可する場合は `ALLOWED_ORIGINS` 環境変数にカンマ区切りで設定する。
+
+```bash
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:4000
+```
 
 ## 環境変数
 

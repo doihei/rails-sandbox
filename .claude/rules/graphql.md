@@ -125,7 +125,8 @@ end
 ### CORS / CSRF 設定
 
 `config/initializers/cors.rb` で rack-cors によるCORS設定を行う。
-デフォルトでは `http://localhost:3000` から `/graphql` への POST を許可している。
+デフォルトでは `http://localhost:3000` から `/graphql` への POST / OPTIONS を許可している。
+複数のオリジンを許可する場合は `ALLOWED_ORIGINS` 環境変数にカンマ区切りで設定する（例: `ALLOWED_ORIGINS=http://localhost:3000,https://example.com`）。
 
 `GraphqlController` では `protect_from_forgery with: :null_session` を設定しており、
 外部クライアント（フロントエンドSPA等）からCSRFトークンなしにリクエストできる。
