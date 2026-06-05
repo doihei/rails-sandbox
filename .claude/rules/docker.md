@@ -18,7 +18,7 @@ paths:
 - `db`: PostgreSQL 18（ポート 5432）
 
 ### Dockerfile の場所
-- `Dockerfile` — プロジェクトルートの本番用イメージ（`ruby:3.4-slim` ベース、ポート 8080）
+- `Dockerfile` — プロジェクトルートの本番用イメージ（`ruby:3.4-slim` ベース、ポート 8080）。CMD で `db:migrate db:seed` を自動実行してからサーバーを起動する（TODO: 動作確認用。本番では別途 migration ジョブを実行すること）
 - `docker/Dockerfile` — Kamal デプロイ用（`config/deploy.yml` の `builder.dockerfile` で参照）
 - `docker/Dockerfile.dev` — 開発用（docker-compose で使用）
 
