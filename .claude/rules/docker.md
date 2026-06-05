@@ -18,12 +18,12 @@ paths:
 - `db`: PostgreSQL 18（ポート 5432）
 
 ### Dockerfile の場所
-- `Dockerfile` — プロジェクトルートの本番用イメージ（`ruby:3.4-slim` ベース、ポート 8080）。CMD はサーバー起動のみ。migration は別途実行すること
-- `docker/Dockerfile` — Kamal デプロイ用（`config/deploy.yml` の `builder.dockerfile` で参照）
+- `docker/Dockerfile` — Cloud Run 用本番イメージ（`ruby:3.4-slim` ベース、ポート 8080）。CMD はサーバー起動のみ。migration は別途実行すること
+- `docker/Dockerfile.kamal` — Kamal デプロイ用（`config/deploy.yml` の `builder.dockerfile` で参照）
 - `docker/Dockerfile.dev` — 開発用（docker-compose で使用）
 
 ### Cloud Build（GCP）
-- `cloudbuild.yaml` — GCP Cloud Build でイメージをビルドする設定。`_SHA` substitution を必ず渡すこと（デフォルト値なし）
+- `cloudbuild.yaml` — GCP Cloud Build でイメージをビルドする設定。`docker/Dockerfile` を使用。`_SHA` substitution を必ず渡すこと（デフォルト値なし）
 - ビルドコマンド: `gcloud builds submit --config=cloudbuild.yaml --substitutions=_SHA=$(git rev-parse --short HEAD) .`
 - GCP デプロイ全体は `rails-sandbox-infra/deploy.sh` が一括管理する
 
