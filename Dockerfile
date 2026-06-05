@@ -2,11 +2,11 @@ FROM ruby:3.4-slim AS base
 WORKDIR /app
 
 RUN apt-get update -qq && apt-get install -y \
-  build-essential libpq-dev curl && \
+  build-essential libpq-dev curl libyaml-dev && \
   rm -rf /var/lib/apt/lists/*
 
 COPY Gemfile Gemfile.lock ./
-RUN bundle install --without development test
+RUN bundle config set --local without 'development test' && bundle install
 
 COPY . .
 
