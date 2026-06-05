@@ -33,6 +33,7 @@ build context はプロジェクトルート（`.`）なので、Dockerfile 内�
 - `.env` に `POSTGRES_USER`, `POSTGRES_PASSWORD`, `DEV_DATABASE_URL`, `TEST_DATABASE_URL` を定義
 - `DEV_DATABASE_URL` により Rails の `primary` と `queue` 接続が同じDBを使う（開発環境は単一DB構成）
 - `SOLID_QUEUE_IN_PUMA: true` を docker-compose の environment に設定済み（Pumaと同一プロセスでJobワーカーを起動）
+- `ALLOWED_ORIGINS` — CORS 許可オリジン。カンマ区切りで複数指定可（例: `http://localhost:3000`）。`.env` に定義する
 
 ### Kamal との関係
 `config/deploy.yml` の `builder.dockerfile` に `docker/Dockerfile` を指定済み。
@@ -47,6 +48,18 @@ build context はプロジェクトルート（`.`）なので、Dockerfile 内�
 foreman が読む開発用プロセス定義。現在の構成:
 - `web`: `bin/rails server -b 0.0.0.0`
 - `css`: `bin/rails tailwindcss:watch[always]`（`always` 必須。Docker では stdin が即閉じるため `always` なしだとビルド1回で終了する）
+
+### フロントエンドとの連携（ローカル開発）
+- `rails-sandbox-front` は別リポジトリで独立した docker-compose を持つ
+- 両サービスの同時起動は `smart-hr-sandbox/` ルートの `Makefile` で管理（`make up` / `make down`）
+- Next.js は `localhost:3000`、Rails API は nginx 経由で `localhost:8080` でアクセス
+- フロントからの GraphQL リクエストは `localhost:8080/graphql` 経由で Rails に届く
+- nginx の役割: ローカルでも本番想定でリバースプロキシを維持。Phase C（ERB 全廃）後に `nginx.conf` を GraphQL API プロキシ専用に変更予定
+
+### nginx の将来的な変更計画
+現在の `nginx.conf` は ERB ビュー配信を含む設定。Phase C（Next.js への全ページ移行完了）後に以下に変更する:
+- 静的ファイル配信の削除（Next.js が担う）
+- `/graphql` と `/graphiql` のみ Rails にプロキシする構成に絞る
 
 ### 関連ファイル
 - `.env` / `.env.example` — DB 接続情報（`.env` は gitignore 対象）
