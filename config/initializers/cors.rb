@@ -1,8 +1,6 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "http://localhost:3000"
-    resource "/graphql",
-      headers: :any,
-      methods: [ :post ]
+    origins ENV.fetch("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
+    resource "/graphql", headers: :any, methods: [ :post, :options ]
   end
 end
