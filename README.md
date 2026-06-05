@@ -72,4 +72,18 @@ ALLOWED_ORIGINS=http://localhost:3000,http://localhost:4000
 
 ## デプロイ
 
-Kamal を使用。`config/deploy.yml` を参照。
+### Kamal（VPS）
+
+`config/deploy.yml` を参照。
+
+### GCP Cloud Run
+
+`rails-sandbox-infra` リポジトリで管理。Cloud Run + Cloud SQL + Secret Manager 構成。
+
+```bash
+# rails-sandbox-infra をクローン後
+cd rails-sandbox-infra
+./deploy.sh  # ビルド・イメージタグ更新・terraform apply を一括実行
+```
+
+詳細は `rails-sandbox-infra/README.md` を参照。
