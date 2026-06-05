@@ -10,7 +10,6 @@ Rails 8.1 + PostgreSQL の学習用サンドボックス。
 ## コンテキストの参照先
 
 - Docker 構成・環境変数・Kamal 連携 → `.claude/rules/docker.md`
-- コミット規約 → `.claude/rules/commit-message.md`
 - テスト実行規約 → `.claude/rules/testing.md`
 - Solid Queue / Job の実装規約 → `.claude/rules/jobs.md`
 - モデル / スコープの実装規約 → `.claude/rules/models.md`
