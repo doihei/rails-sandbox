@@ -1,0 +1,17 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - '${_IMAGE}:${_SHA}'
+      - '-t'
+      - '${_IMAGE}:latest'
+      - '.'
+
+substitutions:
+  _IMAGE: asia-northeast1-docker.pkg.dev/rails-sandbox-learn/rails-sandbox/rails-api
+  _SHA: ''  # 必ず --substitutions で渡すこと
+
+images:
+  - '${_IMAGE}:${_SHA}'
+  - '${_IMAGE}:latest'
