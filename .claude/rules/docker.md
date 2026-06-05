@@ -1,5 +1,6 @@
 ---
 paths:
+  - "Dockerfile"
   - "docker/**/*"
   - "docker-compose.yml"
   - ".devcontainer/**/*"
@@ -17,7 +18,8 @@ paths:
 - `db`: PostgreSQL 18（ポート 5432）
 
 ### Dockerfile の場所
-- `docker/Dockerfile` — 本番用（Kamal デプロイ時に使用）
+- `Dockerfile` — プロジェクトルートの本番用イメージ（`ruby:3.4-slim` ベース、ポート 8080）
+- `docker/Dockerfile` — Kamal デプロイ用（`config/deploy.yml` の `builder.dockerfile` で参照）
 - `docker/Dockerfile.dev` — 開発用（docker-compose で使用）
 
 build context はプロジェクトルート（`.`）なので、Dockerfile 内の COPY パスはルートからの相対パス。
