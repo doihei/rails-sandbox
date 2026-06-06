@@ -6,6 +6,7 @@
   "files.eol": "\n",
   "editor.rulers": [80, 120],
   "editor.formatOnSave": true,
+
   "[ruby]": {
     "editor.defaultFormatter": "Shopify.ruby-lsp"
   },
@@ -14,30 +15,50 @@
     "editor.tabSize": 2,
     "editor.insertSpaces": true
   },
-  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
-  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
-  "[css]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
-  "[scss]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
-  "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
-  "files.exclude": {
-    "**/.git": true, "**/.svn": true, "**/.hg": true, "**/CVS": true, "**/.DS_Store": true,
-    "**/tmp": true, "**/log": true, "**/vendor/bundle": true, "**/vendor/cache": true,
-    "**/node_modules": true, "**/public/assets": true, "**/storage": true
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
-  "search.exclude": {
-    "**/node_modules": true, "**/bower_components": true, "**/tmp": true, "**/log": true,
-    "**/vendor": true, "**/public/assets": true, "**/storage": true, "**/*.lock": true
-  },
+
+  // Ruby LSP（RuboCop フォーマット + inlay hint）
   "rubyLsp.formatter": "rubocop",
-  "gitlens.codeLens.enabled": true,
+  "rubyLsp.enabledFeatures": {
+    "inlayHint": true
+  },
+
+  // エクスプローラーから除外（.git 等は VSCode デフォルト除外のため不要）
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/tmp": true,
+    "**/log": true,
+    "**/vendor/bundle": true,
+    "**/vendor/cache": true,
+    "**/node_modules": true,
+    "**/public/assets": true,
+    "**/storage": true
+  },
+
+  // 検索から除外
+  "search.exclude": {
+    "**/tmp": true,
+    "**/log": true,
+    "**/vendor": true,
+    "**/public/assets": true,
+    "**/storage": true,
+    "**/*.lock": true
+  },
+
+  // Tailwind CSS v4（CSS ベースの設定ファイル）
   "tailwindCSS.includeLanguages": {
     "erb": "html"
   },
-  "tailwindCSS.files.exclude": [],
   "tailwindCSS.experimental.configFile": "app/assets/tailwind/application.css",
+
+  // i18n
   "i18n-ally.localesPaths": ["config/locales", "config/locales/**"],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.sourceLanguage": "ja",
   "i18n-ally.displayLanguage": "ja",
-  "i18n-ally.enabledFrameworks": ["ruby-rails"]
+  "i18n-ally.enabledFrameworks": ["ruby-rails"],
+
+  "gitlens.codeLens.enabled": true
 }
