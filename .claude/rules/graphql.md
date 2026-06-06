@@ -22,6 +22,8 @@ app/graphql/
   mutations/
     base_mutation.rb
     create_article.rb           # Mutation 実装
+    create_session.rb           # JWT 発行
+    delete_session.rb           # ログアウト（クライアント側でトークン破棄）
   sources/
     record_by_id.rb             # belongs_to 用 Dataloader Source
     association_loader.rb       # has_many / has_many :through 用 Dataloader Source
@@ -121,6 +123,25 @@ end
 ```
 
 **注意：** `resolve_reference`（単数）は `references.map` で個別呼び出しになり Dataloader がバッチできないため、必ず `resolve_references`（複数）を使うこと。
+
+### JWT 認証
+
+GraphQL リクエストの認証は JWT のみ（Devise セッションは不使用）。
+
+- `GraphqlController` は `Authorization: Bearer <token>` ヘッダから `current_user` を解決する
+- トークン取得: `createSession` Mutation を呼び出して `token` を受け取る
+- ログアウト: クライアント側でトークンを破棄する（サーバー側での無効化なし）
+- `context[:current_user]` が `nil` の場合は `I18n.t("errors.login_required")` を返して早期終了する
+
+**テストでの認証:**
+
+```ruby
+token = JwtService.encode(user_id: user.id)
+post "/graphql",
+  params: { query: mutation },
+  headers: { "Authorization" => "Bearer #{token}" },
+  as: :json
+```
 
 ### CORS / CSRF 設定
 

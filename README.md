@@ -57,6 +57,25 @@ docker compose exec app bundle exec rspec
 | GraphQL エンドポイント | `POST http://localhost:8080/graphql` |
 | GraphiQL（ブラウザUI） | `http://localhost:8080/graphiql`（development のみ） |
 
+### 認証
+
+`createSession` Mutation でトークンを取得し、以降のリクエストに `Authorization` ヘッダで渡す。
+
+```graphql
+mutation {
+  createSession(input: { email: "user@example.com", password: "password" }) {
+    token
+    errors
+  }
+}
+```
+
+取得したトークンはリクエストヘッダに付与する：
+
+```
+Authorization: Bearer <token>
+```
+
 ### CORS
 
 `config/initializers/cors.rb` により、`/graphql` への CORS を設定している。
