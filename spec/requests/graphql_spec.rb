@@ -79,10 +79,12 @@ RSpec.describe "GraphQL", type: :request do
 
     context "ログイン済みの場合" do
       it "記事が作成される" do
-        # GraphQL はセッション経由でログインする
-        sign_in user
+        token = JwtService.encode(user_id: user.id)
         expect {
-          post "/graphql", params: { query: mutation }, as: :json
+          post "/graphql",
+            params: { query: mutation },
+            headers: { "Authorization" => "Bearer #{token}" },
+            as: :json
         }.to change(Article, :count).by(1)
       end
     end
