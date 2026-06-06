@@ -54,7 +54,12 @@ gem "graphql"
 
 # apollo-federation
 gem "apollo-federation"
+
+# CORS support for Rack applications
 gem "rack-cors"
+
+# jwt
+gem "jwt"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
