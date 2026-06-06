@@ -26,6 +26,9 @@ ja:
 
   errors:
     login_required: "ログインが必要です"
+    token_expired: "セッションの有効期限が切れました。再度ログインしてください"
+    token_invalid: "認証トークンが不正です"
+    invalid_credentials: "メールアドレスまたはパスワードが正しくありません"
 
   activerecord:
     errors:

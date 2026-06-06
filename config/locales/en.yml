@@ -26,6 +26,9 @@ en:
 
   errors:
     login_required: "You need to log in."
+    token_expired: "Your session has expired. Please log in again"
+    token_invalid: "Invalid authentication token"
+    invalid_credentials: "Invalid email or password"
 
   activerecord:
     errors:
