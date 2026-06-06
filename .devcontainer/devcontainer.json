@@ -1,5 +1,5 @@
 {
-  "name": "rails-sandbox",
+  "name": "rails-sandbox-backend",
   "dockerComposeFile": "../docker-compose.yml",
   "service": "web",
   "workspaceFolder": "/rails",

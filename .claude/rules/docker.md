@@ -50,7 +50,7 @@ foreman が読む開発用プロセス定義。現在の構成:
 - `css`: `bin/rails tailwindcss:watch[always]`（`always` 必須。Docker では stdin が即閉じるため `always` なしだとビルド1回で終了する）
 
 ### フロントエンドとの連携（ローカル開発）
-- `rails-sandbox-front` は別リポジトリで独立した docker-compose を持つ
+- `rails-sandbox-frontend` は別リポジトリで独立した docker-compose を持つ
 - 両サービスの同時起動は `smart-hr-sandbox/` ルートの `Makefile` で管理（`make up` / `make down`）
 - Next.js は `localhost:3000`、Rails API は nginx 経由で `localhost:8080` でアクセス
 - フロントからの GraphQL リクエストは `localhost:8080/graphql` 経由で Rails に届く

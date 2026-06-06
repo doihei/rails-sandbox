@@ -1,4 +1,4 @@
-# rails-sandbox
+# rails-sandbox-backend
 
 Rails 8.1 + PostgreSQL のサンドボックスプロジェクト。
 
@@ -17,7 +17,7 @@ VSCode + [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms
 ```bash
 # 1. リポジトリをクローン
 git clone <repo-url>
-cd rails-sandbox
+cd rails-sandbox-backend
 
 # 2. 環境変数ファイルを作成
 cp .env.example .env

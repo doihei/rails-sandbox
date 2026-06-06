@@ -1,4 +1,4 @@
-# rails-sandbox
+# rails-sandbox-backend
 
 Rails 8.1 + PostgreSQL の学習用サンドボックス。
 
