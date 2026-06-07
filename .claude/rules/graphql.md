@@ -17,13 +17,10 @@ app/graphql/
   types/
     query_type.rb               # Query ルートフィールド
     mutation_type.rb            # Mutation ルートフィールド
-    article_type.rb             # 各モデルの型定義
-    ...
+    <model>_type.rb             # 各モデルの型定義
   mutations/
     base_mutation.rb
-    create_article.rb           # Mutation 実装
-    create_session.rb           # JWT 発行
-    delete_session.rb           # ログアウト（クライアント側でトークン破棄）
+    <action>_<resource>.rb      # Mutation 実装（例: create_article.rb）
   sources/
     record_by_id.rb             # belongs_to 用 Dataloader Source
     association_loader.rb       # has_many / has_many :through 用 Dataloader Source
@@ -55,10 +52,14 @@ module Mutations
     field :errors, [String], null: false
 
     def resolve(title:)
-      # 認証チェックは return で早期終了する（unless + return を1行で書く）
+      # 1. 認証チェック（Mutation 層の責務）
       return { article: nil, errors: [I18n.t("errors.login_required")] } unless context[:current_user]
 
-      # Service Object に処理を委譲する
+      # 2. レコード取得（存在しない場合は早期終了）
+      # article = Article.find_by(id: id)
+      # return { article: nil, errors: [I18n.t("articles.errors.not_found")] } unless article
+
+      # 3. Service Object に処理を委譲（認可・ビジネスロジックはサービス内）
       result = Articles::CreateService.call(...)
 
       if result.success?
@@ -71,6 +72,15 @@ module Mutations
 end
 ```
 
+**認証 vs 認可の責務分離：**
+
+| 層 | 責務 |
+|---|---|
+| Mutation (`resolve`) | **認証** — `context[:current_user]` の存在確認、レコードの存在確認 |
+| Service | **認可** — `current_user` がその操作をしてよいか（オーナーチェック等） |
+
+Service は「呼ばれた時点で `current_user` は必ず存在する」前提で動く。Service 内で `current_user` の nil チェックは行わない。
+
 ### Query フィールドの命名
 
 - 複数形（一覧）: `field :articles, [Types::ArticleType], null: false`
@@ -79,13 +89,15 @@ end
 ### エラーメッセージの i18n
 
 Mutation 内のエラーメッセージはハードコードせず `I18n.t()` を使う。
-共通エラーキーは `config/locales/ja.yml` の `errors:` 配下に定義する。
 
-```yaml
-ja:
-  errors:
-    login_required: "ログインが必要です"
-```
+| キー | 用途 |
+|---|---|
+| `errors.login_required` | 未認証 |
+| `errors.unauthorized` | 認可エラー（オーナー以外の操作） |
+| `errors.stale_object` | 楽観的ロック競合 |
+| `<resource>.errors.not_found` | レコードが存在しない（例: `articles.errors.not_found`） |
+
+共通キー（`errors.*`）はルートの `config/locales/ja.yml` に、リソース固有キーはサブディレクトリのロケールファイル（例: `config/locales/articles/ja.yml`）に定義する。
 
 ### GraphiQL
 

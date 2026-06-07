@@ -22,6 +22,7 @@ paths:
   - ジョブ: `spec/jobs/`
   - コンポーネント: `spec/components/<namespace>/`
   - リクエスト（コントローラ相当）: `spec/requests/`
+  - GraphQL: `spec/requests/graphql/queries/`（Query）、`spec/requests/graphql/mutations/`（Mutation）
   - ファクトリ: `spec/factories/`
 - データ生成は FactoryBot（`spec/factories/*.rb`）。fixtures は使わない
 - DB クリーンアップは `use_transactional_fixtures = true`（各テスト後にトランザクションをロールバック）で管理
