@@ -85,6 +85,7 @@ Service は「呼ばれた時点で `current_user` は必ず存在する」前�
 
 - 複数形（一覧）: `field :articles, [Types::ArticleType], null: false`
 - 単数形（1件）: `field :article, Types::ArticleType, null: true`（引数 `id` 必須）
+- 認証ユーザー自身: `field :me, Types::UserType, null: true`（未認証時は `null`、`context[:current_user]` を返す）
 
 ### エラーメッセージの i18n
 
