@@ -8,16 +8,12 @@ module Articles
 
     def call
       article = @user.articles.build(@params)
-
-      if article.save
-        attach_tags(article)
-        ArticleNotificationJob.perform_later(article)
-        Result.success(article)
-      else
-        Result.failure(article.errors.full_messages.join(", "))
-      end
+      article.save!
+      attach_tags(article)
+      ArticleNotificationJob.perform_later(article)
+      Result.success(article)
     rescue ActiveRecord::RecordInvalid => e
-      Result.failure(e.record.erros.full_messages.join(", "))
+      Result.failure(e.record.errors.full_messages.join(", "))
     end
 
     private
