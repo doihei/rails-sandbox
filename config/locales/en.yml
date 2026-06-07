@@ -29,6 +29,8 @@ en:
     token_expired: "Your session has expired. Please log in again"
     token_invalid: "Invalid authentication token"
     invalid_credentials: "Invalid email or password"
+    unauthorized: "You are not authorized to perform this action"
+    stale_object: "This record was updated by someone else. Please review the latest version and try again"
 
   activerecord:
     errors:

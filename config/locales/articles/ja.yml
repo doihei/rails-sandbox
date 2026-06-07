@@ -1,5 +1,7 @@
 ja:
   articles:
+    errors:
+      not_found: "記事が見つかりません"
     index:
       title: "記事一覧"
       new_button: "新規作成"

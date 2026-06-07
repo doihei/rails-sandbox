@@ -1,5 +1,7 @@
 en:
   articles:
+    errors:
+      not_found: "Article not found"
     index:
       title: "Articles"
       new_button: "New Article"

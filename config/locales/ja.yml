@@ -29,6 +29,8 @@ ja:
     token_expired: "セッションの有効期限が切れました。再度ログインしてください"
     token_invalid: "認証トークンが不正です"
     invalid_credentials: "メールアドレスまたはパスワードが正しくありません"
+    unauthorized: "この操作を行う権限がありません"
+    stale_object: "他の人が先に更新しました。最新の内容を確認してから再度お試しください"
 
   activerecord:
     errors:
