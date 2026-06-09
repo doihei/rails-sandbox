@@ -20,7 +20,6 @@ paths:
   - モデル: `spec/models/`
   - サービス: `spec/services/<namespace>/`
   - ジョブ: `spec/jobs/`
-  - コンポーネント: `spec/components/<namespace>/`
   - リクエスト（コントローラ相当）: `spec/requests/`
   - GraphQL: `spec/requests/graphql/queries/`（Query）、`spec/requests/graphql/mutations/`（Mutation）
   - ファクトリ: `spec/factories/`
@@ -31,15 +30,12 @@ paths:
   - `FactoryBot::Syntax::Methods`（`create` / `build` をそのまま使える）
   - `Devise::Test::IntegrationHelpers`（`type: :request` の spec でログイン可能）
   - `ActiveJob::TestHelper`（`have_enqueued_job` / `perform_enqueued_jobs` を使う場合）
-  - `ViewComponent::TestHelpers`（`type: :component` の spec で `render_inline` を使える）
-
 ### RSpec の type 別メモ
 
 | type | 配置先 | 継承元 |
 |---|---|---|
 | `:model` | `spec/models/` | `RSpec::Rails` の model helper |
 | `:request` | `spec/requests/` | `ActionDispatch::Integration` |
-| `:component` | `spec/components/` | `ViewComponent::TestHelpers` |
 | `:job` | `spec/jobs/` | `ActiveJob::TestHelper` |
 
 ### counter_cache カラムのテスト

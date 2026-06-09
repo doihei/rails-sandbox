@@ -201,37 +201,24 @@ end
 
 ### Value Object との連携
 
-#### composed_of（Devise 非管理カラム）
+#### composed_of / カスタム属性型
 
-`composed_of` + `converter` を使うとカラムを VO として直接管理できる。`update!(status: "published")` のような文字列渡しも `converter` 経由で自動変換される：
+カラムを VO として管理する方法は `uniqueness` バリデーションの有無で使い分ける（詳細は `value_objects.md` 参照）。
 
-```ruby
-composed_of :status,
-            class_name: "ValueObjects::ArticleStatus",
-            mapping: [ [ "status", "value" ] ],
-            converter: ->(v) { ValueObjects::ArticleStatus.new(v.to_s) }
-```
+`composed_of` や `attribute` で管理しているカラムをコールバック内で読み書きする場合は `read_attribute` / `write_attribute` を使う（VO を経由しないため）。
 
-テスト内では文字列と直接比較せず述語メソッドを使う：
+テスト内では文字列と直接比較せず、VO のメソッドか `.to_s` を使う：
 
 ```ruby
-# NG: composed_of カラムを文字列比較しない
-assert_equal "published", article.status
+# NG: VO カラムを文字列と直接比較しない
+expect(article.status).to eq("published")
 # OK
-assert article.status.published?
-```
+expect(article.status.published?).to be true
 
-`composed_of` で管理しているカラムをコールバック内で読み書きする場合は `read_attribute` / `write_attribute` を使う（VO を経由しないため）。
-
-#### _vo メソッド（Devise 管理カラム）
-
-`email` など Devise が直接操作するカラムは `composed_of` を使わず `_vo` サフィックスのゲッターメソッドで VO を提供する：
-
-```ruby
-def email_vo
-  value = read_attribute(:email)
-  value.present? ? ValueObjects::Email.new(value) : nil
-end
+# NG: JSON レスポンスと user.email を直接比較しない
+expect(json["email"]).to eq(user.email)
+# OK
+expect(json["email"]).to eq(user.email.to_s)
 ```
 
 ### 楽観的ロック（Optimistic Locking）

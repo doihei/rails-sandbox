@@ -1,6 +1,6 @@
 # rails-sandbox-backend
 
-Rails 8.1 + PostgreSQL のサンドボックスプロジェクト。
+Rails 8.1 + GraphQL API + PostgreSQL のバックエンドサーバー。フロントエンドは `rails-sandbox-frontend`（Next.js）が担当する。
 
 ## 必要なもの
 
@@ -33,7 +33,7 @@ docker compose up -d
 
 ```bash
 # サーバー起動（docker compose up -d 後）
-# → http://localhost:8080 （Nginx経由）
+# → GraphQL: POST http://localhost:8080/graphql
 
 # Rails コンソール
 docker compose exec app bin/rails console

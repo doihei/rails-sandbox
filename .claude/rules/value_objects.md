@@ -99,10 +99,11 @@ tag_list.empty? # => false
 
 ### ActiveRecord モデルとの連携
 
-#### 原則: `composed_of` + `converter` で VO を直接管理する
+AR カラムを VO として管理するには 2 通りある。どちらを使うかはバリデーションの有無で判断する。
 
-Rails が管理するカラム（Devise 非依存）には `composed_of` を使う。
-`converter` を指定することで文字列渡し（`update!(status: "published")` など）も自動変換される。
+#### `composed_of`（uniqueness バリデーションがないカラム）
+
+`composed_of` + `converter` を使う。`update!(status: "published")` のような文字列渡しも自動変換される。
 
 ```ruby
 class Article < ApplicationRecord
@@ -113,27 +114,36 @@ class Article < ApplicationRecord
 end
 ```
 
-- `article.status` → `ValueObjects::ArticleStatus`（VO のドメインメソッドが使える）
-- `article.status = "published"` / `update!(status: "published")` → converter 経由で VO に自動変換
+#### カスタム属性型（uniqueness バリデーションがあるカラム）
 
-#### 例外: Devise 管理カラムには `_vo` メソッドを使う
-
-`email` / `password` など Devise が直接操作するカラムは、`composed_of` を使うと
-uniqueness バリデーションや Devise 内部処理と競合するため使用しない。
-この場合のみ `_vo` サフィックスのゲッターメソッドを定義し、DB カラムは文字列のまま保持する。
+`uniqueness` バリデーションを持つカラムは `composed_of` を使うと AR のクエリシステムが VO を SQL 値に変換できず TypeError になる。
+`cast` / `serialize` を実装したカスタム型を `app/models/attribute_types/` に置き、`attribute` で登録する。
 
 ```ruby
-class User < ApplicationRecord
-  # DB カラム (email: string) はそのまま Rails/Devise に委ねる
-  def email_vo
-    value = read_attribute(:email)
-    value.present? ? ValueObjects::Email.new(value) : nil
+# app/models/attribute_types/email_type.rb
+module AttributeTypes
+  class EmailType < ActiveRecord::Type::String
+    def cast(value)
+      return nil if value.blank?
+      value.is_a?(ValueObjects::Email) ? value : ValueObjects::Email.new(value.to_s)
+    end
+
+    def serialize(value)
+      return nil if value.nil?
+      value.is_a?(ValueObjects::Email) ? value.value : super
+    end
   end
+end
+
+# app/models/user.rb
+class User < ApplicationRecord
+  attribute :email, AttributeTypes::EmailType.new
 end
 ```
 
-- `user.email` → 文字列（Rails/Devise が使用）
-- `user.email_vo` → `ValueObjects::Email`（ドメインロジックで使用）
+- `user.email` → `ValueObjects::Email`（VO のドメインメソッドが使える）
+- `user.email = "FOO@EXAMPLE.COM"` → cast 経由で正規化済み VO に自動変換
+- JSON 比較など文字列が必要な場面では `user.email.to_s` を使う
 
 ### テスト
 

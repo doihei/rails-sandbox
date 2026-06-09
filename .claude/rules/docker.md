@@ -42,24 +42,17 @@ build context はプロジェクトルート（`.`）なので、Dockerfile 内�
 ### エントリポイント
 - `bin/docker-entrypoint` — 本番用（Kamal）。`server.pid` 削除 + `db:prepare` を自動実行
 - `docker/dev-entrypoint` — 開発用（docker-compose）。`bundle install` + `db:prepare` + solid_queue テーブル初期化 + `server.pid` 削除
-- `bin/dev` — foreman 経由で `Procfile.dev` を起動するシェルスクリプト。web（Puma）と css（Tailwind watch）を並列起動する
+- `bin/dev` — foreman 経由で `Procfile.dev` を起動するシェルスクリプト
 
 ### Procfile.dev
 foreman が読む開発用プロセス定義。現在の構成:
 - `web`: `bin/rails server -b 0.0.0.0`
-- `css`: `bin/rails tailwindcss:watch[always]`（`always` 必須。Docker では stdin が即閉じるため `always` なしだとビルド1回で終了する）
 
 ### フロントエンドとの連携（ローカル開発）
 - `rails-sandbox-frontend` は別リポジトリで独立した docker-compose を持つ
 - 両サービスの同時起動は `smart-hr-sandbox/` ルートの `Makefile` で管理（`make up` / `make down`）
 - Next.js は `localhost:3000`、Rails API は nginx 経由で `localhost:8080` でアクセス
 - フロントからの GraphQL リクエストは `localhost:8080/graphql` 経由で Rails に届く
-- nginx の役割: ローカルでも本番想定でリバースプロキシを維持。Phase C（ERB 全廃）後に `nginx.conf` を GraphQL API プロキシ専用に変更予定
-
-### nginx の将来的な変更計画
-現在の `nginx.conf` は ERB ビュー配信を含む設定。Phase C（Next.js への全ページ移行完了）後に以下に変更する:
-- 静的ファイル配信の削除（Next.js が担う）
-- `/graphql` と `/graphiql` のみ Rails にプロキシする構成に絞る
 
 ### 関連ファイル
 - `.env` / `.env.example` — DB 接続情報（`.env` は gitignore 対象）
