@@ -2,47 +2,6 @@ ja:
   articles:
     errors:
       not_found: "記事が見つかりません"
-    index:
-      title: "記事一覧"
-      new_button: "新規作成"
-      loading: "読み込み中..."
-      load_more: "もっと見る"
-    new:
-      title: "新規作成"
-    edit:
-      title: "記事編集"
-    show:
-      publish: "公開する"
-      edit: "編集"
-      delete: "削除"
-      back: "一覧へ"
-      confirm_publish: "この記事を公開しますか？"
-      confirm_delete: "削除しますか？"
-      liked: "♥ いいね済み"
-      like: "♡ いいね"
-    form:
-      title_label: "タイトル"
-      body_label: "本文"
-      char_count_suffix: "/100"
-      submit_create: "作成する"
-      submit_update: "更新する"
-      cancel: "キャンセル"
-      tag_names_label: "タグ"
-      tag_names_placeholder: "rails, ruby, web（カンマ区切り）"
-      tag_names_hint: "カンマ区切りで複数入力できます（例: rails, ruby）"
-    card:
-      liked: "♥"
-      like: "♡"
-      comment_count:
-        zero: "コメントなし"
-        one: "%{count}件のコメント"
-        other: "%{count}件のコメント"
-    popular:
-      title: "🔥 人気記事"
-      description: "コメント3件以上の記事をコメント数順に表示"
-      no_popular_articles: "まだ人気記事がありません"
-      no_popular_articles_hint: "コメントが3件以上ついた記事がここに表示されます"
-      new_button: "新規作成"
     publish:
       errors:
         unauthorized: "この記事を公開する権限がありません"

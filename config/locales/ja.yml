@@ -1,29 +1,4 @@
 ja:
-  app_name: "Rails Sandbox"
-
-  flash:
-    article:
-      created: "記事を作成しました"
-      updated: "記事を更新しました"
-      deleted: "記事を削除しました"
-      published: "記事を公開しました"
-    comment:
-      created: "コメントを投稿しました"
-      deleted: "コメントを削除しました"
-      unauthorized: "削除できるのは自分のコメントだけです"
-    like:
-      created: "いいねしました"
-      destroyed: "いいねを取り消しました"
-    stale_object: "他の人が先に更新しました。最新の内容を確認してから再度お試しください。"
-
-  nav:
-    logout: "ログアウト"
-
-  article_status:
-    draft: "下書き"
-    published: "公開済み"
-    archived: "アーカイブ"
-
   errors:
     login_required: "ログインが必要です"
     token_expired: "セッションの有効期限が切れました。再度ログインしてください"

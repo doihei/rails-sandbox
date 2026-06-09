@@ -1,29 +1,4 @@
 en:
-  app_name: "Rails Sandbox"
-
-  flash:
-    article:
-      created: "Article was created."
-      updated: "Article was updated."
-      deleted: "Article was deleted."
-      published: "Article was published."
-    comment:
-      created: "Comment was created."
-      deleted: "Comment was deleted."
-      unauthorized: "You can only delete your own comments."
-    like:
-      created: "Liked."
-      destroyed: "Unliked."
-    stale_object: "This record was updated by someone else. Please review the latest version and try again."
-
-  nav:
-    logout: "Log out"
-
-  article_status:
-    draft: "Draft"
-    published: "Published"
-    archived: "Archived"
-
   errors:
     login_required: "You need to log in."
     token_expired: "Your session has expired. Please log in again"

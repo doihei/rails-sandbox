@@ -2,46 +2,6 @@ en:
   articles:
     errors:
       not_found: "Article not found"
-    index:
-      title: "Articles"
-      new_button: "New Article"
-      loading: "Loading..."
-      load_more: "Load more"
-    new:
-      title: "New Article"
-    edit:
-      title: "Edit Article"
-    show:
-      publish: "Publish"
-      edit: "Edit"
-      delete: "Delete"
-      back: "Back to List"
-      confirm_publish: "Publish this article?"
-      confirm_delete: "Are you sure you want to delete?"
-      liked: "♥ Liked"
-      like: "♡ Like"
-    form:
-      title_label: "Title"
-      body_label: "Body"
-      char_count_suffix: "/100"
-      submit_create: "Create"
-      submit_update: "Update"
-      cancel: "Cancel"
-      tag_names_label: "Tags"
-      tag_names_placeholder: "rails, ruby, web (comma-separated)"
-      tag_names_hint: "Separate tags with commas (e.g. rails, ruby)"
-    card:
-      liked: "♥"
-      like: "♡"
-      comment_count:
-        zero: "No comments"
-        one: "%{count} comment"
-        other: "%{count} comments"
-    popular:
-      title: "Popular Articles"
-      description: "Articles with 3 or more comments, sorted by comment count"
-      no_popular_articles: "No popular articles yet"
-      no_popular_articles_hint: "Articles with 3 or more comments will appear here"
     publish:
       errors:
         unauthorized: "You are not authorized to publish this article."
