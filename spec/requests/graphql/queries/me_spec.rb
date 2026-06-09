@@ -23,7 +23,7 @@ RSpec.describe "Query: me", type: :request do
         as: :json
 
       json = JSON.parse(response.body)
-      expect(json.dig("data", "me", "email")).to eq(user.email)
+      expect(json.dig("data", "me", "email")).to eq(user.email.to_s)
       expect(json.dig("data", "me", "id")).to eq(user.id.to_s)
     end
   end

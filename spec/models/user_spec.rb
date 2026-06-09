@@ -46,13 +46,13 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "#email_vo" do
+  describe "#email" do
     it "ValueObjects::Email を返す" do
-      expect(user.email_vo).to be_a(ValueObjects::Email)
+      expect(user.email).to be_a(ValueObjects::Email)
     end
 
     it "ドメインを取得できる" do
-      expect(user.email_vo.domain).to eq("example.com")
+      expect(user.email.domain).to eq("example.com")
     end
   end
 

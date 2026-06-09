@@ -49,14 +49,14 @@ RSpec.describe ValueObjects::Email, type: :model do
   end
 
   describe "User との連携" do
-    it "email_vo が ValueObjects::Email を返す" do
+    it "email が ValueObjects::Email を返す" do
       user = create(:user, email: "User@Example.COM")
-      expect(user.email_vo).to be_an_instance_of(described_class)
+      expect(user.email).to be_an_instance_of(described_class)
     end
 
-    it "email_vo が正規化されたメールを返す" do
+    it "email が正規化されたメールを返す" do
       user = create(:user, email: "User@Example.COM")
-      expect(user.email_vo.value).to eq("user@example.com")
+      expect(user.email.value).to eq("user@example.com")
     end
   end
 end
