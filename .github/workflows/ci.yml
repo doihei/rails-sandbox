@@ -23,7 +23,9 @@ jobs:
           key: ${{ runner.os }}-gems-${{ hashFiles('Gemfile.lock') }}
 
       - name: Install gems
-        run: bundle install --path vendor/bundle --jobs 4
+        run: |
+          bundle config set path vendor/bundle
+          bundle install --jobs 4
 
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
@@ -48,7 +50,9 @@ jobs:
           key: ${{ runner.os }}-gems-${{ hashFiles('Gemfile.lock') }}
 
       - name: Install gems
-        run: bundle install --path vendor/bundle --jobs 4
+        run: |
+          bundle config set path vendor/bundle
+          bundle install --jobs 4
 
       - name: Scan for security vulnerabilities in JavaScript dependencies
         run: bin/importmap audit
@@ -71,7 +75,9 @@ jobs:
           key: ${{ runner.os }}-gems-${{ hashFiles('Gemfile.lock') }}
 
       - name: Install gems
-        run: bundle install --path vendor/bundle --jobs 4
+        run: |
+          bundle config set path vendor/bundle
+          bundle install --jobs 4
 
       - name: Prepare RuboCop cache
         uses: actions/cache@v5
@@ -116,7 +122,9 @@ jobs:
           key: ${{ runner.os }}-gems-${{ hashFiles('Gemfile.lock') }}
 
       - name: Install gems
-        run: bundle install --path vendor/bundle --jobs 4
+        run: |
+          bundle config set path vendor/bundle
+          bundle install --jobs 4
 
       - name: Run RSpec
         env:
