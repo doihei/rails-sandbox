@@ -9,7 +9,7 @@ module Mutations
     def resolve(email:, password:)
       user = User.find_by(email: email.downcase.strip)
 
-      unless user&.valid_password?(password)
+      unless user&.authenticate(password)
         return { token: nil, errors: [ I18n.t("errors.invalid_credentials") ] }
       end
 
