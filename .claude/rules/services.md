@@ -6,6 +6,15 @@ paths:
 
 ## Service Object の規約
 
+`app/services/` には性質の異なる 2 種類のクラスがある。**以下の規約は「ビジネスロジックサービス」のみが対象**。
+
+| 種別 | 例 | 規約 |
+|---|---|---|
+| ビジネスロジックサービス | `Articles::PublishService` 等 | `ApplicationService` 継承・`Result` 返却・`I18n` エラー（下記） |
+| 外部サービスクライアント | `NotificationClient` | 下記規約の**対象外**（別パターン。末尾参照） |
+
+### ビジネスロジックサービス
+
 - `ApplicationService` を継承する
 - `call` クラスメソッド経由で呼び出す（`ApplicationService.call(...)` が `new(...).call` を委譲）:
   ```ruby
@@ -31,3 +40,14 @@ paths:
   # OK
   if @article.status.published?
   ```
+
+### 外部サービスクライアント（NotificationClient）
+
+notification-service への HTTP 呼び出しを担う `NotificationClient` は上記規約の**対象外**で、別パターンに従う。
+
+- `NotificationClient.notify(...)` クラスメソッド経由で呼び出す（Faraday 製の HTTP クライアント）
+- 戻り値は **boolean**（成否）。`Result` オブジェクトは返さない
+- `Faraday::Error` を rescue して `false` を返す **non-blocking 設計**。通知の失敗が記事作成をブロックしてはならない
+- 接続先は `NOTIFICATION_SERVICE_URL` 環境変数（定数 `NotificationClient::BASE_URL`）、認証は `INTER_SERVICE_SECRET`
+- 実際の呼び出しは `ArticleNotificationJob` 経由（非同期）で行い、ビジネスロジックサービスから直接 HTTP を叩かない
+- 既存実装の参照: `app/services/notification_client.rb`

@@ -77,3 +77,24 @@ expect(article.status).to eq("published")
 # OK
 expect(article.status.published?).to be true
 ```
+
+### WebMock（外部 HTTP のスタブ）
+
+`spec/rails_helper.rb` で `require 'webmock/rspec'` を読み込み済み。**テスト中は実 HTTP 接続が無効**になる。
+外部サービス（notification-service）を呼び出す spec では必ず `stub_request` を書くこと。無いと `WebMock::NetConnectNotAllowedError` で落ちる。
+
+**重要な落とし穴**: スタブ URL はハードコードせず `NotificationClient::BASE_URL` を参照する。
+`NOTIFICATION_SERVICE_URL` 環境変数で接続先が変わる（ローカルは `http://host.docker.internal:3001`）ため、
+`http://localhost:3001` のようにハードコードするとスタブが一致せず失敗する。
+
+```ruby
+before do
+  stub_request(:post, "#{NotificationClient::BASE_URL}/api/v1/notifications")
+    .to_return(status: 201, body: { notification: { id: 1 } }.to_json)
+end
+```
+
+既存実装の参照: `spec/services/notification_client_spec.rb`、`spec/jobs/article_notification_job_spec.rb`。
+
+なお `Articles::CreateService` 系の spec はテスト中に HTTP を発生させない（`ArticleNotificationJob.perform_later` で
+ジョブをキューイングするだけで `NotificationClient` を直接呼ばない）。通知の HTTP は Job spec 側でスタブして検証する。
