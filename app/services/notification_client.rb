@@ -8,11 +8,11 @@ class NotificationClient
 
   def notify(article_id:, message:, user_id:)
     response = connection.post("api/v1/notifications") do |req|
-      req.body ={
+      req.body = {
         article_id: article_id,
         message: message,
         user_id: user_id
-    }.to_json
+      }.to_json
     end
 
     response.success?
