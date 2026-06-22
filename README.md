@@ -85,6 +85,28 @@ Authorization: Bearer <token>
 ALLOWED_ORIGINS=http://localhost:3000,http://localhost:4000
 ```
 
+## notification-service との連携
+
+記事作成時に `ArticleNotificationJob` が非同期で通知サービス（`rails-sandbox-notification-service`）へ HTTP リクエストを送る。
+
+```
+Articles::CreateService
+  └─ ArticleNotificationJob.perform_later(article)   # Solid Queue でキューイング
+       └─ NotificationClient.notify(...)
+            └─ POST http://host.docker.internal:3001/api/v1/notifications
+                 Authorization: Bearer <INTER_SERVICE_SECRET>
+```
+
+### 関連環境変数
+
+| 変数名 | 用途 | デフォルト値 |
+|---|---|---|
+| `NOTIFICATION_SERVICE_URL` | 通知サービスのベース URL | `http://localhost:3001` |
+| `INTER_SERVICE_SECRET` | Bearer Token（通知サービス側と同じ値を設定） | `dev-secret` |
+
+> Docker コンテナ内から通知サービスへ接続するには `host.docker.internal:3001` が必要。
+> `.env` の `NOTIFICATION_SERVICE_URL` はデフォルトで `http://host.docker.internal:3001` に設定済み。
+
 ## 環境変数
 
 `.env.example` を参照。`.env` にコピーして使用する。
