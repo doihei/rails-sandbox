@@ -3,6 +3,11 @@ require "rails_helper"
 RSpec.describe ArticleNotificationJob, type: :job do
   let(:article) { create(:article) }
 
+  before do
+    stub_request(:post, "#{NotificationClient::BASE_URL}/api/v1/notifications")
+      .to_return(status: 201, body: { notification: { id: 1 } }.to_json)
+  end
+
   describe "#perform" do
     it "例外を上げない" do
       expect { described_class.new.perform(article) }.not_to raise_error

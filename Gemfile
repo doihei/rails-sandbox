@@ -45,6 +45,10 @@ gem "rack-cors"
 # jwt
 gem "jwt"
 
+# Faraday
+gem "faraday"
+gem "faraday-multipart"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -64,6 +68,9 @@ group :development, :test do
   # rspec + factory_bot
   gem "rspec-rails", "~> 8.0.0"
   gem "factory_bot_rails"
+
+  # HTTP stub（外部サービス呼び出しのテスト用）
+  gem "webmock"
 
   # graphql
   gem "graphiql-rails"

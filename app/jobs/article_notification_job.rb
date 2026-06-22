@@ -8,8 +8,10 @@ class ArticleNotificationJob < ApplicationJob
   discard_on ActiveRecord::RecordNotFound
 
   def perform(article)
-    # article は ActiveRecord オブジェクトをそのまま渡せる
-    # Solid Queue が GlobalID でシリアライズ/デシリアライズしてくれる
-    Rails.logger.info "通知送信: #{article.title}"
+    NotificationClient.notify(
+      article_id: article.id,
+      message: "#{article.user.name || article.user.email} さんが「#{article.title}」を作成しました",
+      user_id: article.user_id
+    )
   end
 end
