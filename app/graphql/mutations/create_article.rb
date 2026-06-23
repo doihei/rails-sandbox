@@ -1,5 +1,5 @@
 module Mutations
-  class CreateArticle < Mutations::BaseMutation
+  class CreateArticle < Mutations::AuthenticatedMutation
     argument :title,  String, required: true
     argument :body,   String, required: true
 
@@ -7,10 +7,8 @@ module Mutations
     field :errors, [ String ],          null: false
 
     def resolve(title:, body:)
-      return { article: nil, errors: [ I18n.t("errors.login_required") ] } unless context[:current_user]
-
       result = Articles::CreateService.call(
-        user: context[:current_user],
+        user: current_user,
         params: { title: title, body: body }
       )
 

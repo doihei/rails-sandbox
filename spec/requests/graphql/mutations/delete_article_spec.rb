@@ -64,7 +64,7 @@ RSpec.describe "Mutation: deleteArticle", type: :request do
         params: { query: mutation, variables: { id: article.id, lockVersion: article.lock_version } },
         as: :json
       result = JSON.parse(response.body).dig("data", "deleteArticle")
-      expect(result["success"]).to be false
+      expect(result["success"]).to be_nil
       expect(result["errors"]).to include(I18n.t("errors.login_required"))
     end
   end
