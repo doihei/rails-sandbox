@@ -10,7 +10,7 @@ module Articles
       validates_ownership!
       @article.lock_version = @lock_version
       @article.destroy!
-      Result.success(nil)
+      Result.success()
     rescue OwnershipError => e
       Result.failure(e.message)
     rescue ActiveRecord::StaleObjectError

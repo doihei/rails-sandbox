@@ -24,7 +24,7 @@ module Articles
     private
 
     def validates_ownership!
-      unless @article.user == @current_user
+      unless @article.user_id == @current_user.id
         raise OwnershipError, I18n.t("articles.publish.errors.unauthorized")
       end
     end
