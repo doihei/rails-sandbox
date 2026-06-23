@@ -16,7 +16,7 @@ module Likes
         Result.success({ liked: true, count: @likeable.likes.count })
       end
     rescue ActiveRecord::RecordInvalid => e
-      Result.failure(e.record.erros.full_message.join(", "))
+      Result.failure(e.record.errors.full_messages.join(", "))
     end
   end
 end
