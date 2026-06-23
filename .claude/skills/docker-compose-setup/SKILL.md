@@ -99,24 +99,6 @@ rm tmp/pids/server.pid
 docker compose up -d
 ```
 
-**app コンテナが起動直後に落ちる（css.1 が即終了する）**
-```
-css.1  | exited with code 0
-system | sending SIGTERM to all processes
-```
-→ `Procfile.dev` の Tailwind watch コマンドが正しくない可能性がある。Docker 環境では stdin がすぐ閉じるため、`--watch` のみでは1回ビルドして終了してしまう。`always` オプションが必須。
-```
-# Procfile.dev（正しい例）
-css: bin/rails tailwindcss:watch[always]
-
-# または直接 CLI を使う場合
-css: bin/tailwindcss -i app/assets/tailwind/application.css -o app/assets/builds/tailwind.css --watch=always
-```
-修正後にコンテナを再起動する:
-```bash
-docker compose up app -d
-```
-
 **gem が見つからない（ビルドは成功したのに起動失敗する）**
 ```
 Could not find puma-X.X.X, bootsnap-X.X.X in locally installed gems (Bundler::GemNotFound)

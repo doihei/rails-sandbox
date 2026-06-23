@@ -57,6 +57,6 @@ foreman が読む開発用プロセス定義。現在の構成:
 ### 関連ファイル
 - `.env` / `.env.example` — DB 接続情報（`.env` は gitignore 対象）
 - `docker/nginx.conf` — Nginx → Puma リバースプロキシ設定
-- `Procfile.dev` — foreman が読む開発用プロセス定義（web + css）
+- `Procfile.dev` — foreman が読む開発用プロセス定義（web のみ）
 - `.devcontainer/` — docker-compose の `app` サービスに接続する VSCode Dev Container 設定
 - `.vscode/tasks.json` — docker compose 経由でテスト実行するタスク定義
