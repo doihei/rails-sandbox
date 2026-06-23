@@ -14,6 +14,8 @@ module Types
     # association
     field :user, Types::UserType, null: false
     field :tags, [ Types::TagType ], null: false
+    field :comments, [ Types::CommentType ], null: false
+    field :comments_count, Integer, null: false
 
     def user
       dataloader.with(Sources::RecordById, User).load(object.user_id)
@@ -21,6 +23,10 @@ module Types
 
     def tags
       dataloader.with(Sources::AssociationLoader, :tags).load(object)
+    end
+
+    def comments
+      dataloader.with(Sources::AssociationLoader, :comments).load(object)
     end
 
     def self.resolve_references(references, _context)
