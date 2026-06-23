@@ -145,6 +145,61 @@ end
 - `user.email = "FOO@EXAMPLE.COM"` → cast 経由で正規化済み VO に自動変換
 - JSON 比較など文字列が必要な場面では `user.email.to_s` を使う
 
+### バリデーション用 Value Object
+
+AR モデルを経由せずに GraphQL Mutation / Service でユーザー向けバリデーションを行いたい場合は、`valid?` / `errors` パターンを使う。`ArgumentError` を raise する代わりに、I18n メッセージを収集して返す。
+
+```ruby
+module ValueObjects
+  class CommentBody
+    MAX_LENGTH = 1000
+
+    attr_reader :value
+
+    def initialize(value)
+      @value = value.to_s.strip
+      freeze
+    end
+
+    def valid?
+      errors.empty?
+    end
+
+    def errors
+      errs = []
+      errs << I18n.t("comments.errors.body_blank") if value.blank?
+      errs << I18n.t("comments.errors.body_too_long", max: MAX_LENGTH) if value.length > MAX_LENGTH
+      errs
+    end
+
+    def ==(other) = other.is_a?(CommentBody) && other.value == value
+    alias eql? ==
+    def hash = value.hash
+    def to_s = @value
+  end
+end
+```
+
+**使用場所：** Service の `call` 内で先行バリデーションとして使い、失敗時は `Result.failure` を返す。
+
+```ruby
+def call
+  body_vo = ValueObjects::CommentBody.new(@body)
+  return Result.failure(body_vo.errors.first) unless body_vo.valid?
+
+  comment = @article.comments.build(body: body_vo.to_s, user: @current_user)
+  comment.save!
+  Result.success(comment)
+end
+```
+
+**使い分けの判断基準：**
+
+| パターン | 用途 |
+|---|---|
+| `ArgumentError` を raise | 型ミスなどプログラムバグを示す（開発者向け） |
+| `valid?` / `errors` | ユーザー入力のバリデーションエラーを収集する（ユーザー向け） |
+
 ### テスト
 
 `RSpec.describe` で記述し、正常系・異常系・同値性・変換を網羅する。

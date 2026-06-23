@@ -20,6 +20,7 @@ app/graphql/
     <model>_type.rb             # 各モデルの型定義
   mutations/
     base_mutation.rb
+    authenticated_mutation.rb   # ログイン必須 Mutation の基底クラス（ready? で認証チェック）
     <action>_<resource>.rb      # Mutation 実装（例: create_article.rb）
   sources/
     record_by_id.rb             # belongs_to 用 Dataloader Source
@@ -41,9 +42,12 @@ app/graphql/
 
 ### Mutation の実装パターン
 
+ログイン必須の Mutation は `BaseMutation` ではなく `AuthenticatedMutation` を継承する。
+`ready?` フックで `resolve` より前に認証チェックが走るため、`resolve` 内で `context[:current_user]` を確認する必要はない。
+
 ```ruby
 module Mutations
-  class CreateArticle < Mutations::BaseMutation
+  class CreateArticle < Mutations::AuthenticatedMutation  # ← ログイン必須
     # 引数定義
     argument :title, String, required: true
 
@@ -52,15 +56,12 @@ module Mutations
     field :errors, [String], null: false
 
     def resolve(title:)
-      # 1. 認証チェック（Mutation 層の責務）
-      return { article: nil, errors: [I18n.t("errors.login_required")] } unless context[:current_user]
-
-      # 2. レコード取得（存在しない場合は早期終了）
+      # 1. レコード取得（存在しない場合は早期終了）
       # article = Article.find_by(id: id)
       # return { article: nil, errors: [I18n.t("articles.errors.not_found")] } unless article
 
-      # 3. Service Object に処理を委譲（認可・ビジネスロジックはサービス内）
-      result = Articles::CreateService.call(...)
+      # 2. Service Object に処理を委譲（認可・ビジネスロジックはサービス内）
+      result = Articles::CreateService.call(user: current_user, ...)
 
       if result.success?
         { article: result.value, errors: [] }
@@ -72,14 +73,38 @@ module Mutations
 end
 ```
 
+ログイン不要の Mutation（`CreateSession` 等）は従来どおり `BaseMutation` を継承する。
+
+**`AuthenticatedMutation` の仕組み：**
+
+```ruby
+class AuthenticatedMutation < BaseMutation
+  def ready?(**_args)
+    return [false, { errors: [I18n.t("errors.login_required")] }] unless current_user
+    super
+  end
+
+  private
+
+  def current_user = context[:current_user]
+end
+```
+
+- 未認証時は `resolve` を呼ばず `{ errors: [...] }` を返す
+- `current_user` ヘルパーで `context[:current_user]` を参照できる（`resolve` 内でも使用可）
+
 **認証 vs 認可の責務分離：**
 
 | 層 | 責務 |
 |---|---|
-| Mutation (`resolve`) | **認証** — `context[:current_user]` の存在確認、レコードの存在確認 |
+| `AuthenticatedMutation#ready?` | **認証** — `current_user` の存在確認 |
+| Mutation (`resolve`) | レコードの存在確認 |
 | Service | **認可** — `current_user` がその操作をしてよいか（オーナーチェック等） |
 
 Service は「呼ばれた時点で `current_user` は必ず存在する」前提で動く。Service 内で `current_user` の nil チェックは行わない。
+
+**`success` フィールドの null 制約：**
+削除系 Mutation の `field :success, Boolean` は `null: true` にする。未認証時に `ready?` が `{ errors: [...] }` を返す際、`success` キーが欠落するため `null: false` だと制約違反になる。
 
 ### Query フィールドの命名
 
@@ -144,7 +169,7 @@ GraphQL リクエストの認証は JWT のみ（Devise セッションは不使
 - `GraphqlController` は `Authorization: Bearer <token>` ヘッダから `current_user` を解決する
 - トークン取得: `createSession` Mutation を呼び出して `token` を受け取る
 - ログアウト: クライアント側でトークンを破棄する（サーバー側での無効化なし）
-- `context[:current_user]` が `nil` の場合は `I18n.t("errors.login_required")` を返して早期終了する
+- `context[:current_user]` が `nil` の場合、`AuthenticatedMutation` が `ready?` で自動的に `errors.login_required` を返す
 
 **テストでの認証:**
 
