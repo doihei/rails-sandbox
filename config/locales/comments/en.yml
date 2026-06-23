@@ -1,0 +1,7 @@
+en:
+  comments:
+    errors:
+      body_blank: "Body can't be blank"
+      body_too_long: "Body must be %{max} characters or fewer"
+      not_found: "Comment not found"
+      unauthorized: "You are not authorized to perform this action on the comment"

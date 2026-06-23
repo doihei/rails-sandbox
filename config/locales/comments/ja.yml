@@ -1,0 +1,7 @@
+ja:
+  comments:
+    errors:
+      body_blank: "本文を入力してください"
+      body_too_long: "本文は%{max}文字以内で入力してください"
+      not_found: "コメントが見つかりません"
+      unauthorized: "このコメントを操作する権限がありません"
