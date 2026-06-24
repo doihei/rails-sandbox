@@ -50,5 +50,23 @@ RSpec.describe Articles::CreateService, type: :model do
         expect(result.value.tags).to be_empty
       end
     end
+
+    context "タイトルにNGワードが含まれる" do
+      it "失敗する" do
+        ng_params = { title: "NG_TEST_WORDを含むタイトル", body: "本文" }
+        result = described_class.call(user: user, params: ng_params)
+        expect(result).to be_failure
+        expect(result.error).to include("NG_TEST_WORD")
+      end
+    end
+
+    context "本文にNGワードが含まれる" do
+      it "失敗する" do
+        ng_params = { title: "タイトル", body: "NG_TEST_WORDを含む本文" }
+        result = described_class.call(user: user, params: ng_params)
+        expect(result).to be_failure
+        expect(result.error).to include("NG_TEST_WORD")
+      end
+    end
   end
 end

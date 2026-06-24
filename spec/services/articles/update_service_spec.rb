@@ -33,5 +33,23 @@ RSpec.describe Articles::UpdateService, type: :model do
         expect(result.error).to eq(I18n.t("errors.unauthorized"))
       end
     end
+
+    context "タイトルにNGワードが含まれる" do
+      it "失敗する" do
+        params = { title: "NG_TEST_WORDを含むタイトル", body: "本文", lock_version: article.lock_version }
+        result = described_class.call(article: article, current_user: owner, params: params)
+        expect(result).to be_failure
+        expect(result.error).to include("NG_TEST_WORD")
+      end
+    end
+
+    context "本文にNGワードが含まれる" do
+      it "失敗する" do
+        params = { title: "タイトル", body: "NG_TEST_WORDを含む本文", lock_version: article.lock_version }
+        result = described_class.call(article: article, current_user: owner, params: params)
+        expect(result).to be_failure
+        expect(result.error).to include("NG_TEST_WORD")
+      end
+    end
   end
 end
