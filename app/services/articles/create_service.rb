@@ -7,6 +7,18 @@ module Articles
     end
 
     def call
+      # タイトルの NG ワードチェック
+      title_policy = ValueObjects::NgWordPolicy.new(@params[:title])
+      return Result.failure(
+        I18n.t("articles.errors.title_ng_word", words: title_policy.detected_words.join(", "))
+      ) unless title_policy.valid?
+
+      # 本文の NG ワードチェック
+      body_policy = ValueObjects::NgWordPolicy.new(@params[:body])
+      return Result.failure(
+        I18n.t("articles.errors.body_ng_word", words: body_policy.detected_words.join(", "))
+      ) unless body_policy.valid?
+
       article = @user.articles.build(@params)
       article.save!
       attach_tags(article)

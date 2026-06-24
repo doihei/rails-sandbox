@@ -7,7 +7,12 @@ module Comments
     end
 
     def call
+      # 1. CommentBody で形式チェック（空・文字数）
       return Result.failure(@body.errors.first) unless @body.valid?
+
+      # 2. NgWordPolicy でコンテンツチェック
+      ng_policy = ValueObjects::NgWordPolicy.new(@body.to_s)
+      return Result.failure(ng_policy.errors.first) unless ng_policy.valid?
 
       comment = @article.comments.build(body: @body.to_s, user: @current_user)
       comment.save!

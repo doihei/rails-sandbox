@@ -9,6 +9,19 @@ module Articles
     def call
       validates_ownership!
 
+      [
+        [ :title, @params[:title] ],
+        [ :body,  @params[:body] ]
+      ].each do |field, text|
+        next if text.nil?   # 更新しないフィールドはスキップ
+
+        policy = ValueObjects::NgWordPolicy.new(text)
+        unless policy.valid?
+          key = "articles.errors.#{field}_ng_word"
+          return Result.failure(I18n.t(key, words: policy.detected_words.join("、")))
+        end
+      end
+
       @article.update!(@params)
       Result.success(@article)
     rescue OwnershipError => e

@@ -2,6 +2,8 @@ en:
   articles:
     errors:
       not_found: "Article not found"
+      title_ng_word: "Title contains prohibited words (%{words})"
+      body_ng_word:  "Body contains prohibited words (%{words})"
     publish:
       errors:
         unauthorized: "You are not authorized to publish this article."
