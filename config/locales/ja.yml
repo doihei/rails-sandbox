@@ -14,3 +14,7 @@ ja:
           attributes:
             tag_id:
               taken: "はすでにこの記事に付いています"
+
+  ng_word:
+    errors:
+      detected: "NGワードが含まれています（%{words}）"
