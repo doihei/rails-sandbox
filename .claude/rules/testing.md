@@ -30,6 +30,10 @@ paths:
   - `FactoryBot::Syntax::Methods`（`create` / `build` をそのまま使える）
   - `Devise::Test::IntegrationHelpers`（`type: :request` の spec でログイン可能）
   - `ActiveJob::TestHelper`（`have_enqueued_job` / `perform_enqueued_jobs` を使う場合）
+- クラスレベルでキャッシュを持つ VO（`NgWordPolicy` など）はテスト間でキャッシュが残るため、`rails_helper.rb` の `RSpec.configure` ブロック内でリセット処理を追加すること:
+  ```ruby
+  ValueObjects::NgWordPolicy.instance_variable_set(:@config, nil)
+  ```
 ### RSpec の type 別メモ
 
 | type | 配置先 | 継承元 |
