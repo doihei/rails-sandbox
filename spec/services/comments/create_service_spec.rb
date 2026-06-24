@@ -37,5 +37,27 @@ RSpec.describe Comments::CreateService, type: :model do
         expect(result.success?).to be false
       end
     end
+
+    context "コメントにNGワードが含まれる" do
+      it "失敗する" do
+        result = described_class.call(
+          body:         "NG_TEST_WORDを含むコメント",
+          article:      article,
+          current_user: user
+        )
+        expect(result).to be_failure
+        expect(result.error).to include("NG_TEST_WORD")
+      end
+
+      it "形式エラーより後にチェックされる（空文字はCommentBodyが先に検知）" do
+        result = described_class.call(
+          body:         "",
+          article:      article,
+          current_user: user
+        )
+        # NgWordPolicy ではなく CommentBody のエラーが返る
+        expect(result.error).to include("入力")
+      end
+    end
   end
 end

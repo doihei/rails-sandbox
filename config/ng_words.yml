@@ -1,0 +1,17 @@
+default: &default
+  words:
+    - "スパム"
+    - "広告"
+    - "無料で稼ぐ"
+    - "クリックしてください"
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+  words:
+    - "NG_TEST_WORD"   # テスト専用。本番ワードを使わず意図的に検知できる
+
+production:
+  <<: *default

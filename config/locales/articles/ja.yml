@@ -2,6 +2,8 @@ ja:
   articles:
     errors:
       not_found: "記事が見つかりません"
+      title_ng_word: "タイトルにNGワードが含まれています（%{words}）"
+      body_ng_word:  "本文にNGワードが含まれています（%{words}）"
     publish:
       errors:
         unauthorized: "この記事を公開する権限がありません"
