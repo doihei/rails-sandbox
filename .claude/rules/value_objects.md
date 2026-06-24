@@ -200,6 +200,34 @@ end
 | `ArgumentError` を raise | 型ミスなどプログラムバグを示す（開発者向け） |
 | `valid?` / `errors` | ユーザー入力のバリデーションエラーを収集する（ユーザー向け） |
 
+#### `freeze` と遅延メモ化の落とし穴
+
+`initialize` で `freeze` した後に `||=` でインスタンス変数をメモ化しようとすると `FrozenError` になる。
+コストのかかる計算を保持したい場合は、`freeze` を呼ぶ**前**に計算して代入しておく。
+
+```ruby
+# NG: freeze 後に ||= を使うと FrozenError
+def initialize(text)
+  @text = text.to_s
+  freeze
+end
+
+def detected_words
+  @detected_words ||= self.class.words.select { |w| @text.include?(w) }  # FrozenError!
+end
+
+# OK: freeze 前に計算を済ませる
+def initialize(text)
+  @text = text.to_s
+  @detected_words = self.class.words.select { |w| @text.include?(w) }
+  freeze
+end
+
+def detected_words
+  @detected_words
+end
+```
+
 ### テスト
 
 `RSpec.describe` で記述し、正常系・異常系・同値性・変換を網羅する。
