@@ -38,6 +38,26 @@ module Types
       Article.find_by(id: id)
     end
 
+    field :tags,
+          [ Types::TagType ],
+          null: false,
+          description: "全タグ一覧（articles_count 付き）"
+    def tags
+      Tag.with_articles
+    end
+
+    field :tagged_articles,
+          Types::ArticleType.connection_type,
+          null: false,
+          description: "タグに紐づく記事一覧" do
+      argument :tag_id, ID, required: true
+    end
+    def tagged_articles(tag_id:)
+      tag = Tag.find_by(id: tag_id)
+      return Article.none unless tag
+      tag.articles.recent
+    end
+
     field :me, Types::UserType, null: true, description: "ログイン中のユーザー"
     def me
       context[:current_user]

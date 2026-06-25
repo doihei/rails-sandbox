@@ -4,7 +4,8 @@ class Tag < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true, length: { maximum: 30 }
 
-  # 見つからなければ作る — コントローラで使う
+  scope :with_articles, -> { where("articles_count > 0").order(articles_count: :desc) }
+
   def self.find_or_create_by_name!(name)
     find_or_create_by!(name: name.strip.downcase)
   end
