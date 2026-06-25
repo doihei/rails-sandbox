@@ -112,6 +112,36 @@ Service は「呼ばれた時点で `current_user` は必ず存在する」前�
 - 単数形（1件）: `field :article, Types::ArticleType, null: true`（引数 `id` 必須）
 - 認証ユーザー自身: `field :me, Types::UserType, null: true`（未認証時は `null`、`context[:current_user]` を返す）
 
+### Relay Connection（ページネーション付き一覧）
+
+一覧をページネーション付きで返す場合は `connection_type` を使う。
+
+```ruby
+field :articles, Types::ArticleType.connection_type, null: false
+```
+
+**注意点：**
+
+- `connection_type` は `first` / `after` / `last` / `before` 引数を**自動追加**する。
+  フィールド定義で手動宣言すると `DuplicateNamesError` になる。
+
+  ```ruby
+  # NG: first/after を手動宣言すると DuplicateNamesError
+  field :tagged_articles, Types::ArticleType.connection_type, null: false do
+    argument :tag_id, ID, required: true
+    argument :first,  Integer, required: false  # ← 重複!
+    argument :after,  String,  required: false  # ← 重複!
+  end
+
+  # OK: ドメイン固有の引数だけ宣言する
+  field :tagged_articles, Types::ArticleType.connection_type, null: false do
+    argument :tag_id, ID, required: true
+  end
+  ```
+
+- `Types::ArticleConnectionType` のような独自定数名は graphql-ruby が自動生成しない。
+  未定義定数エラーを避けるため、必ず `Types::ArticleType.connection_type` の形式を使うこと。
+
 ### エラーメッセージの i18n
 
 Mutation 内のエラーメッセージはハードコードせず `I18n.t()` を使う。

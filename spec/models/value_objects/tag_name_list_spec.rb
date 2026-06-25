@@ -32,6 +32,20 @@ RSpec.describe ValueObjects::TagNameList, type: :model do
       expect(described_class.new("").empty?).to be true
     end
 
+    it "配列で初期化できる" do
+      list = described_class.new([ "Rails", " Ruby " ])
+      expect(list.names).to eq([ "rails", "ruby" ])
+    end
+
+    it "配列内の重複を排除する" do
+      list = described_class.new([ "Rails", "RAILS", "ruby" ])
+      expect(list.names).to eq([ "rails", "ruby" ])
+    end
+
+    it "空配列で初期化すると空になる" do
+      expect(described_class.new([]).empty?).to be true
+    end
+
     it "Integer を渡すと ArgumentError" do
       expect { described_class.new(123) }.to raise_error(ArgumentError)
     end

@@ -3,10 +3,23 @@ module ValueObjects
     attr_reader :names
 
     def initialize(raw)
-      raise ArgumentError, "String または nil を渡してください" unless raw.nil? || raw.is_a?(String)
-      @names = raw.to_s.split(",").map { |n| n.strip.downcase }.reject(&:blank?).uniq.freeze
+      raise ArgumentError, "String、Array、または nil を渡してください" unless raw.nil? || raw.is_a?(String) || raw.is_a?(Array)
+      @names = parse(raw)
       freeze
     end
+
+    private
+
+    def parse(raw)
+      names = case raw
+      when Array  then raw.map(&:to_s)
+      when String then raw.split(",")
+      else []
+      end
+      names.map { |n| n.strip.downcase }.reject(&:blank?).uniq.freeze
+    end
+
+    public
 
     def empty?
       @names.empty?

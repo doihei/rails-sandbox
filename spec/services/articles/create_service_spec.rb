@@ -36,9 +36,16 @@ RSpec.describe Articles::CreateService, type: :model do
       end
     end
 
-    context "タグ名を渡した場合" do
+    context "タグ名を文字列で渡した場合" do
       it "タグが付与される" do
         result = described_class.call(user: user, params: valid_params, tag_names: "ruby, rails")
+        expect(result.value.tags.map(&:name)).to contain_exactly("ruby", "rails")
+      end
+    end
+
+    context "タグ名を配列で渡した場合（GraphQL 経由）" do
+      it "タグが付与される" do
+        result = described_class.call(user: user, params: valid_params, tag_names: [ "Ruby", "Rails" ])
         expect(result.value.tags.map(&:name)).to contain_exactly("ruby", "rails")
       end
     end
@@ -46,6 +53,14 @@ RSpec.describe Articles::CreateService, type: :model do
     context "空のタグ名を渡した場合" do
       it "エラーなく成功する" do
         result = described_class.call(user: user, params: valid_params, tag_names: "")
+        expect(result).to be_success
+        expect(result.value.tags).to be_empty
+      end
+    end
+
+    context "空配列を渡した場合" do
+      it "エラーなく成功する" do
+        result = described_class.call(user: user, params: valid_params, tag_names: [])
         expect(result).to be_success
         expect(result.value.tags).to be_empty
       end

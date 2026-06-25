@@ -31,7 +31,46 @@ paths:
   ```
 - ネームスペースはリソース名の複数形モジュールに統一する（例: `Articles::PublishService`）
 - ファイル配置: `app/services/<namespace>/<action>_service.rb`
-- 既存実装の参照: `app/services/articles/publish_service.rb`（公開フロー）、`app/services/articles/update_service.rb`（オーナーチェック + 楽観的ロック）
+- 既存実装の参照: `app/services/articles/publish_service.rb`（公開フロー）、`app/services/articles/update_service.rb`（オーナーチェック + 楽観的ロック + タグ更新）
+
+### Rails 8 の counter_cache × 楽観的ロック
+
+Rails 8 では `update_counters` が `lock_version` も同時にインクリメントする（`ActiveRecord::Locking::Optimistic` がオーバーライド）。
+
+そのため `has_many :through` の中間モデルに `counter_cache` が設定されている場合、関連レコードの作成・削除が `lock_version` を上げてしまう。
+
+```
+ArticleTag.create! → counter_cache → Article.update_counters
+                                       → lock_version も +1 される（Rails 8）
+```
+
+この状態で `article.update!({ lock_version: 0 })` を呼ぶと、DB の `lock_version` はすでに上がっているため `StaleObjectError` になる。
+
+**対処パターン：**
+
+```ruby
+ActiveRecord::Base.transaction do
+  # 1. counter_cache が lock_version を加算する前に楽観的ロックを検証
+  client_lock_version = @params[:lock_version]
+  if client_lock_version && @article.lock_version != client_lock_version.to_i
+    raise ActiveRecord::StaleObjectError.new(@article, "update")
+  end
+
+  # 2. 関連操作（ここで counter_cache が lock_version を加算する）
+  attach_tags
+
+  # 3. reload して最新の lock_version を取得してから update!
+  if update_params.any?
+    @article.reload
+    @article.update!(update_params)
+  end
+end
+```
+
+ポイント：
+- ユーザーが送った `lock_version` の検証はトランザクション**冒頭**で手動チェック
+- `attach_tags` 後は必ず `reload` して DB の最新 `lock_version` を取得してから `update!`
+- `update!` に `lock_version` を渡さず、`reload` 後のモデルの値をそのまま使う
 - サービスは `current_user` が必ず存在する前提で動く。nil チェックは Mutation 層の責務のため、サービス内では行わない
 - `composed_of` で VO 管理しているカラムを扱う場合、文字列比較せずに VO のドメインメソッドを使う:
   ```ruby

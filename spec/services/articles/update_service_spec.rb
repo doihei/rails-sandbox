@@ -15,6 +15,34 @@ RSpec.describe Articles::UpdateService, type: :model do
       end
     end
 
+    context "タグ名を配列で渡した場合（GraphQL 経由）" do
+      it "タグが付与される" do
+        result = described_class.call(article: article, current_user: owner, params: {}, tag_names: [ "Ruby", "Rails" ])
+        expect(result).to be_success
+        expect(result.value.tags.map(&:name)).to contain_exactly("ruby", "rails")
+      end
+    end
+
+    context "空配列を渡した場合" do
+      it "既存タグが全削除される" do
+        article.tags = [ Tag.find_or_create_by_name!("ruby") ]
+        article.reload
+        result = described_class.call(article: article, current_user: owner, params: {}, tag_names: [])
+        expect(result).to be_success
+        expect(result.value.tags).to be_empty
+      end
+    end
+
+    context "tag_names を nil で渡した場合" do
+      it "タグは変更されない" do
+        article.tags = [ Tag.find_or_create_by_name!("ruby") ]
+        article.reload
+        result = described_class.call(article: article, current_user: owner, params: {}, tag_names: nil)
+        expect(result).to be_success
+        expect(result.value.tags.map(&:name)).to contain_exactly("ruby")
+      end
+    end
+
     context "古い lock_version を渡した場合" do
       it "失敗を返す" do
         article.update!(title: "先に更新された")
