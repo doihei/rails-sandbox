@@ -68,8 +68,8 @@ module ValueObjects
     attr_reader :names
 
     def initialize(raw)
-      raise ArgumentError, "String または nil を渡してください" unless raw.nil? || raw.is_a?(String)
-      @names = raw.to_s.split(",").map { |n| n.strip.downcase }.reject(&:blank?).uniq.freeze
+      raise ArgumentError, "String、Array、または nil を渡してください" unless raw.nil? || raw.is_a?(String) || raw.is_a?(Array)
+      @names = parse(raw)
       freeze
     end
 
@@ -85,6 +85,17 @@ module ValueObjects
     def hash
       names.hash
     end
+
+    private
+
+    def parse(raw)
+      names = case raw
+              when Array  then raw.map(&:to_s)
+              when String then raw.split(",")
+              else []
+              end
+      names.map { |n| n.strip.downcase }.reject(&:blank?).uniq.freeze
+    end
   end
 end
 ```
@@ -92,9 +103,14 @@ end
 使用例：
 
 ```ruby
+# カンマ区切り文字列（フォーム入力など）
 tag_list = ValueObjects::TagNameList.new("Rails, ruby, RAILS")
 tag_list.names  # => ["rails", "ruby"]
 tag_list.empty? # => false
+
+# 配列（GraphQL の [String] 引数など）
+tag_list = ValueObjects::TagNameList.new(["Rails", " Ruby "])
+tag_list.names  # => ["rails", "ruby"]
 ```
 
 ### ActiveRecord モデルとの連携
