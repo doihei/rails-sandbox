@@ -19,9 +19,12 @@ module Articles
         I18n.t("articles.errors.body_ng_word", words: body_policy.detected_words.join(", "))
       ) unless body_policy.valid?
 
-      article = @user.articles.build(@params)
-      article.save!
-      attach_tags(article)
+      article = nil
+      ActiveRecord::Base.transaction do
+        article = @user.articles.build(@params)
+        article.save!
+        attach_tags(article)
+      end
       ArticleNotificationJob.perform_later(article)
       Result.success(article)
     rescue ActiveRecord::RecordInvalid => e

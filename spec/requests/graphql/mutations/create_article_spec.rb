@@ -37,4 +37,32 @@ RSpec.describe "Mutation: createArticle", type: :request do
       }.to change(Article, :count).by(1)
     end
   end
+
+  context "タグ付きで記事を作成する" do
+    let(:mutation) do
+      <<~GQL
+        mutation {
+          createArticle(input: {
+            title: "タグ付き記事",
+            body: "本文",
+            tagNames: ["rails", "graphql"]
+          }) {
+            article { id tags { name } }
+            errors
+          }
+        }
+      GQL
+    end
+
+    it "タグが紐づいた記事が作成される" do
+      post "/graphql",
+        params: { query: mutation },
+        headers: auth_headers(user),
+        as: :json
+
+      json = JSON.parse(response.body)
+      tags = json.dig("data", "createArticle", "article", "tags")
+      expect(tags.map { |t| t["name"] }).to contain_exactly("rails", "graphql")
+    end
+  end
 end
