@@ -8,15 +8,27 @@ RSpec.describe "Query: tags", type: :request do
 
   let(:query) do
     <<~GQL
-      query { tags { id name articlesCount } }
+      query {
+        tags {
+          nodes {
+            id
+            name
+            articlesCount
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+        }
+      }
     GQL
   end
 
   it "タグ一覧が返る" do
     post "/graphql", params: { query: query }, as: :json
     json = JSON.parse(response.body)
-    tags = json.dig("data", "tags")
-    expect(tags.first["name"]).to eq("rails")
-    expect(tags.first["articlesCount"]).to eq(1)
+    expect(json.dig("data", "tags", "nodes")).to be_an(Array)
+    expect(json.dig("data", "tags", "nodes").first["name"]).to eq(rails_tag.name)
+    expect(json.dig("data", "tags", "nodes").first["articlesCount"]).to eq(1)
   end
 end

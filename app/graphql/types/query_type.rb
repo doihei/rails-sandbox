@@ -39,7 +39,7 @@ module Types
     end
 
     field :tags,
-          [ Types::TagType ],
+          Types::TagType.connection_type,
           null: false,
           description: "全タグ一覧（articles_count 付き）"
     def tags
