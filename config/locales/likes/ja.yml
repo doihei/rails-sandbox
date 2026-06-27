@@ -3,3 +3,4 @@ ja:
     errors:
       not_found: "いいね対象が見つかりません"
       invalid_type: "無効なタイプです: %{type}"
+      cannot_like_own_content: "自分のコンテンツにはいいねできません"

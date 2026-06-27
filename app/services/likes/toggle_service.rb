@@ -16,6 +16,10 @@ module Likes
       likeable = @likeable_type.constantize.find_by(id: @likeable_id)
       return Result.failure(I18n.t("likes.errors.not_found")) unless likeable
 
+      if @user.id == likeable.user_id
+        return Result.failure(I18n.t("likes.errors.cannot_like_own_content"))
+      end
+
       existing = likeable.likes.find_by(user: @user)
 
       if existing

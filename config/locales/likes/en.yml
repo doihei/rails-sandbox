@@ -3,3 +3,4 @@ en:
     errors:
       not_found: "Like target not found"
       invalid_type: "Invalid type: %{type}"
+      cannot_like_own_content: "You cannot like your own content"
