@@ -1,0 +1,5 @@
+en:
+  likes:
+    errors:
+      not_found: "Like target not found"
+      invalid_type: "Invalid type: %{type}"
