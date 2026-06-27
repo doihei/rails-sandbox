@@ -72,6 +72,30 @@ RSpec.describe "Mutation: toggleLike", type: :request do
     end
   end
 
+  context "自分の記事にいいねしようとする場合" do
+    let(:own_article) { create(:article, user: user) }
+
+    it "errors を返す" do
+      post "/graphql",
+        params: { query: mutation(likeable_id: own_article.id, likeable_type: "Article") },
+        headers: auth_headers(user),
+        as: :json
+      json = JSON.parse(response.body)
+      expect(json.dig("data", "toggleLike", "errors")).to include(
+        I18n.t("likes.errors.cannot_like_own_content")
+      )
+    end
+
+    it "like レコードが増えない" do
+      expect {
+        post "/graphql",
+          params: { query: mutation(likeable_id: own_article.id, likeable_type: "Article") },
+          headers: auth_headers(user),
+          as: :json
+      }.not_to change(Like, :count)
+    end
+  end
+
   context "不正な likeableType" do
     it "errors を返す" do
       post "/graphql",

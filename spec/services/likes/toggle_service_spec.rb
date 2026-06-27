@@ -61,6 +61,40 @@ RSpec.describe Likes::ToggleService, type: :model do
       end
     end
 
+    context "自分の記事にいいねしようとする場合" do
+      let(:own_article) { create(:article, user: user) }
+
+      it "failure を返す" do
+        result = described_class.call(user: user, likeable_id: own_article.id, likeable_type: "Article")
+        expect(result).not_to be_success
+      end
+
+      it "cannot_like_own_content エラーメッセージを返す" do
+        result = described_class.call(user: user, likeable_id: own_article.id, likeable_type: "Article")
+        expect(result.error).to eq(I18n.t("likes.errors.cannot_like_own_content"))
+      end
+
+      it "like レコードが増えない" do
+        expect {
+          described_class.call(user: user, likeable_id: own_article.id, likeable_type: "Article")
+        }.not_to change(Like, :count)
+      end
+    end
+
+    context "自分のコメントにいいねしようとする場合" do
+      let(:own_comment) { create(:comment, user: user) }
+
+      it "failure を返す" do
+        result = described_class.call(user: user, likeable_id: own_comment.id, likeable_type: "Comment")
+        expect(result).not_to be_success
+      end
+
+      it "cannot_like_own_content エラーメッセージを返す" do
+        result = described_class.call(user: user, likeable_id: own_comment.id, likeable_type: "Comment")
+        expect(result.error).to eq(I18n.t("likes.errors.cannot_like_own_content"))
+      end
+    end
+
     context "Comment へのいいね" do
       it "liked: true を返す" do
         result = described_class.call(user: user, likeable_id: comment.id, likeable_type: "Comment")
