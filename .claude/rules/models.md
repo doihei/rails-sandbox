@@ -76,6 +76,26 @@ Tag.find_each { |tag| Tag.reset_counters(tag.id, :article_tags) }
 Article.find_each { |article| Article.reset_counters(article.id, :article_tags) }
 ```
 
+#### counter_culture（ポリモーフィックアソシエーション）
+
+Rails ネイティブの `counter_cache` はポリモーフィック `belongs_to` に対応していない。
+`counter_culture` gem を使うことで `likeable_type` に対応するテーブルを自動判別してカウントを更新できる：
+
+```ruby
+# app/models/like.rb
+class Like < ApplicationRecord
+  belongs_to :likeable, polymorphic: true
+  counter_culture :likeable, column_name: "likes_count"
+end
+```
+
+マイグレーションで対象テーブル全てにカラムを追加する：
+
+```ruby
+add_column :articles, :likes_count, :integer, default: 0, null: false
+add_column :comments, :likes_count, :integer, default: 0, null: false
+```
+
 ### バリデーション
 
 標準バリデーションは `validates` で記述する。エラーメッセージは i18n で管理し `message:` にハードコードしない（詳細は `i18n.md` 参照）：

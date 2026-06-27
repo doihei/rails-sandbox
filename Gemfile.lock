@@ -99,6 +99,9 @@ GEM
       thor (~> 1.0)
     concurrent-ruby (1.3.7)
     connection_pool (3.0.2)
+    counter_culture (3.14.0)
+      activerecord (>= 4.2)
+      activesupport (>= 4.2)
     crack (1.0.1)
       bigdecimal
       rexml
@@ -154,7 +157,7 @@ GEM
       rake (~> 13.3)
     graphiql-rails (1.10.5)
       railties
-    graphql (2.6.4)
+    graphql (2.6.3)
       base64
       fiber-storage
       logger
@@ -427,6 +430,7 @@ DEPENDENCIES
   brakeman
   bullet
   bundler-audit
+  counter_culture
   debug
   factory_bot_rails
   faraday

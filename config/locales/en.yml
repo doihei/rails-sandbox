@@ -7,14 +7,6 @@ en:
     unauthorized: "You are not authorized to perform this action"
     stale_object: "This record was updated by someone else. Please review the latest version and try again"
 
-  activerecord:
-    errors:
-      models:
-        article_tag:
-          attributes:
-            tag_id:
-              taken: "has already been added to this article"
-
   ng_word:
     errors:
       detected: "Contains prohibited words (%{words})"

@@ -14,5 +14,8 @@ module Types
     # コメント
     field :create_comment, mutation: Mutations::CreateComment
     field :delete_comment, mutation: Mutations::DeleteComment
+
+    # いいね
+    field :toggle_like,    mutation: Mutations::ToggleLike
   end
 end

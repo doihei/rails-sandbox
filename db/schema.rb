@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_09_101322) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_27_021121) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -28,6 +28,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_101322) do
     t.text "body"
     t.integer "comments_count", default: 0, null: false
     t.datetime "created_at", null: false
+    t.integer "likes_count", default: 0, null: false
     t.integer "lock_version", default: 0, null: false
     t.string "status"
     t.integer "tags_count", default: 0, null: false
@@ -42,6 +43,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_101322) do
     t.bigint "article_id", null: false
     t.text "body", null: false
     t.datetime "created_at", null: false
+    t.integer "likes_count", default: 0, null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["article_id", "created_at"], name: "index_comments_on_article_id_and_created_at"
