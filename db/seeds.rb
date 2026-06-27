@@ -234,17 +234,19 @@ puts "\n✅ #{Comment.count}件のコメントを作成しました"
 
 puts "\n❤️  いいねを作成中..."
 
-# 記事へのいいね（各記事にランダムなユーザーがいいね）
+# 記事へのいいね（著者本人を除くユーザーがいいね）
 Article.published.each do |article|
-  users.sample(rand(1..users.count)).each do |user|
+  other_users = users.reject { |u| u.id == article.user_id }
+  other_users.sample(rand(0..other_users.length)).each do |user|
     Like.create!(likeable: article, user: user)
     print "."
   end
 end
 
-# コメントへのいいね（一部コメントにいいね）
+# コメントへのいいね（著者本人を除く一部ユーザーがいいね）
 Comment.all.sample(Comment.count / 2).each do |comment|
-  users.sample(rand(1..2)).each do |user|
+  other_users = users.reject { |u| u.id == comment.user_id }
+  other_users.sample(rand(0..[ other_users.length, 2 ].min)).each do |user|
     Like.find_or_create_by!(likeable: comment, user: user)
     print "."
   end
