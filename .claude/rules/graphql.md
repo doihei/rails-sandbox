@@ -103,8 +103,9 @@ end
 
 Service は「呼ばれた時点で `current_user` は必ず存在する」前提で動く。Service 内で `current_user` の nil チェックは行わない。
 
-**`success` フィールドの null 制約：**
-削除系 Mutation の `field :success, Boolean` は `null: true` にする。未認証時に `ready?` が `{ errors: [...] }` を返す際、`success` キーが欠落するため `null: false` だと制約違反になる。
+**結果フィールドの null 制約：**
+`AuthenticatedMutation` では未認証時に `ready?` が `{ errors: [...] }` だけを返す。このとき `errors` 以外のフィールドが欠落するため、`null: false` だと制約違反になり親フィールド全体が `null` に昇格する。
+`errors` 以外のすべての結果フィールドは `null: true` にする（`success`・`liked`・`likes_count` など型を問わず）。
 
 ### Query フィールドの命名
 
